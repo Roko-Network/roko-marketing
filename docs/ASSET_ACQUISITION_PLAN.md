@@ -70,16 +70,19 @@ This document outlines all assets that need to be created, purchased, or generat
 **Prompt Templates:**
 ```
 1. "Futuristic cathedral architecture with temporal clock mechanisms,
-   ethereal blue and purple lighting, volumetric fog, flowing light
-   streams, 8k resolution, cinematic composition, octane render"
+   bright teal and cyan lighting (#00d4aa), pure black backgrounds,
+   volumetric fog, flowing light streams, 8k resolution, cinematic
+   composition, octane render, cyberpunk aesthetic"
 
 2. "Abstract time visualization, flowing data streams forming geometric
    patterns, nanosecond precision representation, holographic interfaces,
-   dark background with cyan accents, ultra detailed, award winning design"
+   pure black background with bright teal/cyan accents (#00d4aa, #00ffcc),
+   ultra detailed, award winning design, high contrast"
 
 3. "Grand futuristic hallway with infinite perspective, sacred geometry
-   patterns, glowing temporal portals, blue-purple gradient lighting,
-   photorealistic, architectural photography style"
+   patterns, glowing temporal portals, bright teal/cyan gradient lighting,
+   pure black architecture, photorealistic, architectural photography style,
+   cyberpunk atmosphere"
 ```
 
 **Generation Platforms:**

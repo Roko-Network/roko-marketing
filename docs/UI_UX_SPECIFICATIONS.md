@@ -318,42 +318,46 @@ The design system combines:
 ### 5.1 Primary Palette
 
 ```css
-/* Core Brand Colors */
---roko-primary: #6366f1;      /* Indigo - Main brand color */
+/* Core Brand Colors - Updated to match Figma */
+--roko-primary: #00d4aa;      /* Bright Teal/Cyan - Main CTA color (seen in Figma) */
 --roko-temporal: #14b8a6;     /* Teal - Time/sync accent */
---roko-compute: #f59e0b;      /* Amber - Compute/energy */
---roko-validation: #10b981;   /* Emerald - Success/validation */
+--roko-accent: #00ffcc;       /* Bright Cyan - Hover states */
+--roko-secondary: #6366f1;    /* Indigo - Secondary brand color */
 
 /* Extended Palette */
 --roko-enterprise: #8b5cf6;   /* Purple - Enterprise/premium */
 --roko-data: #3b82f6;         /* Blue - Data/information */
---roko-alert: #ef4444;        /* Red - Errors/warnings */
+--roko-success: #10b981;      /* Emerald - Success/validation */
+--roko-warning: #f59e0b;      /* Amber - Warnings */
+--roko-error: #ef4444;        /* Red - Errors */
 --roko-neutral: #64748b;      /* Slate - Secondary text */
 ```
 
 ### 5.2 Background Colors
 
 ```css
-/* Dark Theme (Primary) */
---bg-primary: #0a0e27;        /* Deep space navy */
---bg-secondary: #12151a;      /* Panel background */
---bg-tertiary: #1a1d23;       /* Card background */
---bg-overlay: rgba(10, 14, 39, 0.95);  /* Modal overlay */
+/* Dark Theme (Primary) - Aligned with Figma */
+--bg-primary: #000000;        /* Pure black (as seen in Figma) */
+--bg-secondary: #0a0a0a;      /* Near black panel background */
+--bg-tertiary: #1a1a1a;       /* Dark gray card background */
+--bg-overlay: rgba(0, 0, 0, 0.95);  /* Modal overlay */
 
-/* Gradients */
---gradient-hero: linear-gradient(135deg, #6366f1 0%, #14b8a6 100%);
---gradient-dark: linear-gradient(180deg, #0a0e27 0%, #12151a 100%);
---gradient-glow: radial-gradient(circle, #6366f1 0%, transparent 70%);
+/* Gradients - Updated to match Figma aesthetic */
+--gradient-hero: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
+--gradient-accent: linear-gradient(135deg, #00d4aa 0%, #14b8a6 100%);
+--gradient-dark: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+--gradient-glow: radial-gradient(circle, #00d4aa 0%, transparent 70%);
 ```
 
 ### 5.3 Text Colors
 
 ```css
-/* Text Hierarchy */
+/* Text Hierarchy - Aligned with Figma */
 --text-primary: #ffffff;      /* Primary text */
---text-secondary: #94a3b8;    /* Secondary text */
---text-tertiary: #64748b;     /* Muted text */
---text-accent: #14b8a6;       /* Highlighted text */
+--text-secondary: #a0a0a0;    /* Secondary text (lighter gray) */
+--text-tertiary: #707070;     /* Muted text */
+--text-accent: #00d4aa;       /* Highlighted text (bright teal) */
+--text-link: #00ffcc;         /* Link color on hover */
 ```
 
 ---
