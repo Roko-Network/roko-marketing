@@ -100,9 +100,138 @@ The design system combines:
 
 ---
 
-## 3. Design Elements
+## 3. Governance UI Components
 
-### 3.1 2D/3D Visual Elements
+### 3.1 Governance Dashboard
+
+#### Main Dashboard Layout
+**Structure:**
+- **Header**: Wallet connection status, network selector
+- **Sidebar**: Navigation (Overview, Proposals, Staking, Delegation, Treasury)
+- **Main Content**: Dynamic content area
+- **Footer**: Network stats, gas prices
+
+**Visual Design:**
+- Background: Dark gradient (#0a0e27 to #12151a)
+- Cards: Glass morphism effect with subtle borders
+- Accent: Voting power visualization with radial gradient
+
+#### Token Balance Card
+**Specifications:**
+- Size: 360px x 200px
+- Background: Semi-transparent with blur
+- Content:
+  - ROKO balance (large display)
+  - pwROKO balance (voting power)
+  - Reputation multiplier badge
+  - Quick stake/unstake buttons
+
+#### Proposal Card
+**Specifications:**
+- Layout: Horizontal card with status indicator
+- Elements:
+  - Title (24px, semibold)
+  - Status badge (Active/Passed/Failed/Pending)
+  - Progress bar (votes cast)
+  - Time remaining countdown
+  - Vote buttons (For/Against/Abstain)
+  - Quorum indicator
+
+### 3.2 Staking Interface
+
+#### Staking Modal
+**Specifications:**
+- Width: 480px max
+- Steps: Amount input → Review → Confirm → Success
+- Features:
+  - Real-time gas estimation
+  - APY display
+  - Instant unstake option
+  - Transaction history
+
+**Visual Elements:**
+- Input field with token selector
+- Balance display with "Max" button
+- Conversion preview (ROKO → pwROKO)
+- Gas fee estimation
+- Animated confirmation state
+
+### 3.3 Voting Components
+
+#### Voting Interface
+**Layout:**
+- Proposal details (expandable)
+- Current results visualization
+- Vote casting panel
+- Delegation option
+
+**Voting Visualization:**
+- Donut chart for vote distribution
+- Progress bar for quorum
+- Real-time updates via WebSocket
+- Animated transitions on vote cast
+
+#### Delegation Modal
+**Features:**
+- Delegate search/selection
+- Delegation history
+- Revoke delegation option
+- Delegate profile display
+
+### 3.4 Treasury Visualization
+
+#### Treasury Dashboard
+**Components:**
+- Total value locked (TVL) display
+- Asset allocation pie chart
+- Recent transactions table
+- Budget allocation by working group
+
+**Visual Style:**
+- 3D pie chart with hover details
+- Glassmorphism cards
+- Animated value counters
+- Color-coded asset types
+
+### 3.5 Reputation System UI
+
+#### Badge Gallery
+**Layout:**
+- Grid display (3-4 columns)
+- Badge cards with:
+  - NFT image
+  - Title and description
+  - Multiplier value
+  - Rarity indicator
+  - Achievement progress
+
+**Interactive Elements:**
+- Hover: 3D rotation effect
+- Click: Detailed view modal
+- Filter/sort options
+- Progress indicators
+
+### 3.6 Working Group Interface
+
+#### Working Group Dashboard
+**Sections:**
+- Member list with roles
+- Budget overview
+- Active initiatives
+- Funding requests
+- Deliverables tracker
+
+**Multi-sig Component:**
+- Pending transactions list
+- Signature status indicators
+- Approve/reject buttons
+- Transaction details panel
+
+---
+
+## 4. Design Elements
+
+### 4.1 2D/3D Visual Elements
 
 #### 3D Objects Required
 1. **Geometric Spheres**:
@@ -125,7 +254,7 @@ The design system combines:
 - **Performance**: LOD (Level of Detail) system for optimization
 - **Fallback**: Static images for low-performance devices
 
-### 3.2 Grid System & Layout
+### 4.2 Grid System & Layout
 
 **Desktop Grid:**
 - Container: 1440px max-width
@@ -149,7 +278,7 @@ The design system combines:
 - **Card Grids**: 3-column (desktop), 2-column (tablet), 1-column (mobile)
 - **Feature Showcases**: Z-pattern or F-pattern layouts
 
-### 3.3 Imagery Style
+### 4.3 Imagery Style
 
 **Photography Requirements:**
 - **Style**: Futuristic, ethereal, high-tech
@@ -167,7 +296,7 @@ The design system combines:
 4. Crystalline and geometric formations
 5. Sacred geometry patterns
 
-### 3.4 UI Icons
+### 4.4 UI Icons
 
 **Icon Style:**
 - Type: Outlined with 2px stroke
@@ -184,9 +313,9 @@ The design system combines:
 
 ---
 
-## 4. Color System
+## 5. Color System
 
-### 4.1 Primary Palette
+### 5.1 Primary Palette
 
 ```css
 /* Core Brand Colors */
@@ -202,7 +331,7 @@ The design system combines:
 --roko-neutral: #64748b;      /* Slate - Secondary text */
 ```
 
-### 4.2 Background Colors
+### 5.2 Background Colors
 
 ```css
 /* Dark Theme (Primary) */
@@ -217,7 +346,7 @@ The design system combines:
 --gradient-glow: radial-gradient(circle, #6366f1 0%, transparent 70%);
 ```
 
-### 4.3 Text Colors
+### 5.3 Text Colors
 
 ```css
 /* Text Hierarchy */
@@ -229,9 +358,9 @@ The design system combines:
 
 ---
 
-## 5. Typography System
+## 6. Typography System
 
-### 5.1 Font Families
+### 6.1 Font Families
 
 **Primary Font Stack:**
 ```css
@@ -240,7 +369,7 @@ The design system combines:
 --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 ```
 
-### 5.2 Type Scale
+### 6.2 Type Scale
 
 ```css
 /* Desktop Typography */
@@ -257,7 +386,7 @@ The design system combines:
 --text-micro: 12px/1.4;       /* Micro text */
 ```
 
-### 5.3 Font Weights
+### 6.3 Font Weights
 
 ```css
 --font-light: 300;
@@ -269,9 +398,9 @@ The design system combines:
 
 ---
 
-## 6. Motion & Animation
+## 7. Motion & Animation
 
-### 6.1 Animation Principles
+### 7.1 Animation Principles
 
 **Timing Functions:**
 ```css
@@ -290,7 +419,7 @@ The design system combines:
 --duration-slower: 800ms;
 ```
 
-### 6.2 Animation Patterns
+### 7.2 Animation Patterns
 
 #### Entrance Animations
 - **Fade Up**: Elements fade in while moving up 20px
@@ -309,9 +438,9 @@ The design system combines:
 
 ---
 
-## 7. Required Assets & Resources
+## 8. Required Assets & Resources
 
-### 7.1 3D Assets to Create/Acquire
+### 8.1 3D Assets to Create/Acquire
 
 1. **Temporal Orb Model**
    - Format: GLTF/GLB
@@ -337,7 +466,7 @@ The design system combines:
    - Materials: Gold/bronze metallic
    - Animation: Continuous movement
 
-### 7.2 Imagery Assets to Generate
+### 8.2 Imagery Assets to Generate
 
 #### AI Image Generation Prompts
 
@@ -369,7 +498,7 @@ The design system combines:
    aesthetic, blue-purple lighting"
    ```
 
-### 7.3 Icon Library Requirements
+### 8.3 Icon Library Requirements
 
 **Custom Icons Needed:**
 - Temporal/Clock variations (10 icons)
@@ -384,7 +513,7 @@ The design system combines:
 - Secondary: Feather Icons (modified)
 - Specialized: Cryptocurrency icon set
 
-### 7.4 Animation Libraries
+### 8.4 Animation Libraries
 
 **Required Libraries:**
 - **Framer Motion**: Page transitions and component animations
@@ -393,7 +522,7 @@ The design system combines:
 - **Lottie**: Complex 2D animations
 - **GSAP**: Advanced scroll animations (optional)
 
-### 7.5 Font Files
+### 8.5 Font Files
 
 **To Acquire:**
 1. **Inter Variable Font**
@@ -413,9 +542,9 @@ The design system combines:
 
 ---
 
-## 8. Responsive Design Specifications
+## 9. Responsive Design Specifications
 
-### 8.1 Breakpoints
+### 9.1 Breakpoints
 
 ```scss
 $breakpoints: (
@@ -429,7 +558,7 @@ $breakpoints: (
 );
 ```
 
-### 8.2 Responsive Behavior
+### 9.2 Responsive Behavior
 
 #### Typography Scaling
 - **Desktop**: 100% of defined sizes
@@ -450,20 +579,20 @@ $breakpoints: (
 
 ---
 
-## 9. Accessibility Requirements
+## 10. Accessibility Requirements
 
-### 9.1 Visual Accessibility
+### 10.1 Visual Accessibility
 - **Color Contrast**: Minimum 4.5:1 for body text, 3:1 for large text
 - **Focus Indicators**: Visible outline with 3px offset
 - **Text Size**: Minimum 16px for body text
 - **Touch Targets**: Minimum 44x44px
 
-### 9.2 Motion Accessibility
+### 10.2 Motion Accessibility
 - **Reduced Motion**: Respect prefers-reduced-motion
 - **Pause Controls**: For auto-playing animations
 - **Smooth Scrolling**: Optional based on user preference
 
-### 9.3 Screen Reader Support
+### 10.3 Screen Reader Support
 - **Semantic HTML**: Proper heading hierarchy
 - **ARIA Labels**: For interactive elements
 - **Skip Links**: Navigation bypass options
@@ -471,21 +600,21 @@ $breakpoints: (
 
 ---
 
-## 10. Performance Guidelines
+## 11. Performance Guidelines
 
-### 10.1 Asset Optimization
+### 11.1 Asset Optimization
 - **Images**: Max 200KB per image, WebP format
 - **3D Models**: Max 500KB per model, compressed textures
 - **Fonts**: Subset and preload critical glyphs
 - **Icons**: SVG sprites or inline SVG
 
-### 10.2 Loading Strategy
+### 11.2 Loading Strategy
 - **Critical CSS**: Inline above-the-fold styles
 - **Code Splitting**: Route-based chunking
 - **Lazy Loading**: Images, 3D models, and below-fold content
 - **Preloading**: Critical fonts and hero images
 
-### 10.3 Performance Targets
+### 11.3 Performance Targets
 - **LCP**: < 2.5 seconds
 - **FID/INP**: < 100ms
 - **CLS**: < 0.1
@@ -493,7 +622,7 @@ $breakpoints: (
 
 ---
 
-## 11. Implementation Priority
+## 12. Implementation Priority
 
 ### Phase 1: Foundation (Week 1-2)
 - [ ] Set up color system and typography
@@ -521,7 +650,7 @@ $breakpoints: (
 
 ---
 
-## 12. Design Handoff Checklist
+## 13. Design Handoff Checklist
 
 ### Assets to Deliver
 - [ ] Figma design file with components

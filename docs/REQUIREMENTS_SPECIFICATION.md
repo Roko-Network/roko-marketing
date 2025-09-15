@@ -96,6 +96,26 @@
 
 **Measurement**: Build time monitoring
 
+### NFR-8: Blockchain Integration Requirements
+
+#### NFR-8.1: Web3 Connectivity
+- **Wallet Support**: MetaMask, WalletConnect, Coinbase Wallet
+- **Network Support**: Ethereum Mainnet, Arbitrum, Base
+- **RPC Fallback**: Multiple RPC endpoints with automatic failover
+- **Transaction Retry**: Automatic retry with exponential backoff
+- **Gas Optimization**: EIP-1559 support, gas estimation
+
+**Measurement**: Transaction success rate, connection reliability
+
+#### NFR-8.2: Smart Contract Interaction
+- **ABI Management**: TypeChain generated types
+- **Event Listening**: Real-time updates via WebSocket
+- **Error Handling**: User-friendly blockchain error messages
+- **Signature Standards**: EIP-712 typed data signing
+- **Account Abstraction**: ERC-4337 support for gasless transactions
+
+**Measurement**: Contract call success rate, event subscription reliability
+
 ---
 
 ## Functional Requirements - User Stories
@@ -355,6 +375,124 @@ describe('SEO', () => {
   it('creates valid sitemap')
   it('sets canonical URLs')
   it('renders social cards')
+})
+```
+
+### Epic 7: DAO Governance Integration
+
+#### US-7.1: Governance Dashboard
+**As a** token holder
+**I want to** view and participate in governance
+**So that** I can influence the protocol's direction
+
+**Acceptance Criteria:**
+- [ ] Connect wallet (MetaMask/WalletConnect)
+- [ ] Display token balances (ROKO, pwROKO)
+- [ ] Show voting power with multipliers
+- [ ] List active proposals with status
+- [ ] Display treasury information
+- [ ] View delegation status
+
+**Test Cases:**
+```javascript
+describe('Governance Dashboard', () => {
+  it('connects to Web3 wallet')
+  it('displays token balances')
+  it('calculates voting power')
+  it('shows active proposals')
+  it('displays treasury balance')
+})
+```
+
+#### US-7.2: Staking Interface
+**As a** ROKO holder
+**I want to** stake tokens for voting power
+**So that** I can participate in governance
+
+**Acceptance Criteria:**
+- [ ] Stake ROKO to receive pwROKO 1:1
+- [ ] Display staking rewards/benefits
+- [ ] Instant unstaking capability
+- [ ] Delegation management
+- [ ] Transaction history
+- [ ] Gas estimation display
+
+**Test Cases:**
+```javascript
+describe('Staking', () => {
+  it('stakes ROKO tokens')
+  it('mints pwROKO tokens')
+  it('allows instant unstaking')
+  it('manages delegation')
+  it('estimates gas costs')
+})
+```
+
+#### US-7.3: Proposal Voting
+**As a** pwROKO holder
+**I want to** vote on proposals
+**So that** I can participate in decision-making
+
+**Acceptance Criteria:**
+- [ ] View proposal details and discussion
+- [ ] Cast votes (for/against/abstain)
+- [ ] Delegate voting power
+- [ ] View voting history
+- [ ] See real-time voting results
+- [ ] Support different voting strategies
+
+**Test Cases:**
+```javascript
+describe('Voting', () => {
+  it('displays proposal details')
+  it('casts votes with signature')
+  it('delegates voting power')
+  it('shows voting results')
+  it('handles quadratic voting')
+})
+```
+
+#### US-7.4: Working Group Interface
+**As a** working group member
+**I want to** manage group activities
+**So that** I can execute approved initiatives
+
+**Acceptance Criteria:**
+- [ ] View working group members
+- [ ] Submit funding requests
+- [ ] Track budget allocation
+- [ ] Report on deliverables
+- [ ] Multi-sig transaction management
+
+**Test Cases:**
+```javascript
+describe('Working Groups', () => {
+  it('displays member list')
+  it('submits funding requests')
+  it('tracks budget usage')
+  it('manages multi-sig approvals')
+})
+```
+
+#### US-7.5: Reputation System
+**As a** community contributor
+**I want to** earn reputation badges
+**So that** I get increased voting power
+
+**Acceptance Criteria:**
+- [ ] Display reputation NFTs
+- [ ] Show achievement progress
+- [ ] Calculate voting multipliers
+- [ ] Leaderboard rankings
+- [ ] Badge gallery view
+
+**Test Cases:**
+```javascript
+describe('Reputation', () => {
+  it('displays NFT badges')
+  it('tracks achievements')
+  it('calculates multipliers')
+  it('shows leaderboard')
 })
 ```
 

@@ -64,9 +64,15 @@ This document establishes the governance framework for the ROKO Marketing Site p
 
 ### 1.2 Decision-Making Framework
 
-Based on **SAFe Lean-Agile Principles** and **Spotify Model** adaptations:
+Based on **SAFe Lean-Agile Principles**, **Spotify Model** adaptations, and **DAO Governance** principles:
 
 ```
+DAO Governance Decisions (Token Holders + Working Groups)
+├── Protocol changes and upgrades
+├── Treasury allocation and grants
+├── Constitutional amendments
+└── Partnership approvals
+
 Strategic Decisions (Product Owner + Technical Lead)
 ├── Product direction and roadmap
 ├── Technology stack changes
@@ -85,6 +91,27 @@ Operational Decisions (Individual Level)
 ├── Documentation approach
 └── Bug fix priorities
 ```
+
+### 1.3 DAO Governance Structure
+
+**Multi-Token Governance System**
+- **pwROKO**: Non-transferable voting power token
+- **Reputation NFTs**: Soulbound tokens for quality contributions
+- **Donor Tokens**: ERC1155 recognition tokens
+
+**Working Groups**
+- Technical Working Group (30% treasury allocation)
+- Community Working Group (20% treasury allocation)
+- Treasury Working Group (Direct treasury access)
+- Marketing Working Group (15% treasury allocation)
+
+**Proposal Types**
+| Code | Type | Voting Strategy | Quorum |
+|------|------|-----------------|---------|
+| SP | System Proposal | Weighted voting | 5-10% |
+| CP | Community Proposal | Simple majority | 2-4% |
+| FP | Financial Proposal | Quadratic voting | 3-7% |
+| CA | Constitutional Amendment | Time-weighted | 10-15% |
 
 ---
 
@@ -167,6 +194,16 @@ All work items must meet these criteria to be considered complete:
 - [ ] **Multi-tenant**: Isolation verified
 - [ ] **Branding**: Logo/color replacement tested
 - [ ] **I18n Ready**: Text externalized
+
+#### DAO Governance Features
+- [ ] **Smart Contract Integration**: Web3 provider connected
+- [ ] **Wallet Connection**: MetaMask/WalletConnect tested
+- [ ] **Transaction Signing**: EIP-712 compliant
+- [ ] **Gas Estimation**: Accurate fee calculation
+- [ ] **Voting Interface**: Delegation and vote casting functional
+- [ ] **Proposal Display**: Markdown rendering with syntax highlighting
+- [ ] **Token Balances**: Real-time updates via events
+- [ ] **Gasless Transactions**: ERC4337 account abstraction enabled
 
 ---
 
@@ -556,18 +593,23 @@ Restricted: Payment information, PII
 
 ### RACI Matrix
 
-| Decision Area | Product Owner | Tech Lead | Design Lead | Dev Team | QA |
-|--------------|---------------|-----------|-------------|----------|-----|
-| **Product Strategy** | A/R | C | C | I | I |
-| **Technical Architecture** | C | A/R | I | C | I |
-| **Design System** | C | C | A/R | C | I |
-| **Sprint Planning** | A | R | C | R | C |
-| **Code Implementation** | I | C | I | A/R | C |
-| **Testing Strategy** | C | C | I | C | A/R |
-| **Release Decision** | A/R | R | C | C | R |
-| **Security Policies** | R | A/R | I | C | C |
-| **Performance Standards** | C | A/R | I | R | C |
-| **Accessibility Standards** | C | C | A/R | R | R |
+| Decision Area | Product Owner | Tech Lead | Design Lead | Dev Team | QA | DAO/Community |
+|--------------|---------------|-----------|-------------|----------|-----|---------------|
+| **Product Strategy** | A/R | C | C | I | I | C |
+| **Technical Architecture** | C | A/R | I | C | I | I |
+| **Design System** | C | C | A/R | C | I | I |
+| **Sprint Planning** | A | R | C | R | C | I |
+| **Code Implementation** | I | C | I | A/R | C | I |
+| **Testing Strategy** | C | C | I | C | A/R | I |
+| **Release Decision** | A/R | R | C | C | R | I |
+| **Security Policies** | R | A/R | I | C | C | C |
+| **Performance Standards** | C | A/R | I | R | C | I |
+| **Accessibility Standards** | C | C | A/R | R | R | I |
+| **Protocol Governance** | C | C | I | I | I | A/R |
+| **Treasury Management** | C | I | I | I | I | A/R |
+| **Grant Allocations** | C | C | I | I | I | A/R |
+| **Smart Contract Upgrades** | C | R | I | R | R | A |
+| **Tokenomics Changes** | C | C | I | I | I | A/R |
 
 **Legend**: R = Responsible, A = Accountable, C = Consulted, I = Informed
 
