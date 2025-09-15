@@ -99,22 +99,43 @@
 ### NFR-8: Blockchain Integration Requirements
 
 #### NFR-8.1: Web3 Connectivity
-- **Wallet Support**: MetaMask, WalletConnect, Coinbase Wallet
-- **Network Support**: Ethereum Mainnet, Arbitrum, Base
+- **Wallet Support**: MetaMask, WalletConnect, Coinbase Wallet, Rainbow
+- **Network Support**: Ethereum Mainnet, Arbitrum, Base, Polygon
 - **RPC Fallback**: Multiple RPC endpoints with automatic failover
 - **Transaction Retry**: Automatic retry with exponential backoff
-- **Gas Optimization**: EIP-1559 support, gas estimation
+- **Gas Optimization**: EIP-1559 support, gas estimation, batch transactions
 
-**Measurement**: Transaction success rate, connection reliability
+**Measurement**: Transaction success rate, connection reliability, gas efficiency
 
 #### NFR-8.2: Smart Contract Interaction
 - **ABI Management**: TypeChain generated types
-- **Event Listening**: Real-time updates via WebSocket
+- **Event Listening**: Real-time updates via WebSocket with reconnection
 - **Error Handling**: User-friendly blockchain error messages
 - **Signature Standards**: EIP-712 typed data signing
 - **Account Abstraction**: ERC-4337 support for gasless transactions
+- **Multi-sig Support**: Gnosis Safe integration
 
 **Measurement**: Contract call success rate, event subscription reliability
+
+### NFR-9: Design System Requirements
+
+#### NFR-9.1: Brand Compliance
+- **Colors**: Official ROKO palette (#BAC0CC, #BCC1D1, #D9DBE3, #181818)
+- **Typography**: Rajdhani (display), HK Guise (body), Aeonik TRIAL (accent)
+- **Spacing**: 8px grid system
+- **Border Radius**: 8px standard, 16px for cards
+- **Shadows**: Consistent elevation system
+
+**Measurement**: Design system audit score, brand consistency check
+
+#### NFR-9.2: Component Library
+- **Storybook**: All components documented
+- **Props Validation**: TypeScript interfaces for all props
+- **Theming**: CSS variables for customization
+- **Accessibility**: ARIA compliant components
+- **Testing**: Visual regression tests for all states
+
+**Measurement**: Component coverage, documentation completeness
 
 ---
 
@@ -129,10 +150,13 @@
 
 **Acceptance Criteria:**
 - [ ] Hero displays within 1 second
-- [ ] Clear headline: "The Temporal Layer for Web3"
-- [ ] Animated timeline visualization showing nanosecond precision
-- [ ] Three clear CTAs: "Start Building", "View Docs", "Join Network"
-- [ ] Live network stats update every 5 seconds
+- [ ] Headline in Rajdhani font, 72px, color #D9DBE3
+- [ ] Tagline: "The Temporal Layer for Web3" in HK Guise
+- [ ] Animated temporal orb with #00d4aa glow effects
+- [ ] CTAs with teal background (#00d4aa), hover (#00ffcc)
+- [ ] Background gradient: #000000 to #181818
+- [ ] Live network stats in ROKO gray (#BCC1D1)
+- [ ] Stats update every 5 seconds via WebSocket
 
 **Test Cases:**
 ```javascript
@@ -150,11 +174,13 @@ describe('Homepage Hero', () => {
 **So that** I can find relevant information quickly
 
 **Acceptance Criteria:**
-- [ ] Sticky navigation bar on scroll
-- [ ] Mobile hamburger menu
-- [ ] Keyboard accessible (Tab navigation)
-- [ ] Active section highlighting
-- [ ] Smooth scroll to sections
+- [ ] Sticky navigation with glassmorphism (rgba(24, 24, 24, 0.95))
+- [ ] Navigation text in HK Guise, 16px, #BCC1D1
+- [ ] Active link in teal (#00d4aa) with underline animation
+- [ ] Mobile hamburger menu with slide animation
+- [ ] Keyboard accessible (Tab, Enter, Escape)
+- [ ] ARIA labels for accessibility
+- [ ] Logo area with ROKO branding
 
 **Test Cases:**
 ```javascript
@@ -493,6 +519,176 @@ describe('Reputation', () => {
   it('tracks achievements')
   it('calculates multipliers')
   it('shows leaderboard')
+})
+```
+
+### Epic 8: 3D Visualizations & Animations
+
+#### US-8.1: Temporal Orb Hero Animation
+**As a** visitor
+**I want to** see an impressive 3D temporal orb
+**So that** I'm engaged by the futuristic technology
+
+**Acceptance Criteria:**
+- [ ] Three.js temporal orb with rotating gears
+- [ ] Particle effects around the orb
+- [ ] Mouse/touch interaction for rotation
+- [ ] Performance: 60fps on mid-range devices
+- [ ] Fallback: Static image for low-end devices
+- [ ] Loading state while model loads
+
+**Test Cases:**
+```javascript
+describe('Temporal Orb', () => {
+  it('loads 3D model successfully')
+  it('responds to mouse movement')
+  it('maintains 60fps performance')
+  it('shows fallback on WebGL error')
+  it('displays loading indicator')
+})
+```
+
+#### US-8.2: Network Globe Visualization
+**As a** user
+**I want to** see global network activity
+**So that** I understand ROKO's worldwide presence
+
+**Acceptance Criteria:**
+- [ ] Interactive 3D globe with validator nodes
+- [ ] Real-time connection animations
+- [ ] Click on node for details
+- [ ] Zoom and rotate controls
+- [ ] Mobile touch gestures
+- [ ] Data updates via WebSocket
+
+**Test Cases:**
+```javascript
+describe('Network Globe', () => {
+  it('renders globe with nodes')
+  it('handles user interactions')
+  it('updates data in real-time')
+  it('supports touch gestures')
+})
+```
+
+#### US-8.3: Scroll-Triggered Animations
+**As a** user scrolling the page
+**I want to** see smooth animations trigger
+**So that** the experience feels premium
+
+**Acceptance Criteria:**
+- [ ] GSAP ScrollTrigger implementation
+- [ ] Stagger animations for lists
+- [ ] Parallax effects on images
+- [ ] Text reveal animations
+- [ ] Respect prefers-reduced-motion
+- [ ] No layout shift (CLS < 0.1)
+
+**Test Cases:**
+```javascript
+describe('Scroll Animations', () => {
+  it('triggers at correct scroll positions')
+  it('respects reduced motion preference')
+  it('maintains performance while scrolling')
+  it('no cumulative layout shift')
+})
+```
+
+### Epic 9: Documentation Portal
+
+#### US-9.1: Interactive API Explorer
+**As a** developer
+**I want to** test API endpoints interactively
+**So that** I can understand the API quickly
+
+**Acceptance Criteria:**
+- [ ] Swagger/OpenAPI integration
+- [ ] Try it out functionality
+- [ ] Authentication handling
+- [ ] Request/response examples
+- [ ] Code generation for multiple languages
+- [ ] Search and filter endpoints
+
+**Test Cases:**
+```javascript
+describe('API Explorer', () => {
+  it('loads API specification')
+  it('sends test requests')
+  it('displays responses')
+  it('generates code snippets')
+  it('handles authentication')
+})
+```
+
+#### US-9.2: Code Playground
+**As a** developer
+**I want to** write and test code in-browser
+**So that** I can experiment without setup
+
+**Acceptance Criteria:**
+- [ ] Monaco editor with TypeScript support
+- [ ] Syntax highlighting and autocomplete
+- [ ] Run code in sandboxed environment
+- [ ] Share code via URL
+- [ ] Save code snippets
+- [ ] Import npm packages
+
+**Test Cases:**
+```javascript
+describe('Code Playground', () => {
+  it('executes code safely')
+  it('provides autocomplete')
+  it('shares via URL')
+  it('handles errors gracefully')
+  it('imports packages')
+})
+```
+
+### Epic 10: Analytics & Monitoring
+
+#### US-10.1: User Analytics Dashboard
+**As a** site administrator
+**I want to** track user behavior
+**So that** I can optimize the user experience
+
+**Acceptance Criteria:**
+- [ ] Google Analytics 4 integration
+- [ ] Custom events for key actions
+- [ ] Conversion funnel tracking
+- [ ] Real-time user count
+- [ ] Geographic distribution
+- [ ] Device and browser breakdown
+
+**Test Cases:**
+```javascript
+describe('Analytics', () => {
+  it('tracks page views')
+  it('records custom events')
+  it('respects DNT header')
+  it('handles cookie consent')
+})
+```
+
+#### US-10.2: Performance Monitoring
+**As a** technical administrator
+**I want to** monitor site performance
+**So that** I can maintain optimal speed
+
+**Acceptance Criteria:**
+- [ ] Core Web Vitals tracking
+- [ ] Error logging with Sentry
+- [ ] Uptime monitoring
+- [ ] API response times
+- [ ] WebSocket connection stability
+- [ ] Alert thresholds
+
+**Test Cases:**
+```javascript
+describe('Performance Monitoring', () => {
+  it('captures Web Vitals')
+  it('logs errors to Sentry')
+  it('tracks API latency')
+  it('monitors WebSocket health')
 })
 ```
 
