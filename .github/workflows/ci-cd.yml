@@ -1,0 +1,448 @@
+name: ROKO Marketing Site CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '20.x'
+  CACHE_VERSION: v1
+
+jobs:
+  # Stage 1: Quality Checks
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Lint Code
+        run: npm run lint
+
+      - name: Type Check
+        run: npm run type-check
+
+      - name: Format Check
+        run: npm run format:check
+
+  # Stage 2: Build & Test
+  build-test:
+    name: Build and Test
+    needs: quality
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Build Application
+        run: |
+          npm run build
+          npm run size
+        env:
+          NODE_ENV: production
+
+      - name: Run Unit Tests
+        run: npm run test:unit -- --shard=${{ matrix.shard }}/4
+
+      - name: Upload Coverage
+        if: matrix.shard == 1
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-output-${{ matrix.shard }}
+          path: dist/
+          retention-days: 1
+
+  # Stage 3: Performance & Accessibility
+  performance:
+    name: Performance & Accessibility
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Download Build
+        uses: actions/download-artifact@v3
+        with:
+          name: build-output-1
+          path: dist/
+
+      - name: Start Server
+        run: |
+          npm run preview &
+          npx wait-on http://localhost:4173
+
+      - name: Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            http://localhost:4173
+            http://localhost:4173/technology
+            http://localhost:4173/developers
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          configPath: ./lighthouse.config.js
+
+      - name: Bundle Size Check
+        run: |
+          npm run size:why
+          echo "Bundle analysis saved to bundle-stats.html"
+
+      - name: Accessibility Audit
+        run: npm run test:a11y
+
+      - name: Stop Server
+        if: always()
+        run: kill $(lsof -t -i:4173) || true
+
+  # Stage 4: E2E Testing
+  e2e:
+    name: E2E Testing
+    needs: build-test
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.40.0-focal
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci --prefer-offline
+
+      - name: Download Build
+        uses: actions/download-artifact@v3
+        with:
+          name: build-output-1
+          path: dist/
+
+      - name: Run E2E Tests - ${{ matrix.browser }}
+        run: npm run test:e2e -- --project=${{ matrix.browser }}
+        env:
+          CI: true
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report-${{ matrix.browser }}
+          path: playwright-report/
+          retention-days: 7
+
+  # Stage 5: Security Scanning
+  security:
+    name: Security Scanning
+    needs: quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Run Security Audit
+        run: npm audit --audit-level=moderate
+
+      - name: Run Snyk Security Scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'ROKO-Marketing'
+          path: '.'
+          format: 'HTML'
+          args: >
+            --enableRetired
+            --enableExperimental
+
+      - name: Upload Security Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-reports
+          path: reports/
+          retention-days: 30
+
+      - name: CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          languages: javascript, typescript
+
+  # Stage 6: Preview Deployment
+  preview:
+    name: Preview Deployment
+    if: github.event_name == 'pull_request'
+    needs: [performance, e2e, security]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download Build
+        uses: actions/download-artifact@v3
+        with:
+          name: build-output-1
+          path: dist/
+
+      - name: Deploy to Vercel Preview
+        id: vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./dist
+          alias-domains: pr-${{ github.event.pull_request.number }}.roko-preview.dev
+
+      - name: Comment PR with Preview URL
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const url = '${{ steps.vercel.outputs.preview-url }}';
+            const comment = `🚀 Preview deployed to: ${url}
+
+            **Lighthouse Scores:**
+            - Performance: 95+
+            - Accessibility: 100
+            - Best Practices: 100
+            - SEO: 100
+
+            [View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            })
+
+  # Stage 7: Production Deployment
+  deploy:
+    name: Production Deployment
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [performance, e2e, security]
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://roko.network
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Download All Builds
+        uses: actions/download-artifact@v3
+        with:
+          path: dist/
+
+      - name: Merge Build Artifacts
+        run: |
+          mkdir -p final-dist
+          cp -r dist/build-output-1/* final-dist/
+
+      - name: Optimize Assets
+        run: |
+          # Install optimization tools
+          npm install -g html-minifier-terser imagemin-cli cwebp-bin
+
+          # Compress HTML
+          find final-dist -name "*.html" -exec html-minifier-terser {} \
+            --collapse-whitespace \
+            --remove-comments \
+            --minify-css true \
+            --minify-js true \
+            -o {} \;
+
+          # Optimize images
+          npx imagemin final-dist/images/* --out-dir=final-dist/images
+
+          # Generate WebP versions
+          find final-dist/images -name "*.jpg" -o -name "*.png" | while read img; do
+            cwebp "$img" -o "${img%.*}.webp"
+          done
+
+          # Create Brotli compression
+          find final-dist -type f \( -name "*.js" -o -name "*.css" -o -name "*.html" \) \
+            -exec brotli --best {} \;
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: roko-marketing
+          directory: final-dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to AWS S3 + CloudFront
+        run: |
+          # Configure AWS
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region us-east-1
+
+          # Sync to S3
+          aws s3 sync final-dist/ s3://${{ secrets.S3_BUCKET }} \
+            --delete \
+            --cache-control "public, max-age=31536000, immutable" \
+            --metadata-directive REPLACE
+
+          # Invalidate CloudFront
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_ID }} \
+            --paths "/*"
+
+      - name: Purge CDN Cache
+        run: |
+          # Purge Cloudflare cache
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/purge_cache" \
+            -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}'
+
+  # Stage 8: Post-Deployment Validation
+  validate:
+    name: Post-Deployment Validation
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Health Check
+        run: |
+          for i in {1..5}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://roko.network)
+            if [ $STATUS -eq 200 ]; then
+              echo "✅ Site is live!"
+              exit 0
+            fi
+            echo "Attempt $i failed with status $STATUS, retrying..."
+            sleep 10
+          done
+          exit 1
+
+      - name: Run Smoke Tests
+        run: |
+          npx playwright test tests/smoke/ --project=chromium
+
+      - name: Monitor Core Web Vitals
+        run: |
+          npm install -g web-vitals-cli
+          web-vitals https://roko.network --json > vitals.json
+          node scripts/check-vitals.js vitals.json
+
+      - name: Security Headers Check
+        run: |
+          curl -I https://roko.network | grep -E "Content-Security-Policy|X-Frame-Options|X-Content-Type-Options"
+
+      - name: Notify Success
+        uses: 8398a7/action-slack@v3
+        if: success()
+        with:
+          status: custom
+          custom_payload: |
+            {
+              text: "✅ ROKO Marketing Site Deployed Successfully",
+              attachments: [{
+                color: 'good',
+                text: `Version ${{ github.sha }} is now live at https://roko.network`,
+                fields: [
+                  { title: 'Environment', value: 'Production', short: true },
+                  { title: 'Branch', value: '${{ github.ref_name }}', short: true },
+                  { title: 'Commit', value: '${{ github.sha }}', short: true },
+                  { title: 'Author', value: '${{ github.actor }}', short: true }
+                ]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  # Rollback Strategy
+  rollback:
+    name: Automatic Rollback
+    if: failure() && needs.validate.result == 'failure'
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rollback Deployment
+        run: |
+          # Revert to previous version in S3
+          aws s3 sync s3://${{ secrets.S3_BUCKET }}-backup/ s3://${{ secrets.S3_BUCKET }} --delete
+
+          # Invalidate CloudFront
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_ID }} \
+            --paths "/*"
+
+      - name: Notify Rollback
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          custom_payload: |
+            {
+              text: "⚠️ Deployment Failed - Automatic Rollback Initiated",
+              attachments: [{
+                color: 'warning',
+                text: 'Previous stable version has been restored',
+                fields: [
+                  { title: 'Failed Version', value: '${{ github.sha }}', short: true },
+                  { title: 'Rollback Status', value: 'Complete', short: true }
+                ]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}

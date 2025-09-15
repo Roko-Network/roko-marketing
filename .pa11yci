@@ -1,0 +1,44 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "timeout": 30000,
+    "wait": 2000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "hideElements": ".loading-spinner, .skeleton",
+    "ignore": [
+      "color-contrast"
+    ]
+  },
+  "urls": [
+    {
+      "url": "http://localhost:5173",
+      "screenCapture": "screenshots/homepage.png"
+    },
+    {
+      "url": "http://localhost:5173/technology",
+      "screenCapture": "screenshots/technology.png"
+    },
+    {
+      "url": "http://localhost:5173/developers",
+      "screenCapture": "screenshots/developers.png"
+    },
+    {
+      "url": "http://localhost:5173/solutions",
+      "screenCapture": "screenshots/solutions.png"
+    },
+    {
+      "url": "http://localhost:5173",
+      "viewport": {
+        "width": 375,
+        "height": 667
+      },
+      "screenCapture": "screenshots/homepage-mobile.png"
+    }
+  ]
+}
