@@ -187,25 +187,35 @@ This document outlines all assets that need to be created, purchased, or generat
 
 ### 4.1 Font Licenses (Priority: HIGH)
 
-#### Inter Variable Font
-- **License**: Open source (Free)
-- **Download**: https://rsms.me/inter/
-- **Formats needed**: WOFF2, WOFF
-- **Variable axes**: Weight (100-900)
+#### Rajdhani (Display Font)
+- **License**: Google Fonts (Free)
+- **Download**: https://fonts.google.com/specimen/Rajdhani
+- **Weights needed**: 300, 400, 500, 600, 700
+- **Usage**: Headlines, hero text, CTAs
+- **Cost**: $0
 
-#### Space Grotesk
-- **License**: Open source (Free)
-- **Download**: https://fonts.google.com/specimen/Space+Grotesk
-- **Weights needed**: 400, 500, 700
-- **Usage**: Display headings
+#### HK Guise (Primary Font)
+- **License**: Commercial license required
+- **Source**: Hanken Design Co.
+- **Weights needed**: 300, 400, 500, 600, 700
+- **Usage**: Body text, UI elements
+- **Cost**: $200-500 for web license
 
-#### JetBrains Mono
+#### Aeonik TRIAL (Accent Font)
+- **License**: Trial version (production license needed)
+- **Source**: CoType Foundry
+- **Weights needed**: 400, 500, 600, 700
+- **Usage**: Special features, premium sections
+- **Cost**: $300-800 for production license
+
+#### JetBrains Mono (Code Font)
 - **License**: Open source (Free)
 - **Download**: https://www.jetbrains.com/lp/mono/
 - **Weights needed**: 400, 500
 - **Usage**: Code blocks, technical content
+- **Cost**: $0
 
-**Total Font Budget**: $0 (all open source)
+**Total Font Budget**: $200-1,300 (depending on licensing options)
 
 ### 4.2 Font Optimization
 - **Subsetting**: Remove unused characters
@@ -286,8 +296,8 @@ This document outlines all assets that need to be created, purchased, or generat
 | Icons | Custom icon set (20) | $800 |
 | AI Images | 3 months subscription | $300 |
 | Stock Photos | 3 months subscription | $297 |
-| Fonts | Open source | $0 |
-| **Total** | | **$2,597** |
+| Fonts | Rajdhani (free) + HK Guise license | $350 |
+| **Total** | | **$2,947** |
 
 ### Nice-to-Have (Phase 2)
 | Category | Item | Cost |
@@ -296,12 +306,13 @@ This document outlines all assets that need to be created, purchased, or generat
 | Animations | Lottie set | $750 |
 | GSAP | Commercial license | $149 |
 | Video | Background loops | $500 |
-| **Total** | | **$2,199** |
+| Fonts | Aeonik production license | $550 |
+| **Total** | | **$2,749** |
 
 ### Total Budget Range
-- **Minimum (Essential)**: $2,597
-- **Recommended**: $3,500
-- **Full Implementation**: $4,796
+- **Minimum (Essential)**: $2,947
+- **Recommended**: $3,850
+- **Full Implementation**: $5,696
 
 ---
 

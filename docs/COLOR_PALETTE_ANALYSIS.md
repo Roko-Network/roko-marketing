@@ -1,174 +1,247 @@
-# ROKO Marketing Site - Color Palette Specification
+# ROKO Marketing Site - Official Brand Guidelines
 
 ## Executive Summary
 
-This document defines the official color palette for the ROKO Network marketing site based on the Figma design artifacts. The design follows a cyberpunk-inspired aesthetic with high contrast between pure black backgrounds and bright teal/cyan accents.
+This document defines the official ROKO brand guidelines including typography and color palette as specified in the design system. The brand combines sophisticated gray tones with bright teal accents for a modern, professional Web3 aesthetic.
 
 ---
 
-## 1. Core Color System
+## 1. Official Color System
 
-### 1.1 Primary Brand Colors
+### 1.1 ROKO Brand Colors
 
 ```css
-/* Brand Colors */
---roko-primary: #00d4aa;      /* Bright Teal - Main brand color */
---roko-primary-hover: #00ffcc; /* Bright Cyan - Hover states */
---roko-primary-dark: #00a084;  /* Dark Teal - Active/pressed states */
+/* Official ROKO Palette */
+--roko-primary: #BAC0CC;      /* Light Blue-Gray - Primary brand */
+--roko-secondary: #BCC1D1;    /* Light Gray - Secondary elements */
+--roko-tertiary: #D9DBE3;     /* Lightest Gray - Subtle accents */
+--roko-dark: #181818;         /* Near Black - Text and contrasts */
 ```
 
-### 1.2 Secondary Colors
+### 1.2 Accent Colors
 
 ```css
-/* Supporting Colors */
---roko-secondary: #6366f1;    /* Indigo - Secondary actions */
---roko-tertiary: #8b5cf6;     /* Purple - Premium features */
---roko-info: #3b82f6;         /* Blue - Information */
+/* Teal Accents (from Figma CTAs) */
+--roko-teal: #00d4aa;         /* Bright Teal - CTAs and highlights */
+--roko-teal-hover: #00ffcc;   /* Bright Cyan - Hover states */
+--roko-teal-dark: #00a084;    /* Dark Teal - Active states */
+```
+
+### 1.3 System Colors
+
+```css
+/* Semantic Colors */
 --roko-success: #10b981;      /* Emerald - Success states */
 --roko-warning: #f59e0b;      /* Amber - Warnings */
 --roko-error: #ef4444;        /* Red - Errors */
+--roko-info: #3b82f6;         /* Blue - Information */
 ```
 
-### 1.3 Background Colors
+---
+
+## 2. Typography System
+
+### 2.1 Official Font Stack
+
+```css
+/* ROKO Typography */
+--font-display: 'Rajdhani', sans-serif;      /* Headlines, Hero text */
+--font-primary: 'HK Guise', sans-serif;      /* Body text, UI elements */
+--font-accent: 'Aeonik TRIAL', sans-serif;   /* Special features */
+--font-mono: 'JetBrains Mono', monospace;    /* Code blocks */
+```
+
+### 2.2 Font Specifications
+
+#### Rajdhani (Google Fonts)
+- **License**: Free, Open Source
+- **Weights**: 300, 400, 500, 600, 700
+- **Usage**: Display headings, hero sections, CTAs
+- **Character**: Bold, technical, impactful
+
+#### HK Guise
+- **License**: Commercial (Required)
+- **Weights**: 300, 400, 500, 600, 700
+- **Usage**: Primary body text, UI components
+- **Character**: Clean, modern, readable
+
+#### Aeonik TRIAL
+- **License**: Trial version (Production license needed)
+- **Weights**: 400, 500, 600, 700
+- **Usage**: Premium features, special accents
+- **Character**: Sophisticated, distinctive
+
+### 2.3 Typography Scale
+
+```css
+/* Display Sizes (Rajdhani) */
+--text-hero: 72px/1.1;        /* Hero headlines */
+--text-h1: 56px/1.2;          /* Page titles */
+--text-h2: 48px/1.2;          /* Section headers */
+
+/* Body Sizes (HK Guise) */
+--text-body-lg: 20px/1.6;     /* Large body text */
+--text-body: 18px/1.6;        /* Regular body text */
+--text-body-sm: 16px/1.5;     /* Small body text */
+
+/* UI Sizes (HK Guise) */
+--text-button: 16px/1;        /* Button text */
+--text-label: 14px/1.4;       /* Form labels */
+--text-caption: 12px/1.4;     /* Captions */
+```
+
+---
+
+## 3. Color Application
+
+### 3.1 Background Hierarchy
 
 ```css
 /* Dark Theme Backgrounds */
---bg-primary: #000000;        /* Pure black - Main background */
---bg-secondary: #0a0a0a;      /* Near black - Panel background */
---bg-tertiary: #1a1a1a;       /* Dark gray - Card background */
+--bg-primary: #000000;        /* Main background */
+--bg-secondary: #0a0a0a;      /* Panels */
+--bg-tertiary: #181818;       /* Cards (ROKO Dark) */
 --bg-elevated: #2a2a2a;       /* Elevated surfaces */
---bg-overlay: rgba(0, 0, 0, 0.95);  /* Modal overlay */
 ```
 
-### 1.4 Text Colors
+### 3.2 Text Hierarchy
 
 ```css
-/* Text Hierarchy */
---text-primary: #ffffff;      /* Primary text */
---text-secondary: #a0a0a0;    /* Secondary text */
---text-tertiary: #707070;     /* Muted text */
---text-accent: #00d4aa;       /* Accent text */
---text-link: #00ffcc;         /* Link hover state */
+/* Text Colors */
+--text-primary: #ffffff;      /* Primary text on dark */
+--text-secondary: #D9DBE3;    /* Secondary (ROKO Light Gray) */
+--text-tertiary: #BCC1D1;     /* Muted (ROKO Gray) */
+--text-quaternary: #BAC0CC;   /* Subtle (ROKO Primary) */
+--text-dark: #181818;         /* Dark text on light */
 ```
 
-### 1.5 Gradients
+### 3.3 Interactive Elements
 
 ```css
-/* Gradient Definitions */
---gradient-hero: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
---gradient-accent: linear-gradient(135deg, #00d4aa 0%, #00a084 100%);
---gradient-dark: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
---gradient-glow: radial-gradient(circle, #00d4aa 0%, transparent 70%);
+/* CTAs and Buttons */
+.btn-primary {
+  background: var(--roko-teal);
+  color: var(--bg-primary);
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid var(--roko-primary);
+  color: var(--roko-primary);
+}
+
+/* Links */
+a {
+  color: var(--roko-primary);
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--roko-teal);
+}
 ```
 
 ---
 
-## 2. Color Usage Guidelines
+## 4. Brand Gradients
 
-### 2.1 Primary Teal (#00d4aa)
-
-**Usage:**
-- Primary CTAs ("Connect Wallet", "Start Building")
-- Active navigation states
-- Key interactive elements
-- Success confirmations
-- Brand moments
-
-**Implementation:**
 ```css
-.btn-primary {
-  background: var(--roko-primary);
-  color: var(--bg-primary);
-  border: 2px solid transparent;
-}
-
-.btn-primary:hover {
-  background: var(--roko-primary-hover);
-  box-shadow: 0 0 20px rgba(0, 212, 170, 0.5);
-}
-
-.btn-primary:active {
-  background: var(--roko-primary-dark);
-}
+/* Official Gradients */
+--gradient-brand: linear-gradient(135deg, #BAC0CC 0%, #D9DBE3 100%);
+--gradient-teal: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
+--gradient-dark: linear-gradient(180deg, #000000 0%, #181818 100%);
+--gradient-subtle: linear-gradient(135deg, #181818 0%, #2a2a2a 100%);
 ```
 
-### 2.2 Black Backgrounds (#000000)
+---
 
-**Usage:**
-- Main page background
-- Hero sections
-- Creating high contrast
-- Cyberpunk aesthetic
+## 5. Accessibility Compliance
 
-**Implementation:**
+### 5.1 Contrast Ratios
+
+| Combination | Ratio | WCAG Level | Usage |
+|-------------|-------|------------|-------|
+| White on Black (#000) | 21:1 | AAA | Primary text |
+| ROKO Light Gray (#D9DBE3) on Black | 16.8:1 | AAA | Secondary text |
+| ROKO Gray (#BCC1D1) on Black | 13.5:1 | AAA | Tertiary text |
+| ROKO Primary (#BAC0CC) on Black | 12.3:1 | AAA | Subtle text |
+| Teal (#00d4aa) on Black | 11.3:1 | AAA | CTAs |
+| Black on ROKO Primary | 1.7:1 | Fail | Do not use |
+| White on Teal | 2.1:1 | Fail | Use black text instead |
+
+### 5.2 Recommendations
+
+- Use ROKO grays for text hierarchy on dark backgrounds
+- Maintain teal for interactive elements only
+- Ensure all text meets AA minimum (4.5:1)
+- Test with color blindness simulators
+
+---
+
+## 6. Implementation Examples
+
+### 6.1 Hero Section
+
 ```css
-body {
-  background: var(--bg-primary);
+.hero {
+  background: var(--gradient-dark);
   color: var(--text-primary);
 }
 
-.hero {
-  background: var(--gradient-dark);
+.hero h1 {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 700;
+  font-size: var(--text-hero);
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  font-family: 'HK Guise', sans-serif;
+  color: var(--text-secondary);
 }
 ```
 
-### 2.3 Card & Panel Styling
+### 6.2 Card Component
 
-**Implementation:**
 ```css
 .card {
-  background: var(--bg-tertiary);
-  border: 1px solid rgba(0, 212, 170, 0.1);
-  transition: all 0.3s ease;
+  background: var(--bg-tertiary); /* #181818 */
+  border: 1px solid var(--roko-primary); /* #BAC0CC */
+  padding: 2rem;
 }
 
 .card:hover {
-  border-color: var(--roko-primary);
-  box-shadow: 0 0 30px rgba(0, 212, 170, 0.1);
+  border-color: var(--roko-teal);
+  box-shadow: 0 0 30px rgba(0, 212, 170, 0.2);
 }
 
-.panel {
-  background: var(--bg-secondary);
-  backdrop-filter: blur(10px);
+.card-title {
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-primary);
+}
+
+.card-description {
+  font-family: 'HK Guise', sans-serif;
+  color: var(--text-tertiary);
 }
 ```
 
----
-
-## 3. Accessibility Standards
-
-### 3.1 Contrast Ratios
-
-| Combination | Contrast Ratio | WCAG Level | Usage |
-|-------------|---------------|------------|-------|
-| White (#fff) on Black (#000) | 21:1 | AAA | Primary text |
-| Teal (#00d4aa) on Black | 11.3:1 | AAA | Links, CTAs |
-| Secondary Gray (#a0a0a0) on Black | 6.3:1 | AA | Secondary text |
-| Tertiary Gray (#707070) on Black | 4.1:1 | AA (Large) | Muted text |
-| White on Teal | 2.1:1 | Fail | Avoid - use black text |
-| Black on Teal | 3.7:1 | AA (Large) | Button text (large only) |
-
-### 3.2 Recommendations
-
-- Always use white text on teal backgrounds for better contrast
-- Ensure interactive elements have visible focus states
-- Provide sufficient color contrast for all text elements
-- Use color in combination with other indicators (icons, text)
-
----
-
-## 4. Component-Specific Palettes
-
-### 4.1 Navigation
+### 6.3 Navigation
 
 ```css
 .nav {
-  background: var(--bg-primary);
-  border-bottom: 1px solid var(--bg-tertiary);
+  background: rgba(24, 24, 24, 0.95); /* ROKO Dark with transparency */
+  backdrop-filter: blur(10px);
 }
 
 .nav-link {
-  color: var(--text-secondary);
+  font-family: 'HK Guise', sans-serif;
+  color: var(--roko-secondary);
+  font-weight: 500;
 }
 
 .nav-link:hover {
@@ -176,151 +249,111 @@ body {
 }
 
 .nav-link.active {
-  color: var(--roko-primary);
-}
-```
-
-### 4.2 Forms
-
-```css
-.input {
-  background: var(--bg-secondary);
-  border: 1px solid var(--bg-elevated);
-  color: var(--text-primary);
-}
-
-.input:focus {
-  border-color: var(--roko-primary);
-  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
-}
-```
-
-### 4.3 Alerts & Notifications
-
-```css
-.alert-success {
-  background: rgba(16, 185, 129, 0.1);
-  border-color: var(--roko-success);
-  color: var(--roko-success);
-}
-
-.alert-warning {
-  background: rgba(245, 158, 11, 0.1);
-  border-color: var(--roko-warning);
-  color: var(--roko-warning);
-}
-
-.alert-error {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: var(--roko-error);
-  color: var(--roko-error);
+  color: var(--roko-teal);
+  font-weight: 600;
 }
 ```
 
 ---
 
-## 5. Dark Mode Implementation
+## 7. Font Loading Strategy
 
-The entire design system is dark-mode first, with no light mode variant planned.
+### 7.1 Font Imports
 
-### 5.1 CSS Variables Structure
+```html
+<!-- Rajdhani from Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-```css
-:root {
-  /* Colors are defined for dark mode by default */
-  color-scheme: dark;
-
-  /* All color variables here */
-}
-
-/* Ensure proper dark mode rendering */
-html {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-}
+<!-- Self-hosted fonts -->
+<link rel="preload" href="/fonts/HKGuise-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/HKGuise-Medium.woff2" as="font" type="font/woff2" crossorigin>
 ```
 
-### 5.2 Glassmorphism Effects
+### 7.2 CSS Font-Face
 
 ```css
-.glass {
-  background: rgba(26, 26, 26, 0.7);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 212, 170, 0.1);
+/* HK Guise */
+@font-face {
+  font-family: 'HK Guise';
+  src: url('/fonts/HKGuise-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HK Guise';
+  src: url('/fonts/HKGuise-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+
+/* Aeonik TRIAL */
+@font-face {
+  font-family: 'Aeonik TRIAL';
+  src: url('/fonts/AeonikTRIAL-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
 }
 ```
 
 ---
 
-## 6. Color Token System
+## 8. Design Token Export
 
-### 6.1 Design Tokens (JSON)
+### 8.1 JSON Tokens
 
 ```json
 {
   "color": {
-    "brand": {
-      "primary": {
-        "value": "#00d4aa",
-        "type": "color"
-      },
-      "primary-hover": {
-        "value": "#00ffcc",
-        "type": "color"
-      },
-      "primary-dark": {
-        "value": "#00a084",
-        "type": "color"
-      }
+    "roko": {
+      "primary": "#BAC0CC",
+      "secondary": "#BCC1D1",
+      "tertiary": "#D9DBE3",
+      "dark": "#181818"
     },
-    "background": {
-      "primary": {
-        "value": "#000000",
-        "type": "color"
-      },
-      "secondary": {
-        "value": "#0a0a0a",
-        "type": "color"
-      },
-      "tertiary": {
-        "value": "#1a1a1a",
-        "type": "color"
-      }
-    },
-    "text": {
-      "primary": {
-        "value": "#ffffff",
-        "type": "color"
-      },
-      "secondary": {
-        "value": "#a0a0a0",
-        "type": "color"
-      },
-      "accent": {
-        "value": "#00d4aa",
-        "type": "color"
-      }
+    "accent": {
+      "teal": "#00d4aa",
+      "teal-hover": "#00ffcc",
+      "teal-dark": "#00a084"
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "display": "Rajdhani, sans-serif",
+      "body": "HK Guise, sans-serif",
+      "accent": "Aeonik TRIAL, sans-serif",
+      "mono": "JetBrains Mono, monospace"
     }
   }
 }
 ```
 
-### 6.2 Tailwind Configuration
+### 8.2 Tailwind Configuration
 
 ```javascript
-// tailwind.config.js
 module.exports = {
   theme: {
     extend: {
       colors: {
-        'roko-primary': '#00d4aa',
-        'roko-primary-hover': '#00ffcc',
-        'roko-primary-dark': '#00a084',
-        'roko-secondary': '#6366f1',
-        'roko-tertiary': '#8b5cf6',
-        'bg-primary': '#000000',
-        'bg-secondary': '#0a0a0a',
-        'bg-tertiary': '#1a1a1a',
+        'roko': {
+          'primary': '#BAC0CC',
+          'secondary': '#BCC1D1',
+          'tertiary': '#D9DBE3',
+          'dark': '#181818',
+        },
+        'teal': {
+          DEFAULT: '#00d4aa',
+          'hover': '#00ffcc',
+          'dark': '#00a084',
+        }
+      },
+      fontFamily: {
+        'display': ['Rajdhani', 'sans-serif'],
+        'body': ['HK Guise', 'sans-serif'],
+        'accent': ['Aeonik TRIAL', 'sans-serif'],
+        'mono': ['JetBrains Mono', 'monospace'],
       }
     }
   }
@@ -329,62 +362,40 @@ module.exports = {
 
 ---
 
-## 7. Implementation Checklist
+## 9. Budget Considerations
 
-### 7.1 Development Setup
-- [ ] Configure CSS variables in root
-- [ ] Set up Tailwind color config
-- [ ] Create color utility classes
-- [ ] Implement dark mode by default
+### 9.1 Font Licensing Costs
 
-### 7.2 Component Updates
-- [ ] Update button components
-- [ ] Apply to navigation
-- [ ] Style form elements
-- [ ] Update card components
-- [ ] Apply to modals/overlays
+| Font | License Type | Estimated Cost | Priority |
+|------|-------------|----------------|----------|
+| Rajdhani | Google Fonts (Free) | $0 | Essential |
+| HK Guise | Commercial Web License | $200-500 | Essential |
+| Aeonik TRIAL | Production License | $300-800 | Optional |
+| JetBrains Mono | Open Source | $0 | Essential |
 
-### 7.3 Quality Assurance
-- [ ] Verify contrast ratios
-- [ ] Test with color blindness simulators
-- [ ] Validate against Figma designs
-- [ ] Check hover/focus states
+**Total Budget Range**: $200-1,300
 
----
+### 9.2 Recommendations
 
-## 8. AI Image Generation Prompts
-
-When generating images, use these color specifications:
-
-```
-Color palette: pure black background (#000000), bright teal/cyan accents
-(#00d4aa, #00ffcc), minimal color usage, high contrast cyberpunk aesthetic,
-dark atmosphere with glowing teal highlights
-```
-
-Example prompt structure:
-```
-"[Subject description], pure black background, bright teal/cyan lighting
-(#00d4aa), cyberpunk aesthetic, high contrast, minimal color palette,
-glowing accents, dark atmosphere"
-```
+1. **Phase 1**: Use Rajdhani + system fonts fallback
+2. **Phase 2**: Purchase HK Guise license
+3. **Phase 3**: Evaluate need for Aeonik production license
 
 ---
 
 ## Conclusion
 
-This color system creates a distinctive, futuristic brand identity for ROKO Network with:
+The ROKO brand combines sophisticated gray tones with vibrant teal accents, creating a professional yet modern identity perfect for Web3 infrastructure. The typography system, led by Rajdhani and HK Guise, provides both impact and readability across all touchpoints.
 
-- **High contrast** for excellent readability
-- **Cyberpunk aesthetic** aligning with Web3/blockchain themes
-- **Minimal palette** for consistency and impact
-- **Accessibility compliance** meeting WCAG standards
-- **Brand differentiation** through unique teal/black combination
-
-The bright teal against pure black creates a striking visual identity that reflects ROKO's position as a cutting-edge temporal blockchain infrastructure.
+Key brand attributes:
+- **Professional**: Sophisticated gray palette
+- **Modern**: Clean typography and minimal design
+- **Technical**: Rajdhani's bold character
+- **Accessible**: High contrast ratios throughout
+- **Distinctive**: Unique color combination for Web3 space
 
 ---
 
-*Document Version: 2.0*
+*Document Version: 3.0*
 *Last Updated: January 2025*
-*Based on Figma Design Artifacts*
+*Based on Official ROKO Brand Guidelines*

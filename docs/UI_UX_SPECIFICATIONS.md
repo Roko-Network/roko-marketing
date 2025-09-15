@@ -318,18 +318,21 @@ The design system combines:
 ### 5.1 Primary Palette
 
 ```css
-/* Core Brand Colors */
---roko-primary: #00d4aa;      /* Bright Teal/Cyan - Main CTA color */
---roko-primary-hover: #00ffcc; /* Bright Cyan - Hover states */
---roko-primary-dark: #00a084;  /* Darker Teal - Active states */
+/* Official ROKO Brand Colors */
+--roko-primary: #BAC0CC;      /* Light Blue-Gray - Primary brand */
+--roko-secondary: #BCC1D1;    /* Light Gray - Secondary elements */
+--roko-tertiary: #D9DBE3;     /* Lightest Gray - Subtle accents */
+--roko-dark: #181818;         /* Near Black - Text and contrasts */
 
-/* Extended Palette */
---roko-secondary: #6366f1;    /* Indigo - Secondary elements */
---roko-tertiary: #8b5cf6;     /* Purple - Premium features */
---roko-info: #3b82f6;         /* Blue - Information */
+/* Accent Colors (from Figma CTAs) */
+--roko-teal: #00d4aa;         /* Bright Teal - CTAs and highlights */
+--roko-teal-hover: #00ffcc;   /* Bright Cyan - Hover states */
+
+/* System Colors */
 --roko-success: #10b981;      /* Emerald - Success states */
 --roko-warning: #f59e0b;      /* Amber - Warnings */
 --roko-error: #ef4444;        /* Red - Errors */
+--roko-info: #3b82f6;         /* Blue - Information */
 ```
 
 ### 5.2 Background Colors
@@ -338,14 +341,14 @@ The design system combines:
 /* Dark Theme */
 --bg-primary: #000000;        /* Pure black */
 --bg-secondary: #0a0a0a;      /* Near black panels */
---bg-tertiary: #1a1a1a;       /* Card backgrounds */
+--bg-tertiary: #181818;       /* ROKO Dark - Card backgrounds */
 --bg-elevated: #2a2a2a;       /* Elevated surfaces */
---bg-overlay: rgba(0, 0, 0, 0.95);  /* Modal overlay */
+--bg-overlay: rgba(24, 24, 24, 0.95);  /* Modal overlay with ROKO dark */
 
 /* Gradients */
---gradient-hero: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
---gradient-accent: linear-gradient(135deg, #00d4aa 0%, #00a084 100%);
---gradient-dark: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+--gradient-hero: linear-gradient(135deg, #BAC0CC 0%, #D9DBE3 100%);
+--gradient-accent: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
+--gradient-dark: linear-gradient(180deg, #000000 0%, #181818 100%);
 --gradient-glow: radial-gradient(circle, #00d4aa 0%, transparent 70%);
 ```
 
@@ -353,11 +356,13 @@ The design system combines:
 
 ```css
 /* Text Hierarchy */
---text-primary: #ffffff;      /* Primary text */
---text-secondary: #a0a0a0;    /* Secondary text */
---text-tertiary: #707070;     /* Muted text */
---text-accent: #00d4aa;       /* Accent text */
---text-link: #00ffcc;         /* Link hover */
+--text-primary: #ffffff;      /* Primary text on dark */
+--text-secondary: #D9DBE3;    /* Secondary text - ROKO Light Gray */
+--text-tertiary: #BCC1D1;     /* Muted text - ROKO Gray */
+--text-accent: #00d4aa;       /* Accent text - Teal */
+--text-dark: #181818;         /* Dark text on light backgrounds */
+--text-link: #BAC0CC;         /* Link default - ROKO Primary */
+--text-link-hover: #00d4aa;   /* Link hover - Teal */
 ```
 
 ---
@@ -368,10 +373,16 @@ The design system combines:
 
 **Primary Font Stack:**
 ```css
---font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
---font-display: 'Space Grotesk', 'Inter', sans-serif;
+--font-primary: 'HK Guise', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+--font-display: 'Rajdhani', 'HK Guise', sans-serif;
+--font-accent: 'Aeonik TRIAL', 'HK Guise', sans-serif;
 --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 ```
+
+**Font Roles:**
+- **Rajdhani**: Display headings, hero text (Google Fonts - free)
+- **HK Guise**: Body text, UI elements (Commercial license required)
+- **Aeonik TRIAL**: Special accents, premium features (Trial version - upgrade needed)
 
 ### 6.2 Type Scale
 
@@ -529,20 +540,31 @@ The design system combines:
 ### 8.5 Font Files
 
 **To Acquire:**
-1. **Inter Variable Font**
-   - License: Open source
-   - Weights: 300-700
+1. **Rajdhani** (Display Font)
+   - Source: Google Fonts (Free)
+   - Weights: 300, 400, 500, 600, 700
    - Format: WOFF2
+   - Usage: Headlines, hero text, CTAs
 
-2. **Space Grotesk**
-   - License: Open source
-   - Weights: 400, 500, 700
+2. **HK Guise** (Primary Font)
+   - Source: Commercial license required
+   - License: ~$200-500 for web use
+   - Weights: 300, 400, 500, 600, 700
    - Format: WOFF2
+   - Usage: Body text, UI elements
 
-3. **JetBrains Mono**
+3. **Aeonik TRIAL** (Accent Font)
+   - Source: Trial version (upgrade needed for production)
+   - License: Contact foundry for pricing
+   - Weights: 400, 500, 600, 700
+   - Format: WOFF2
+   - Usage: Special features, premium sections
+
+4. **JetBrains Mono** (Code Font)
    - License: Open source
    - Weights: 400, 500
    - Format: WOFF2
+   - Usage: Code blocks, technical content
 
 ---
 
