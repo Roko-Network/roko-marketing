@@ -58,31 +58,31 @@
   --roko-error: #ef4444;        /* Red - Errors */
   --roko-info: #3b82f6;         /* Blue - Information */
 
-  /* Dark Theme Backgrounds */
-  --bg-primary: #000000;        /* Main background */
-  --bg-secondary: #0a0a0a;      /* Panels */
-  --bg-tertiary: #181818;       /* Cards (ROKO Dark) */
-  --bg-elevated: #2a2a2a;       /* Elevated surfaces */
+  /* Light Theme Backgrounds */
+  --bg-primary: #FFFFFF;        /* Main background */
+  --bg-secondary: #F8F9FA;      /* Panels */
+  --bg-tertiary: #F1F3F4;       /* Cards */
+  --bg-elevated: #FFFFFF;       /* Elevated surfaces */
 
-  /* Text Hierarchy - Enhanced for Better Contrast */
-  --text-primary: #ffffff;      /* Primary text on dark - Hero headings */
-  --text-secondary: #F0F1F4;    /* Card titles, feature headings (16.8:1 contrast) */
-  --text-body: #F5F6F8;         /* Body text, paragraphs (19.2:1 contrast) */
-  --text-tertiary: #D9DBE3;     /* Muted text, descriptions (12.5:1 contrast) */
-  --text-quaternary: #BAC0CC;   /* Subtle text, placeholders (ROKO Primary) */
-  --text-dark: #181818;         /* Dark text on light backgrounds */
-  --text-accent: #00E5BA;       /* Enhanced teal accent for better visibility */
+  /* Text Hierarchy - Light Theme */
+  --text-primary: #1A202C;      /* Primary text - Hero headings */
+  --text-secondary: #2D3748;    /* Card titles, feature headings */
+  --text-body: #4A5568;         /* Body text, paragraphs */
+  --text-tertiary: #718096;     /* Muted text, descriptions */
+  --text-quaternary: #A0AEC0;   /* Subtle text, placeholders */
+  --text-dark: #1A202C;         /* Dark text on light backgrounds */
+  --text-accent: #0078D4;       /* Blue accent for better visibility */
 
-  /* Border Colors for Dark Theme */
-  --border-light: #2A2A2A;
-  --border-medium: #404040;
-  --border-dark: #606060;
+  /* Border Colors for Light Theme */
+  --border-light: #E2E8F0;
+  --border-medium: #CBD5E0;
+  --border-dark: #A0AEC0;
 
-  /* Brand Gradients */
-  --gradient-brand: linear-gradient(135deg, #00d4aa 0%, #ffffff 100%);
-  --gradient-teal: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
-  --gradient-dark: linear-gradient(180deg, #000000 0%, #181818 100%);
-  --gradient-subtle: linear-gradient(135deg, #181818 0%, #2a2a2a 100%);
+  /* Brand Gradients - Light Theme */
+  --gradient-brand: linear-gradient(135deg, #0078D4 0%, #40A9FF 100%);
+  --gradient-teal: linear-gradient(135deg, #0078D4 0%, #1890FF 100%);
+  --gradient-light: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%);
+  --gradient-subtle: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
 
   /* Official ROKO Typography */
   --font-display: 'Rajdhani', sans-serif;      /* Headlines, Hero text */
@@ -124,14 +124,14 @@
   --radius-2xl: 1rem;
   --radius-full: 9999px;
 
-  /* Shadows */
+  /* Shadows - Light Theme */
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
   --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
-  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
-  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 20px rgba(0, 212, 170, 0.3);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+  --shadow-glow: 0 0 20px rgba(0, 120, 212, 0.15);
 
   /* Transitions */
   --transition-fast: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -164,24 +164,24 @@
 .footer h4,
 .footer h5,
 .footer h6 {
-  color: #ffffff !important;
+  color: var(--text-primary) !important;
 }
 
-/* Light theme overrides (if needed for admin/dashboard) */
-:root.light {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --bg-tertiary: #e9ecef;
-  --bg-elevated: #ffffff;
+/* Dark theme overrides (optional for future use) */
+:root.dark {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0a;
+  --bg-tertiary: #181818;
+  --bg-elevated: #2a2a2a;
 
-  --text-primary: #181818;
-  --text-secondary: #6b7280;
-  --text-tertiary: #9ca3af;
-  --text-quaternary: #d1d5db;
+  --text-primary: #ffffff;
+  --text-secondary: #F0F1F4;
+  --text-tertiary: #D9DBE3;
+  --text-quaternary: #BAC0CC;
 
-  --border-light: #e5e7eb;
-  --border-medium: #d1d5db;
-  --border-dark: #6b7280;
+  --border-light: #2A2A2A;
+  --border-medium: #404040;
+  --border-dark: #606060;
 }
 
 /* CSS Reset and Base Styles */
@@ -204,8 +204,8 @@ html {
 }
 
 body {
-  background: var(--gradient-dark);
-  color: #ffffff;
+  background: var(--gradient-light);
+  color: var(--text-primary);
   font-family: var(--font-body), system-ui, sans-serif;
   font-weight: 400;
   line-height: 1.6;
@@ -227,7 +227,7 @@ h6 {
   font-family: var(--font-display);
   font-weight: 600;
   line-height: 1.25;
-  color: #ffffff; /* Always white for all headings */
+  color: var(--text-primary); /* Dark text for all headings */
   margin-bottom: var(--spacing-md);
 }
 
@@ -246,25 +246,25 @@ h2 {
 h3 {
   font-size: var(--text-4xl);
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 h4 {
   font-size: var(--text-3xl);
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 h5 {
   font-size: var(--text-2xl);
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 h6 {
   font-size: var(--text-xl);
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 p {
@@ -309,14 +309,14 @@ pre {
 }
 
 code {
-  background-color: var(--bg-accent);
+  background-color: var(--bg-tertiary);
   border-radius: var(--radius-sm);
   padding: 0.125rem 0.25rem;
   color: var(--text-accent);
 }
 
 pre {
-  background-color: var(--color-dark);
+  background-color: var(--bg-tertiary);
   border-radius: var(--radius-md);
   padding: var(--spacing-md);
   overflow-x: auto;
@@ -326,7 +326,7 @@ pre {
 pre code {
   background: none;
   padding: 0;
-  color: var(--color-teal);
+  color: var(--text-accent);
 }
 
 /* List Styles */
@@ -369,7 +369,7 @@ select {
   border: 2px solid var(--border-medium);
   border-radius: var(--radius-md);
   padding: var(--spacing-sm) var(--spacing-md);
-  color: #ffffff;
+  color: var(--text-primary);
   transition: var(--transition-fast);
 }
 
@@ -377,13 +377,13 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: var(--color-teal);
-  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+  border-color: var(--text-accent);
+  box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.1);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: var(--text-light);
+  color: var(--text-tertiary);
 }
 
 /* Utility Classes */
@@ -413,7 +413,7 @@ textarea::placeholder {
 .font-semibold { font-weight: 600; }
 .font-bold { font-weight: 700; }
 
-.text-primary { color: #ffffff; }
+.text-primary { color: var(--text-primary); }
 .text-secondary { color: var(--text-secondary); }
 .text-body { color: var(--text-body); }
 .text-tertiary { color: var(--text-tertiary); }
@@ -544,20 +544,20 @@ textarea::placeholder {
 
 /* Focus styles for accessibility */
 *:focus {
-  outline: 2px solid var(--color-teal);
+  outline: 2px solid var(--text-accent);
   outline-offset: 2px;
 }
 
 button:focus,
 a:focus {
-  outline: 2px solid var(--color-teal);
+  outline: 2px solid var(--text-accent);
   outline-offset: 2px;
 }
 
 /* Selection styles */
 ::selection {
-  background-color: var(--color-teal);
-  color: var(--color-white);
+  background-color: var(--text-accent);
+  color: #ffffff;
 }
 
 /* Scrollbar styles */
@@ -576,7 +576,7 @@ a:focus {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--color-teal);
+  background-color: var(--text-accent);
 }
 
 /* Print styles */

@@ -124,11 +124,11 @@ export const Features: FC = () => {
   const glowVariants = {
     hover: {
       boxShadow: [
-        '0 0 20px rgba(0, 212, 170, 0.2)',
-        '0 0 40px rgba(0, 212, 170, 0.4)',
-        '0 0 20px rgba(0, 212, 170, 0.2)'
+        '0 0 20px rgba(0, 120, 212, 0.1)',
+        '0 0 40px rgba(0, 120, 212, 0.2)',
+        '0 0 20px rgba(0, 120, 212, 0.1)'
       ],
-      borderColor: '#00d4aa',
+      borderColor: '#0078D4',
       transition: {
         duration: 0.3,
         ease: 'easeInOut'
@@ -154,7 +154,7 @@ export const Features: FC = () => {
           <h2 className={styles.title}>
             <span className={styles.gradientText}>Temporal Precision</span>
             <br />
-            <span style={{ color: '#CDD1DB' }}>at Scale</span>
+            <span style={{ color: 'var(--text-tertiary)' }}>at Scale</span>
           </h2>
           <p className={styles.subtitle}>
             Revolutionary blockchain infrastructure combining nanosecond timing accuracy

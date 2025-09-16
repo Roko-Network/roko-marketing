@@ -187,11 +187,11 @@ export const Technology: FC = () => {
   const tabVariants = {
     inactive: {
       backgroundColor: 'transparent',
-      color: '#BCC1D1'
+      color: '#4a5568'
     },
     active: {
-      backgroundColor: 'rgba(0, 212, 170, 0.1)',
-      color: '#00d4aa'
+      backgroundColor: 'rgba(0, 160, 133, 0.1)',
+      color: '#00a085'
     }
   };
 
@@ -213,7 +213,7 @@ export const Technology: FC = () => {
           <h2 className={styles.title}>
             <span className={styles.gradientText}>Temporal Architecture</span>
             <br />
-            <span style={{ color: '#D9DBE3' }}>Reimagined</span>
+            <span style={{ color: '#1a1a1a' }}>Reimagined</span>
           </h2>
           <p className={styles.subtitle}>
             Revolutionary blockchain infrastructure combining nanosecond-precision timing
@@ -327,7 +327,7 @@ export const Technology: FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h4 style={{ color: '#ffffff' }}>Temporal Blockchain Architecture</h4>
+                <h4 style={{ color: '#1a1a1a' }}>Temporal Blockchain Architecture</h4>
                 <div className={styles.timeline}>
                   <div className={styles.timelineItem}>
                     <div className={styles.timelineIcon}>1</div>
@@ -361,7 +361,7 @@ export const Technology: FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h4 style={{ color: '#ffffff' }}>ROKO vs Traditional Blockchains</h4>
+                <h4 style={{ color: '#1a1a1a' }}>ROKO vs Traditional Blockchains</h4>
                 <div className={styles.comparisonTable}>
                   <div className={styles.tableHeader}>
                     <div>Feature</div>
@@ -389,7 +389,7 @@ export const Technology: FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h4 style={{ color: '#ffffff' }}>Developer API Example</h4>
+                <h4 style={{ color: '#1a1a1a' }}>Developer API Example</h4>
                 <div className={styles.codeBlock}>
                   <pre><code>{codeExample}</code></pre>
                 </div>

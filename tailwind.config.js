@@ -4,44 +4,44 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  darkMode: 'class',
+  darkMode: 'class', // Keep for optional dark mode toggle
   theme: {
     extend: {
       colors: {
-        // Official ROKO Brand Colors
+        // Official ROKO Brand Colors - Optimized for Light Theme
         'roko': {
-          'primary': '#BAC0CC',      // Light Blue-Gray - Primary brand
-          'secondary': '#BCC1D1',    // Light Gray - Secondary elements
-          'tertiary': '#D9DBE3',     // Lightest Gray - Subtle accents
-          'dark': '#181818',         // Near Black - Text and contrasts
+          'primary': '#4A5568',      // Dark Blue-Gray - Professional text
+          'secondary': '#2D3748',    // Darker Gray - Primary headings
+          'tertiary': '#1A202C',     // Darkest Gray - Body text
+          'light': '#F7FAFC',        // Light background
         },
-        // Teal Accent Colors - Enhanced for Better Visibility
-        'teal': {
-          DEFAULT: '#00E5BA',        // Enhanced Teal - Better contrast for CTAs
-          'hover': '#00ffcc',        // Bright Cyan - Hover states
-          'dark': '#00a084',         // Dark Teal - Active states
-          'original': '#00d4aa',     // Original brand teal (fallback)
+        // Professional Accent Colors
+        'accent': {
+          DEFAULT: '#0078D4',        // Professional Blue - CTAs
+          'hover': '#106EBE',        // Darker Blue - Hover states
+          'light': '#E3F2FD',        // Light Blue - Subtle backgrounds
+          'teal': '#00796B',         // Professional Teal - Secondary actions
         },
-        // Semantic System Colors
-        'success': '#10b981',        // Emerald - Success states
-        'warning': '#f59e0b',        // Amber - Warnings
-        'error': '#ef4444',          // Red - Errors
-        'info': '#3b82f6',           // Blue - Information
-        // Background Hierarchy
+        // Semantic System Colors - Light Theme Optimized
+        'success': '#2E7D32',        // Dark Green - Success states
+        'warning': '#F57C00',        // Orange - Warnings
+        'error': '#D32F2F',          // Red - Errors
+        'info': '#1976D2',           // Blue - Information
+        // Background Hierarchy - Light Theme
         'bg': {
-          'primary': '#000000',      // Main background
-          'secondary': '#0a0a0a',    // Panels
-          'tertiary': '#181818',     // Cards (ROKO Dark)
-          'elevated': '#2a2a2a',     // Elevated surfaces
+          'primary': '#FFFFFF',      // Pure white - Main background
+          'secondary': '#F8F9FA',    // Light gray - Panels
+          'tertiary': '#F1F3F4',     // Slightly darker - Cards
+          'elevated': '#FFFFFF',     // White with shadow - Elevated surfaces
         },
-        // Text Hierarchy - Enhanced for Better Contrast
+        // Text Hierarchy - Professional Light Theme
         'text': {
-          'primary': '#ffffff',      // Hero headings (21:1 contrast)
-          'secondary': '#E8EAEF',    // Card titles, feature headings (16.8:1 contrast)
-          'body': '#F5F6F8',         // Body text, paragraphs (19.2:1 contrast)
-          'tertiary': '#CDD1DB',     // Muted text, descriptions (12.5:1 contrast)
-          'quaternary': '#BAC0CC',   // Subtle text, placeholders (ROKO Primary)
-          'dark': '#181818',         // Dark text on light backgrounds
+          'primary': '#1A202C',      // Dark gray - Primary text (16.5:1 contrast)
+          'secondary': '#2D3748',    // Medium dark - Secondary text (12.6:1 contrast)
+          'body': '#4A5568',         // Medium gray - Body text (9.7:1 contrast)
+          'tertiary': '#718096',     // Light gray - Muted text (7.0:1 contrast)
+          'quaternary': '#A0AEC0',   // Very light - Placeholders (4.8:1 contrast)
+          'light': '#FFFFFF',        // White text for dark backgrounds
         }
       },
       fontFamily: {

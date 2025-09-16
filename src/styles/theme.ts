@@ -27,21 +27,21 @@ export const theme = {
   components: {
     button: {
       primary: {
-        background: COLORS.teal,
+        background: COLORS.accent,
         color: COLORS.white,
         border: 'none',
         hover: {
-          background: '#00b894', // Darker teal
+          background: '#106EBE', // Darker professional blue
           transform: 'translateY(-2px)',
-          shadow: '0 8px 25px rgba(0, 212, 170, 0.3)'
+          shadow: '0 8px 25px rgba(0, 120, 212, 0.3)'
         }
       },
       secondary: {
         background: 'transparent',
-        color: COLORS.primary,
-        border: `2px solid ${COLORS.primary}`,
+        color: COLORS.accent,
+        border: `2px solid ${COLORS.accent}`,
         hover: {
-          background: COLORS.primary,
+          background: COLORS.accent,
           color: COLORS.white,
           transform: 'translateY(-2px)'
         }
@@ -58,51 +58,51 @@ export const theme = {
     },
 
     card: {
-      background: COLORS.white,
+      background: COLORS.background.elevated,
       border: `1px solid ${COLORS.border.light}`,
       borderRadius: LAYOUT.borderRadius.lg,
       shadow: '0 4px 6px rgba(0, 0, 0, 0.05)',
       hover: {
-        shadow: '0 20px 25px rgba(0, 0, 0, 0.1)',
-        transform: 'translateY(-4px)'
+        shadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
+        transform: 'translateY(-2px)'
       }
     },
 
     input: {
-      background: COLORS.white,
+      background: COLORS.background.primary,
       border: `2px solid ${COLORS.border.medium}`,
       borderRadius: LAYOUT.borderRadius.md,
       color: COLORS.text.primary,
-      placeholder: COLORS.text.secondary,
+      placeholder: COLORS.text.tertiary,
       focus: {
-        border: `2px solid ${COLORS.teal}`,
-        shadow: `0 0 0 3px rgba(0, 212, 170, 0.1)`
+        border: `2px solid ${COLORS.accent}`,
+        shadow: `0 0 0 3px rgba(0, 120, 212, 0.1)`
       }
     },
 
     modal: {
-      overlay: 'rgba(24, 24, 24, 0.8)',
-      background: COLORS.white,
+      overlay: 'rgba(0, 0, 0, 0.5)',
+      background: COLORS.background.primary,
       borderRadius: LAYOUT.borderRadius.xl,
-      shadow: '0 25px 50px rgba(0, 0, 0, 0.25)'
+      shadow: '0 25px 50px rgba(0, 0, 0, 0.15)'
     },
 
     navigation: {
       background: 'rgba(255, 255, 255, 0.95)',
       backdrop: 'blur(10px)',
       border: `1px solid ${COLORS.border.light}`,
-      shadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
+      shadow: '0 2px 12px rgba(0, 0, 0, 0.08)'
     },
 
     hero: {
       gradient: `linear-gradient(135deg, ${COLORS.background.primary} 0%, ${COLORS.background.accent} 100%)`,
-      overlay: 'rgba(24, 24, 24, 0.05)'
+      overlay: 'rgba(0, 120, 212, 0.03)'
     },
 
     code: {
-      background: COLORS.dark,
-      color: COLORS.teal,
-      border: `1px solid ${COLORS.border.dark}`,
+      background: '#F8F9FA',
+      color: COLORS.accent,
+      border: `1px solid ${COLORS.border.medium}`,
       borderRadius: LAYOUT.borderRadius.md,
       fontFamily: TYPOGRAPHY.fontFamily.mono
     }
@@ -149,31 +149,35 @@ export const theme = {
   }
 } as const;
 
-// CSS Custom Properties for runtime theming
+// CSS Custom Properties for runtime theming - Light Theme Default
 export const cssVariables = {
-  // Colors
+  // Brand colors
   '--color-primary': COLORS.primary,
   '--color-secondary': COLORS.secondary,
   '--color-tertiary': COLORS.tertiary,
-  '--color-dark': COLORS.dark,
+  '--color-accent': COLORS.accent,
   '--color-teal': COLORS.teal,
   '--color-white': COLORS.white,
   '--color-black': COLORS.black,
 
-  // Background colors
+  // Background colors - Light Theme
   '--bg-primary': COLORS.background.primary,
   '--bg-secondary': COLORS.background.secondary,
+  '--bg-tertiary': COLORS.background.tertiary,
   '--bg-dark': COLORS.background.dark,
   '--bg-accent': COLORS.background.accent,
+  '--bg-elevated': COLORS.background.elevated,
 
-  // Text colors
+  // Text colors - Light Theme
   '--text-primary': COLORS.text.primary,
   '--text-secondary': COLORS.text.secondary,
-  '--text-light': COLORS.text.light,
+  '--text-body': COLORS.text.body,
+  '--text-tertiary': COLORS.text.tertiary,
+  '--text-quaternary': COLORS.text.quaternary,
   '--text-accent': COLORS.text.accent,
   '--text-inverse': COLORS.text.inverse,
 
-  // Border colors
+  // Border colors - Light Theme
   '--border-light': COLORS.border.light,
   '--border-medium': COLORS.border.medium,
   '--border-dark': COLORS.border.dark,
@@ -210,46 +214,63 @@ export const cssVariables = {
   '--transition-spring': theme.transitions.spring
 } as const;
 
-// Dark theme variant
+// Dark theme variant - Cyberpunk style for optional toggle
 export const darkTheme = {
   ...theme,
   colors: {
     ...theme.colors,
     background: {
-      primary: COLORS.dark,
-      secondary: '#1F1F1F',
-      dark: COLORS.dark,
-      accent: '#2A2A2A'
+      primary: '#000000',
+      secondary: '#0a0a0a',
+      tertiary: '#181818',
+      dark: '#181818',
+      accent: '#2a2a2a',
+      elevated: '#1a1a1a'
     },
     text: {
-      primary: COLORS.white,
-      secondary: '#B0B0B0',
-      light: '#808080',
-      accent: COLORS.teal,
-      inverse: COLORS.dark
+      primary: '#ffffff',
+      secondary: '#E8EAEF',
+      body: '#F5F6F8',
+      tertiary: '#CDD1DB',
+      quaternary: '#BAC0CC',
+      accent: '#00d4aa',
+      inverse: '#181818'
     },
     border: {
-      light: '#2A2A2A',
-      medium: '#404040',
-      dark: '#606060'
+      light: 'rgba(186, 192, 204, 0.1)',
+      medium: 'rgba(186, 192, 204, 0.2)',
+      dark: 'rgba(186, 192, 204, 0.3)'
     }
   },
   components: {
     ...theme.components,
     card: {
       ...theme.components.card,
-      background: '#1F1F1F',
-      border: `1px solid #2A2A2A`
+      background: 'rgba(24, 24, 24, 0.9)',
+      border: `1px solid rgba(186, 192, 204, 0.1)`
     },
     input: {
       ...theme.components.input,
       background: '#1F1F1F',
       border: `2px solid #404040`,
-      color: COLORS.white
+      color: '#ffffff'
     },
     navigation: {
       ...theme.components.navigation,
       background: 'rgba(24, 24, 24, 0.95)'
+    },
+    button: {
+      ...theme.components.button,
+      primary: {
+        background: 'linear-gradient(135deg, #00d4aa, #00ffcc)',
+        color: '#181818',
+        border: 'none',
+        hover: {
+          background: 'linear-gradient(135deg, #00b894, #00d4aa)',
+          transform: 'translateY(-2px)',
+          shadow: '0 8px 25px rgba(0, 212, 170, 0.4)'
+        }
+      }
     }
   }
 } as const;
@@ -273,18 +294,25 @@ export const toggleDarkMode = (element: HTMLElement = document.documentElement) 
   const isDark = element.classList.contains('dark');
 
   if (isDark) {
+    // Switch to light theme
     element.classList.remove('dark');
     applyTheme(element, cssVariables);
   } else {
+    // Switch to dark theme (cyberpunk)
     element.classList.add('dark');
     applyTheme(element, {
       ...cssVariables,
       '--bg-primary': darkTheme.colors.background.primary,
       '--bg-secondary': darkTheme.colors.background.secondary,
+      '--bg-tertiary': darkTheme.colors.background.tertiary,
       '--bg-accent': darkTheme.colors.background.accent,
+      '--bg-elevated': darkTheme.colors.background.elevated,
       '--text-primary': darkTheme.colors.text.primary,
       '--text-secondary': darkTheme.colors.text.secondary,
-      '--text-light': darkTheme.colors.text.light,
+      '--text-body': darkTheme.colors.text.body,
+      '--text-tertiary': darkTheme.colors.text.tertiary,
+      '--text-quaternary': darkTheme.colors.text.quaternary,
+      '--text-accent': darkTheme.colors.text.accent,
       '--border-light': darkTheme.colors.border.light,
       '--border-medium': darkTheme.colors.border.medium,
       '--border-dark': darkTheme.colors.border.dark

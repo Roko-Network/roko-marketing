@@ -51,11 +51,11 @@ export const Header: FC<HeaderProps> = memo(({ className }) => {
 
   const headerVariants = {
     initial: {
-      backgroundColor: 'rgba(24, 24, 24, 0.8)',
+      backgroundColor: 'rgba(255, 255, 255, 0.8)',
       backdropFilter: 'blur(8px)',
     },
     scrolled: {
-      backgroundColor: 'rgba(24, 24, 24, 0.95)',
+      backgroundColor: 'rgba(255, 255, 255, 0.95)',
       backdropFilter: 'blur(12px)',
     },
   };

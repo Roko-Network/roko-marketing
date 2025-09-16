@@ -127,7 +127,7 @@ const SEO: FC<SEOProps> = memo(({
 
     // Additional SEO
     updateMetaTag('theme-color', '#00d4aa');
-    updateMetaTag('msapplication-TileColor', '#181818');
+    updateMetaTag('msapplication-TileColor', '#0078D4');
 
     // Structured Data
     if (jsonLd) {
@@ -268,7 +268,7 @@ export const Layout: FC<LayoutProps> = memo(({
           tabIndex={-1}
           aria-label="Main content"
           style={{
-            background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 25%, #141414 50%, #0a0a0a 75%, #000000 100%)'
+            background: 'linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 25%, #F1F3F4 50%, #F8F9FA 75%, #FFFFFF 100%)'
           }}
         >
           <AnimatePresence mode="wait">
@@ -281,11 +281,11 @@ export const Layout: FC<LayoutProps> = memo(({
               exit="exit"
               style={{
                 background: `
-                  linear-gradient(135deg, #000000 0%, #0a0a0a 25%, #141414 50%, #0a0a0a 75%, #000000 100%),
-                  radial-gradient(ellipse at 50% 50%, rgba(0, 212, 170, 0.03) 0%, transparent 50%),
-                  radial-gradient(ellipse at 20% 80%, rgba(186, 192, 204, 0.02) 0%, transparent 40%)
+                  linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 25%, #F1F3F4 50%, #F8F9FA 75%, #FFFFFF 100%),
+                  radial-gradient(ellipse at 50% 50%, rgba(0, 120, 212, 0.02) 0%, transparent 50%),
+                  radial-gradient(ellipse at 20% 80%, rgba(74, 85, 104, 0.01) 0%, transparent 40%)
                 `,
-                backgroundBlendMode: 'normal, screen, screen',
+                backgroundBlendMode: 'normal, multiply, multiply',
                 position: 'relative',
                 minHeight: '100vh',
               }}
@@ -298,12 +298,12 @@ export const Layout: FC<LayoutProps> = memo(({
                 right: 0,
                 bottom: 0,
                 backgroundImage: `
-                  linear-gradient(rgba(186, 192, 204, 0.015) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(186, 192, 204, 0.015) 1px, transparent 1px)
+                  linear-gradient(rgba(160, 174, 192, 0.08) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(160, 174, 192, 0.08) 1px, transparent 1px)
                 `,
                 backgroundSize: '60px 60px',
                 pointerEvents: 'none',
-                opacity: 0.6,
+                opacity: 0.3,
                 zIndex: 1,
               }} />
 
@@ -315,7 +315,7 @@ export const Layout: FC<LayoutProps> = memo(({
                 transform: 'translate(-50%, -50%)',
                 width: '600px',
                 height: '600px',
-                background: 'radial-gradient(circle, rgba(0, 212, 170, 0.02) 0%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(0, 120, 212, 0.015) 0%, transparent 70%)',
                 filter: 'blur(80px)',
                 pointerEvents: 'none',
                 zIndex: 1,

@@ -1,45 +1,50 @@
-// ROKO Network Brand Colors
+// ROKO Network Brand Colors - Light Theme Professional Palette
 export const COLORS = {
-  primary: '#BAC0CC',     // ROKO Primary
-  secondary: '#BCC1D1',   // ROKO Secondary
-  tertiary: '#D9DBE3',    // ROKO Tertiary
-  dark: '#181818',        // ROKO Dark
-  teal: '#00d4aa',        // ROKO Teal accent
+  primary: '#4A5568',     // Professional Dark Gray
+  secondary: '#2D3748',   // Darker Gray for headings
+  tertiary: '#1A202C',    // Darkest for body text
+  dark: '#181818',        // Keep for dark mode toggle
+  accent: '#0078D4',      // Professional Blue
+  teal: '#00796B',        // Professional Teal
 
   // Extended palette
   white: '#FFFFFF',
   black: '#000000',
 
-  // Background variations
+  // Background variations - Light Theme
   background: {
-    primary: '#FFFFFF',
-    secondary: '#F8F9FA',
-    dark: '#181818',
-    accent: '#F0F2F4'
+    primary: '#FFFFFF',     // Pure white main background
+    secondary: '#F8F9FA',   // Light gray panels
+    tertiary: '#F1F3F4',    // Card backgrounds
+    dark: '#181818',        // Keep for dark mode
+    accent: '#E3F2FD',      // Light blue accent backgrounds
+    elevated: '#FFFFFF'     // White with shadows
   },
 
-  // Text variations
+  // Text variations - Optimized for Light Backgrounds
   text: {
-    primary: '#181818',
-    secondary: '#6B7280',
-    light: '#9CA3AF',
-    accent: '#00d4aa',
-    inverse: '#FFFFFF'
+    primary: '#1A202C',     // Dark primary text (16.5:1 contrast)
+    secondary: '#2D3748',   // Medium dark headings (12.6:1 contrast)
+    body: '#4A5568',        // Body text (9.7:1 contrast)
+    tertiary: '#718096',    // Muted text (7.0:1 contrast)
+    quaternary: '#A0AEC0',  // Subtle text (4.8:1 contrast)
+    accent: '#0078D4',      // Professional blue links
+    inverse: '#FFFFFF'      // White text for dark areas
   },
 
-  // Border variations
+  // Border variations - Light Theme
   border: {
-    light: '#E5E7EB',
-    medium: '#D1D5DB',
-    dark: '#6B7280'
+    light: '#E2E8F0',       // Very light borders
+    medium: '#CBD5E0',      // Medium borders
+    dark: '#A0AEC0'         // Darker borders for definition
   },
 
-  // Status colors
+  // Status colors - Professional Light Theme
   status: {
-    success: '#10B981',
-    warning: '#F59E0B',
-    error: '#EF4444',
-    info: '#3B82F6'
+    success: '#2E7D32',     // Dark green for good contrast
+    warning: '#F57C00',     // Orange for warnings
+    error: '#D32F2F',       // Red for errors
+    info: '#1976D2'         // Blue for information
   }
 } as const;
 

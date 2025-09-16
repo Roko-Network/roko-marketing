@@ -52,9 +52,9 @@ export const Hero: FC<HeroProps> = ({ onStartBuilding, onReadDocs }) => {
   const glowVariants = {
     animate: {
       boxShadow: [
-        '0 0 20px rgba(0, 212, 170, 0.3)',
-        '0 0 40px rgba(0, 212, 170, 0.6)',
-        '0 0 20px rgba(0, 212, 170, 0.3)'
+        '0 0 20px rgba(0, 120, 212, 0.2)',
+        '0 0 40px rgba(0, 120, 212, 0.4)',
+        '0 0 20px rgba(0, 120, 212, 0.2)'
       ],
       transition: {
         duration: 2,
@@ -153,7 +153,7 @@ export const Hero: FC<HeroProps> = ({ onStartBuilding, onReadDocs }) => {
           <motion.button
             className={styles.secondaryCta}
             onClick={handleReadDocs}
-            whileHover={{ scale: 1.02, borderColor: '#00d4aa' }}
+            whileHover={{ scale: 1.02, borderColor: '#0078D4' }}
             whileTap={{ scale: 0.98 }}
           >
             Read Documentation

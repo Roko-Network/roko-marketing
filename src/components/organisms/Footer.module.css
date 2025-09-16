@@ -23,7 +23,7 @@
 
 .footer {
   background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-  border-top: 1px solid rgba(186, 192, 204, 0.1);
+  border-top: 1px solid var(--border-medium);
   padding: 4rem 0 2rem;
   margin-top: auto;
 }
@@ -150,7 +150,7 @@
   font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
   letter-spacing: 0.025em;
 }
@@ -170,10 +170,10 @@
 .emailInput {
   flex: 1;
   padding: 0.875rem 1rem;
-  background: rgba(24, 24, 24, 0.8);
-  border: 1px solid rgba(186, 192, 204, 0.2);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-medium);
   border-radius: 6px;
-  color: #ffffff;
+  color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 14px;
   transition: all 0.2s ease;
@@ -183,8 +183,8 @@
 .emailInput:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px rgba(0, 212, 170, 0.2);
-  background: rgba(24, 24, 24, 0.95);
+  box-shadow: 0 0 0 2px rgba(0, 120, 212, 0.2);
+  background: var(--bg-primary);
 }
 
 .emailInput::placeholder {
@@ -198,7 +198,7 @@
 
 .subscribeButton {
   background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
-  color: var(--color-dark);
+  color: #ffffff;
   border: none;
   padding: 0 1.5rem;
   border-radius: 6px;
@@ -219,7 +219,7 @@
 
 .subscribeButton:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(0, 212, 170, 0.4);
+  box-shadow: 0 4px 20px rgba(0, 120, 212, 0.3);
 }
 
 .subscribeButton:focus {
@@ -280,7 +280,7 @@
   font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
   letter-spacing: 0.025em;
 }
@@ -297,8 +297,8 @@
   justify-content: center;
   width: 44px;
   height: 44px;
-  background: rgba(186, 192, 204, 0.1);
-  border: 1px solid rgba(186, 192, 204, 0.2);
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-medium);
   border-radius: 8px;
   color: var(--text-secondary);
   text-decoration: none;
@@ -307,11 +307,11 @@
 }
 
 .socialLink:hover {
-  background: rgba(0, 212, 170, 0.1);
+  background: rgba(0, 120, 212, 0.05);
   border-color: var(--color-accent);
   color: var(--color-accent);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.1);
 }
 
 .socialLink:focus {
@@ -336,11 +336,10 @@
 }
 
 .sectionTitle {
-  color: #ffffff;
+  color: var(--text-primary);
   font-family: var(--font-display);
   font-size: 1.25rem;
   font-weight: 600;
-  color: #ffffff;
   margin: 0;
   letter-spacing: 0.025em;
 }
@@ -397,7 +396,7 @@
    ============================================================================= */
 
 .bottom {
-  border-top: 1px solid rgba(186, 192, 204, 0.1);
+  border-top: 1px solid var(--border-medium);
   padding-top: 2rem;
 }
 

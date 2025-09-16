@@ -7,12 +7,12 @@
 /* CSS Custom Properties from design tokens */
 :root {
   /* Colors */
-  --color-primary: #BAC0CC;
-  --color-secondary: #BCC1D1;
-  --color-tertiary: #D9DBE3;
-  --color-dark: #181818;
-  --color-accent: #00d4aa;
-  --color-accent-hover: #00ffcc;
+  --color-primary: #4A5568;
+  --color-secondary: #2D3748;
+  --color-tertiary: #1A202C;
+  --color-dark: #1A202C;
+  --color-accent: #0078D4;
+  --color-accent-hover: #106EBE;
 
   /* System Colors */
   --color-success: #10b981;
@@ -21,20 +21,20 @@
   --color-info: #3b82f6;
 
   /* Background Colors */
-  --bg-primary: #000000;
-  --bg-secondary: #0a0a0a;
-  --bg-tertiary: #181818;
-  --bg-elevated: #2a2a2a;
-  --bg-overlay: rgba(24, 24, 24, 0.95);
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8F9FA;
+  --bg-tertiary: #F1F3F4;
+  --bg-elevated: #FFFFFF;
+  --bg-overlay: rgba(255, 255, 255, 0.95);
 
   /* Text Colors */
-  --text-primary: #ffffff;
-  --text-secondary: #E8EAEF;
-  --text-tertiary: #CDD1DB;
-  --text-accent: #00d4aa;
-  --text-dark: #181818;
-  --text-link: #BAC0CC;
-  --text-link-hover: #00d4aa;
+  --text-primary: #1A202C;
+  --text-secondary: #2D3748;
+  --text-tertiary: #718096;
+  --text-accent: #0078D4;
+  --text-dark: #1A202C;
+  --text-link: #0078D4;
+  --text-link-hover: #106EBE;
 
   /* Typography */
   --font-display: 'Rajdhani', 'HK Guise', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -74,9 +74,9 @@
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  --shadow-glow: 0 0 20px rgba(0, 212, 170, 0.3);
-  --shadow-glow-hover: 0 0 30px rgba(0, 212, 170, 0.4);
-  --shadow-temporal: 0 4px 20px rgba(0, 212, 170, 0.2), 0 0 40px rgba(186, 192, 204, 0.1);
+  --shadow-glow: 0 0 20px rgba(0, 120, 212, 0.15);
+  --shadow-glow-hover: 0 0 30px rgba(0, 120, 212, 0.2);
+  --shadow-temporal: 0 4px 20px rgba(0, 120, 212, 0.1), 0 0 40px rgba(160, 174, 192, 0.05);
 
   /* Z-Index */
   --z-hide: -1;

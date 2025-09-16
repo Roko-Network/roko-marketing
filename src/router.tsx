@@ -36,7 +36,7 @@ const NotFoundPage = lazy(() => import('@pages/NotFoundPage'));
 const LazyPageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <ErrorBoundary>
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000000' }}>
+      <div className="min-h-screen flex items-center justify-center bg-white">
         <LoadingSpinner size="lg" />
       </div>
     }>
