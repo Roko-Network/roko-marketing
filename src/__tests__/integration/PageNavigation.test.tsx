@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '@/test-utils';
 
@@ -16,7 +16,7 @@ const mockLocation = { pathname: '/', search: '', hash: '', state: null };
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
   useLocation: () => mockLocation,
-  MemoryRouter: ({ children, initialEntries = ['/'] }: any) => children,
+  MemoryRouter: ({ children }: any) => children,
   Routes: ({ children }: any) => children,
   Route: ({ element }: any) => element,
   Link: ({ children, to, ...props }: any) => (
@@ -206,7 +206,10 @@ describe('Page Navigation Integration', () => {
       render(<MockApp currentPath="/governance" />);
       
       const homeLinks = screen.getAllByText('Home');
-      await user.click(homeLinks[0]); // First Home link in navigation
+      const firstHomeLink = homeLinks[0];
+      if (firstHomeLink) {
+        await user.click(firstHomeLink);
+      }
       
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
@@ -236,7 +239,10 @@ describe('Page Navigation Integration', () => {
       render(<MockApp currentPath="/developers" />);
       
       const homeLinks = screen.getAllByText('Home');
-      await user.click(homeLinks[0]);
+      const firstHomeLink = homeLinks[0];
+      if (firstHomeLink) {
+        await user.click(firstHomeLink);
+      }
       
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });
@@ -256,7 +262,10 @@ describe('Page Navigation Integration', () => {
       render(<MockApp currentPath="/docs" />);
       
       const homeLinks = screen.getAllByText('Home');
-      await user.click(homeLinks[0]);
+      const firstHomeLink = homeLinks[0];
+      if (firstHomeLink) {
+        await user.click(firstHomeLink);
+      }
       
       expect(mockNavigate).toHaveBeenCalledWith('/');
     });

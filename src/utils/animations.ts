@@ -119,21 +119,21 @@ export const pageTransitions = {
     },
     exit: {
       opacity: 0,
-      x: [0, -2, 2, -1, 1, 0],
+      x: [0, -2, 2, -1, 1, 0] as any,
       filter: [
         'hue-rotate(0deg)',
         'hue-rotate(90deg)',
         'hue-rotate(-90deg)',
         'hue-rotate(0deg)'
-      ],
+      ] as any,
       textShadow: [
         '0 0 0 transparent',
         '2px 0 0 #00d4aa, -2px 0 0 #ff4757',
         '0 0 0 transparent'
-      ],
+      ] as any,
       transition: {
         duration: durations.normal,
-        times: [0, 0.2, 0.4, 0.6, 0.8, 1],
+        times: [0, 0.2, 0.4, 0.6, 0.8, 1] as any,
       },
     },
   },
@@ -247,7 +247,7 @@ export const hoverEffects = {
         '0 0 0 rgba(0, 212, 170, 0)',
         '0 0 20px rgba(0, 212, 170, 0.4)',
         '0 0 40px rgba(0, 212, 170, 0.6)',
-      ],
+      ] as any,
       transition: {
         duration: durations.normal,
         ease: timingFunctions.easeOut,
@@ -262,7 +262,7 @@ export const hoverEffects = {
         'linear-gradient(135deg, #00d4aa, #00ffcc)',
         'linear-gradient(135deg, #00ffcc, #00d4aa, #00ffcc)',
         'linear-gradient(135deg, #00d4aa, #00ffcc)',
-      ],
+      ] as any,
       transition: {
         duration: durations.leisurely,
         ease: timingFunctions.easeInOut,
@@ -280,7 +280,7 @@ export const hoverEffects = {
         'hue-rotate(10deg)',
         'hue-rotate(-10deg)',
         'hue-rotate(0deg)',
-      ],
+      ] as any,
       transition: {
         duration: durations.slow,
         ease: timingFunctions.easeInOut,
@@ -291,7 +291,7 @@ export const hoverEffects = {
   // Morph effect
   morph: {
     whileHover: {
-      borderRadius: ['8px', '16px', '8px'],
+      borderRadius: ['8px', '16px', '8px'] as any,
       transition: {
         duration: durations.slow,
         ease: timingFunctions.cyberGlitch,
@@ -334,7 +334,7 @@ export const textAnimations = {
   // Gradient animation
   gradientShift: {
     animate: {
-      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+      backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] as any,
       transition: {
         duration: 3,
         ease: timingFunctions.easeInOut,
@@ -346,21 +346,21 @@ export const textAnimations = {
   // Glitch text effect
   glitchText: {
     whileHover: {
-      x: [0, -2, 2, -1, 1, 0],
+      x: [0, -2, 2, -1, 1, 0] as any,
       filter: [
         'hue-rotate(0deg)',
         'hue-rotate(90deg)',
         'hue-rotate(-90deg)',
         'hue-rotate(0deg)'
-      ],
+      ] as any,
       textShadow: [
         '0 0 0 transparent',
         '2px 0 0 #00d4aa, -2px 0 0 #ff4757',
         '0 0 0 transparent'
-      ],
+      ] as any,
       transition: {
         duration: durations.normal,
-        times: [0, 0.2, 0.4, 0.6, 0.8, 1],
+        times: [0, 0.2, 0.4, 0.6, 0.8, 1] as any,
       },
     },
   },
@@ -368,8 +368,8 @@ export const textAnimations = {
   // Pulse effect
   pulse: {
     animate: {
-      opacity: [1, 0.7, 1],
-      scale: [1, 1.02, 1],
+      opacity: [1, 0.7, 1] as any,
+      scale: [1, 1.02, 1] as any,
       transition: {
         duration: 2,
         ease: timingFunctions.easeInOut,
@@ -386,7 +386,7 @@ export const loadingAnimations = {
   // Skeleton loading
   skeleton: {
     animate: {
-      opacity: [0.4, 0.8, 0.4],
+      opacity: [0.4, 0.8, 0.4] as any,
       transition: {
         duration: 1.5,
         ease: timingFunctions.easeInOut,
@@ -398,8 +398,8 @@ export const loadingAnimations = {
   // Pulse loading
   pulse: {
     animate: {
-      scale: [1, 1.05, 1],
-      opacity: [0.7, 1, 0.7],
+      scale: [1, 1.05, 1] as any,
+      opacity: [0.7, 1, 0.7] as any,
       transition: {
         duration: 1,
         ease: timingFunctions.easeInOut,
@@ -423,8 +423,8 @@ export const loadingAnimations = {
   // Dots loading
   dots: (delay = 0) => ({
     animate: {
-      y: [0, -10, 0],
-      opacity: [0.4, 1, 0.4],
+      y: [0, -10, 0] as any,
+      opacity: [0.4, 1, 0.4] as any,
       transition: {
         duration: 0.6,
         ease: timingFunctions.easeInOut,
@@ -453,13 +453,13 @@ export const feedbackAnimations = {
   success: {
     initial: { scale: 0, opacity: 0 },
     animate: {
-      scale: [0, 1.2, 1],
+      scale: [0, 1.2, 1] as any,
       opacity: 1,
       filter: [
         'drop-shadow(0 0 0 rgba(0, 212, 170, 0))',
         'drop-shadow(0 0 10px rgba(0, 212, 170, 0.8))',
         'drop-shadow(0 0 5px rgba(0, 212, 170, 0.4))',
-      ],
+      ] as any,
     },
     transition: {
       duration: durations.slow,
@@ -470,12 +470,12 @@ export const feedbackAnimations = {
   // Error shake
   error: {
     animate: {
-      x: [0, -10, 10, -10, 10, 0],
+      x: [0, -10, 10, -10, 10, 0] as any,
       filter: [
         'drop-shadow(0 0 0 rgba(255, 71, 87, 0))',
         'drop-shadow(0 0 10px rgba(255, 71, 87, 0.8))',
         'drop-shadow(0 0 0 rgba(255, 71, 87, 0))',
-      ],
+      ] as any,
       transition: {
         duration: durations.slow,
         ease: timingFunctions.sharp,
@@ -486,12 +486,12 @@ export const feedbackAnimations = {
   // Warning pulse
   warning: {
     animate: {
-      scale: [1, 1.05, 1],
+      scale: [1, 1.05, 1] as any,
       filter: [
         'drop-shadow(0 0 0 rgba(255, 165, 2, 0))',
         'drop-shadow(0 0 8px rgba(255, 165, 2, 0.6))',
         'drop-shadow(0 0 0 rgba(255, 165, 2, 0))',
-      ],
+      ] as any,
       transition: {
         duration: 1,
         ease: timingFunctions.easeInOut,
@@ -553,8 +553,8 @@ export const threeDAnimations = {
   // Particle system sync
   particleSync: {
     animate: {
-      opacity: [0.3, 1, 0.3],
-      scale: [1, 1.1, 1],
+      opacity: [0.3, 1, 0.3] as any,
+      scale: [1, 1.1, 1] as any,
       transition: {
         duration: 3,
         ease: timingFunctions.easeInOut,
@@ -566,13 +566,13 @@ export const threeDAnimations = {
   // Orb pulsing
   orbPulse: {
     animate: {
-      scale: [1, 1.2, 1],
-      opacity: [0.8, 1, 0.8],
+      scale: [1, 1.2, 1] as any,
+      opacity: [0.8, 1, 0.8] as any,
       filter: [
         'drop-shadow(0 0 20px rgba(0, 212, 170, 0.4))',
         'drop-shadow(0 0 40px rgba(0, 212, 170, 0.8))',
         'drop-shadow(0 0 20px rgba(0, 212, 170, 0.4))',
-      ],
+      ] as any,
       transition: {
         duration: 2,
         ease: timingFunctions.easeInOut,

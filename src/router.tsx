@@ -1,11 +1,19 @@
 import React, { Suspense, lazy } from 'react';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
-import type { RouteConfig } from '@types';
+// Route configuration types
+interface RouteConfig {
+  path: string;
+  element: React.ReactElement;
+  errorElement?: React.ReactElement;
+  label?: string;
+  description?: string;
+  featured?: boolean;
+}
 
 // Layout components
-import RootLayout from '@components/templates/RootLayout';
-import ErrorBoundary from '@components/organisms/ErrorBoundary';
-import LoadingSpinner from '@components/atoms/LoadingSpinner';
+import RootLayout from './components/templates/RootLayout';
+import ErrorBoundary from './components/organisms/ErrorBoundary';
+import LoadingSpinner from './components/atoms/LoadingSpinner';
 
 // Lazy load pages for code splitting
 const HomePage = lazy(() => import('@pages/Home/HomePage'));
@@ -41,34 +49,34 @@ const LazyPageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) 
 export const routeConfig: RouteConfig[] = [
   {
     path: '/',
-    element: HomePage,
+    element: <HomePage />,
     label: 'Home',
     description: 'ROKO Network - The Temporal Layer for Web3'
   },
   {
     path: '/technology',
-    element: TechnologyPage,
+    element: <TechnologyPage />,
     label: 'Technology',
     description: 'Temporal blockchain infrastructure with nanosecond precision',
     featured: true
   },
   {
     path: '/governance',
-    element: GovernancePage,
+    element: <GovernancePage />,
     label: 'Governance',
     description: 'Decentralized decision making and proposal system',
     featured: true
   },
   {
     path: '/developers',
-    element: DevelopersPage,
+    element: <DevelopersPage />,
     label: 'Developers',
     description: 'Build time-sensitive dApps on ROKO Network',
     featured: true
   },
   {
     path: '/ecosystem',
-    element: EcosystemPage,
+    element: <EcosystemPage />,
     label: 'Ecosystem',
     description: 'Partners, integrations, and community projects',
     featured: true

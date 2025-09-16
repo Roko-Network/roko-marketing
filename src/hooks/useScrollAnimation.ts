@@ -35,8 +35,8 @@ export interface ParallaxConfig {
 }
 
 export interface ScrollProgressConfig {
-  container?: HTMLElement | null;
-  target?: HTMLElement | null;
+  container?: React.RefObject<HTMLElement>;
+  target?: React.RefObject<HTMLElement>;
   offset?: [string, string];
 }
 
@@ -124,7 +124,7 @@ export const useScrollProgress = (config: ScrollProgressConfig = {}) => {
   const { scrollYProgress } = useScroll({
     container: container || undefined,
     target: target || undefined,
-    offset,
+    offset: offset as any,
   });
 
   const [progress, setProgress] = useState(0);
@@ -218,7 +218,7 @@ export const useStickyScroll = (
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ['start start', `end-${stickyHeight}px start`],
+    offset: ['start start', `end-${stickyHeight}px start`] as any,
   });
 
   const opacity = useTransform(
@@ -401,8 +401,9 @@ export const useOptimizedScrollAnimation = (
   config: ScrollAnimationConfig & { debounceMs?: number } = {}
 ) => {
   const { debounceMs = 16, ...scrollConfig } = config; // ~60fps
-  const { ref, inView } = useScrollAnimation(scrollConfig);
-  const { scrollYProgress } = useScroll({ target: ref });
+  const { ref: inViewRef, inView } = useScrollAnimation(scrollConfig);
+  const scrollRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({ target: scrollRef });
 
   const lastCallTime = useRef(0);
 
@@ -420,7 +421,7 @@ export const useOptimizedScrollAnimation = (
     return unsubscribe;
   }, [scrollYProgress, inView, animationCallback, debounceMs]);
 
-  return { ref, inView, scrollYProgress };
+  return { ref: inViewRef, scrollRef, inView, scrollYProgress };
 };
 
 export default {

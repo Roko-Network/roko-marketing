@@ -259,6 +259,7 @@ export const PageTransition: React.FC<PageTransitionProps> = ({
 
       return () => clearInterval(interval);
     }
+    return; // Explicit return for when not loading
   }, [isLoading]);
 
   // Handle route changes

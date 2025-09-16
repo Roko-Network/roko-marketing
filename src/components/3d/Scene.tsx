@@ -31,6 +31,7 @@ interface SceneProps {
   showStats?: boolean;
   performanceLevel?: 'high' | 'medium' | 'low';
   fallbackComponent?: React.ComponentType;
+  children?: React.ReactNode;
 }
 
 // Loading component
@@ -207,7 +208,8 @@ export const Scene: React.FC<SceneProps> = ({
   autoRotate = true,
   showStats = false,
   performanceLevel,
-  fallbackComponent: FallbackComponent = SceneFallback
+  fallbackComponent: FallbackComponent = SceneFallback,
+  children
 }) => {
   const [detectedPerformance, setDetectedPerformance] = useState<'high' | 'medium' | 'low'>('medium');
   const [webGLSupported, setWebGLSupported] = useState(true);
@@ -269,10 +271,12 @@ export const Scene: React.FC<SceneProps> = ({
 
         {/* Scene content with loading */}
         <Suspense fallback={<SceneLoader />}>
-          <SceneContent
-            performanceLevel={finalPerformanceLevel}
-            autoRotate={autoRotate}
-          />
+          {children || (
+            <SceneContent
+              performanceLevel={finalPerformanceLevel}
+              autoRotate={autoRotate}
+            />
+          )}
         </Suspense>
 
         {/* Post-processing effects */}

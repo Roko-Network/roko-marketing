@@ -23,6 +23,15 @@ declare const __DEV__: boolean
 declare const __PROD__: boolean
 declare const __VERSION__: string
 
+// Performance monitoring globals
+interface Window {
+  __ROKO_PERFORMANCE__?: {
+    marks: {
+      [key: string]: number;
+    };
+  };
+}
+
 // Module declarations for assets
 declare module '*.svg' {
   import { FC, SVGProps } from 'react'

@@ -47,7 +47,7 @@ interface PerformanceHook {
   trackCustomMetric: (name: string, value: number, budget?: number) => void;
   trackThreeJSMetrics: (initTime: number, renderTime: number) => void;
   preloadImage: (src: string, options?: any) => void;
-  createLazyImage: (src: string, alt: string, options?: any) => JSX.Element;
+  createLazyImage: (src: string, alt: string, options?: any) => string;
 }
 
 /**
@@ -86,7 +86,9 @@ export function usePerformanceOptimization(config: PerformanceConfig = {}): Perf
 
   // Initialize performance optimizations
   useEffect(() => {
-    const initializeOptimizations = async () => {
+    let metricsInterval: NodeJS.Timeout | null = null;
+    
+    const initializeOptimizations = async (): Promise<void> => {
       try {
         // Initialize Web Vitals monitoring
         if (enableMonitoring) {
@@ -129,10 +131,7 @@ export function usePerformanceOptimization(config: PerformanceConfig = {}): Perf
           };
 
           // Update metrics every second
-          const metricsInterval = setInterval(updateMetrics, 1000);
-
-          // Clean up interval on unmount
-          return () => clearInterval(metricsInterval);
+          metricsInterval = setInterval(updateMetrics, 1000);
         }
 
         // Initialize performance dashboard (development only)
@@ -207,6 +206,9 @@ export function usePerformanceOptimization(config: PerformanceConfig = {}): Perf
 
     // Cleanup on unmount
     return () => {
+      if (metricsInterval) {
+        clearInterval(metricsInterval);
+      }
       monitorRef.current?.destroy();
       dashboardRef.current?.destroy();
       performance3DRef.current?.cleanup();
@@ -236,6 +238,7 @@ export function usePerformanceOptimization(config: PerformanceConfig = {}): Perf
 
       return () => clearInterval(updateInterval);
     }
+    return undefined;
   }, [isOptimized]);
 
   // Track custom metrics
@@ -297,6 +300,7 @@ export function use3DPerformanceOptimization(camera?: any) {
         perfManager.cleanup();
       };
     }
+    return undefined;
   }, [camera, manager]);
 
   const updatePerformance = () => {
@@ -367,7 +371,6 @@ export function useImageOptimization() {
 
   return {
     formatSupport,
-    getOptimalFormat,
     generateResponsiveImage,
     preloadCriticalImage,
     ...imageOptimization

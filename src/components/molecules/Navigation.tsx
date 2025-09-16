@@ -15,6 +15,8 @@ export interface NavigationProps {
   isMobile?: boolean;
   className?: string;
   onNavigate?: () => void;
+  currentPage?: string;
+  onScroll?: (event: Event) => void;
 }
 
 /**
@@ -26,7 +28,9 @@ export interface NavigationProps {
 export const Navigation: FC<NavigationProps> = memo(({
   isMobile = false,
   className,
-  onNavigate
+  onNavigate,
+  currentPage,
+  onScroll
 }) => {
   const location = useLocation();
   const [activeIndicator, setActiveIndicator] = useState({ width: 0, left: 0 });

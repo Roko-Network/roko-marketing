@@ -198,6 +198,12 @@ export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>
       onFocus,
       onBlur,
       disabled,
+      onAnimationStart,
+      onAnimationEnd,
+      onAnimationIteration,
+      onDrag,
+      onDragStart,
+      onDragEnd,
       ...props
     },
     ref
@@ -294,7 +300,7 @@ export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>
 
     // Animation variants
     const buttonVariants = shouldUseReducedMotion
-      ? {}
+      ? undefined
       : {
           hover: {
             y: -2,
@@ -318,12 +324,14 @@ export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>
 
     return (
       <motion.button
-        ref={(node) => {
-          buttonRef.current = node;
+        ref={(node: HTMLButtonElement | null) => {
+          if (buttonRef) {
+            (buttonRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
+          }
           if (typeof ref === 'function') {
             ref(node);
           } else if (ref) {
-            ref.current = node;
+            (ref as React.MutableRefObject<HTMLButtonElement | null>).current = node;
           }
         }}
         className={buttonClasses}
@@ -342,6 +350,9 @@ export const AnimatedButton = forwardRef<HTMLButtonElement, AnimatedButtonProps>
         onBlur={handleBlur}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
+        onAnimationStart={onAnimationStart as any}
+        onAnimationEnd={onAnimationEnd as any}
+        onAnimationIteration={onAnimationIteration as any}
         {...props}
       >
         {/* Background effects */}

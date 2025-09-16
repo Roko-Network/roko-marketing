@@ -1,5 +1,20 @@
-import { COLORS, TYPOGRAPHY, LAYOUT, ANIMATIONS } from '@config/constants';
-import type { ThemeColors, Typography } from '@types';
+import { COLORS, TYPOGRAPHY, LAYOUT, ANIMATIONS } from '../config/constants';
+
+// Theme types
+interface ThemeColors {
+  primary: string;
+  secondary: string;
+  tertiary: string;
+  // Add other color properties as needed
+}
+
+interface Typography {
+  fontFamily: {
+    primary: string;
+    secondary: string;
+    // Add other font properties as needed
+  };
+}
 
 // Design System Theme Configuration
 export const theme = {
@@ -245,7 +260,7 @@ export type CSSVariables = typeof cssVariables;
 
 // Utility functions for theme manipulation
 export const getThemeValue = (path: string, fallback?: any) => {
-  return path.split('.').reduce((obj, key) => obj?.[key], theme) || fallback;
+  return path.split('.').reduce((obj: any, key: string) => obj?.[key], theme as any) || fallback;
 };
 
 export const applyTheme = (element: HTMLElement, themeVariables: Record<string, string>) => {

@@ -76,9 +76,11 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
       // Color variation
       const colorIndex = Math.floor(Math.random() * brandColors.length);
       const color = brandColors[colorIndex];
-      colors[i3] = color.r;
-      colors[i3 + 1] = color.g;
-      colors[i3 + 2] = color.b;
+      if (color) {
+        colors[i3] = color.r;
+        colors[i3 + 1] = color.g;
+        colors[i3 + 2] = color.b;
+      }
     }
 
     return { positions, colors, velocities };
@@ -113,7 +115,7 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
   }, []);
 
   // Spring animation for hover effects
-  const { orbScale, emissiveIntensity } = useSpring({
+  const { orbScale } = useSpring({
     orbScale: isHovered ? scale * 1.1 : scale,
     emissiveIntensity: isHovered ? 0.6 : 0.3,
     config: { tension: 300, friction: 30 }
@@ -135,16 +137,19 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
     orbMaterial.emissiveIntensity = pulsation * (isHovered ? 2 : 1);
 
     // Animate particles
-    const positions = particleSystemRef.current.attributes.position.array as Float32Array;
-    const velocities = particlesRef.current.userData.velocities as Float32Array;
+    const positionAttribute = particleSystemRef.current.attributes['position'];
+    if (!positionAttribute) return;
+    const positions = positionAttribute.array as Float32Array;
+    const velocities = particlesRef.current.userData?.['velocities'] as Float32Array;
+    if (!velocities) return;
 
     for (let i = 0; i < config.particleCount; i++) {
       const i3 = i * 3;
 
       // Orbital motion around orb
-      const x = positions[i3];
-      const y = positions[i3 + 1];
-      const z = positions[i3 + 2];
+      const x = positions[i3] || 0;
+      const y = positions[i3 + 1] || 0;
+      const z = positions[i3 + 2] || 0;
 
       // Calculate orbital velocity
       const distance = Math.sqrt(x * x + y * y + z * z);
@@ -167,7 +172,10 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
       }
     }
 
-    particleSystemRef.current.attributes.position.needsUpdate = true;
+    const positionAttr = particleSystemRef.current.attributes['position'];
+    if (positionAttr) {
+      positionAttr.needsUpdate = true;
+    }
   });
 
   return (

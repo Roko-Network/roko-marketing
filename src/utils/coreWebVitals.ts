@@ -122,7 +122,8 @@ export class LCPOptimizer {
       // Optimize hero text rendering
       const heroText = heroSection.querySelectorAll('h1, h2, .hero-title');
       heroText.forEach((element) => {
-        element.style.fontDisplay = 'block';
+        // Font display should be set in CSS, but we can add will-change for performance
+        (element as HTMLElement).style.willChange = 'contents';
       });
     }
   }
@@ -373,7 +374,7 @@ export class INPOptimizer {
 export class CLSOptimizer {
   private config: CLSOptimizationConfig;
   private observer: ResizeObserver | null = null;
-  private fontLoadObserver: FontFaceObserver | null = null;
+  private fontLoadObserver: any | null = null;
 
   constructor(config?: Partial<CLSOptimizationConfig>) {
     this.config = {
@@ -646,5 +647,5 @@ export class CoreWebVitalsOptimizer {
   };
 }
 
-export { LCPOptimizer, INPOptimizer, CLSOptimizer };
+// Classes already exported at definition
 export default CoreWebVitalsOptimizer;

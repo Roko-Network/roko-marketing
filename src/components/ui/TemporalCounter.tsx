@@ -175,6 +175,7 @@ export const TemporalCounter = forwardRef<HTMLDivElement, TemporalCounterProps>(
           }
         };
       }
+      return undefined;
     }, [realTime, updateInterval]);
 
     // Handle value changes

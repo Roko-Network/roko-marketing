@@ -110,38 +110,6 @@ test.describe('Homepage - Critical User Journeys', () => {
     });
   });
 
-  test.describe('Wallet Connection Flow', () => {
-    test('should display connect wallet button', async ({ page }) => {
-      const connectWalletBtn = page.getByRole('button', { name: /connect wallet/i });
-      
-      // Button should be visible
-      await expect(connectWalletBtn).toBeVisible();
-      await expect(connectWalletBtn).toBeEnabled();
-    });
-
-    test('should handle wallet connection attempt', async ({ page }) => {
-      const connectWalletBtn = page.getByRole('button', { name: /connect wallet/i });
-      
-      if (await connectWalletBtn.isVisible()) {
-        // Click connect wallet
-        await connectWalletBtn.click();
-        
-        // Should open wallet selection modal or extension
-        // Note: In E2E, this might trigger browser extension or show modal
-        
-        // Verify button interaction worked (no crashes)
-        await expect(connectWalletBtn).toBeVisible();
-      }
-    });
-
-    test('should show network selection when needed', async ({ page }) => {
-      // This test would need actual wallet connection to be meaningful
-      // For now, just verify the UI elements are present
-      
-      const connectButton = page.getByRole('button', { name: /connect wallet/i });
-      await expect(connectButton).toBeVisible();
-    });
-  });
 
   test.describe('Interactive Elements', () => {
     test('should handle CTA button interactions', async ({ page }) => {

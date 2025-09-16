@@ -416,12 +416,14 @@ export const AnimatedInput = forwardRef<HTMLInputElement, AnimatedInputProps>(
 
           {/* Input field */}
           <input
-            ref={(node) => {
-              inputRef.current = node;
+            ref={(node: HTMLInputElement | null) => {
+              if (inputRef) {
+                (inputRef as React.MutableRefObject<HTMLInputElement | null>).current = node;
+              }
               if (typeof ref === 'function') {
                 ref(node);
               } else if (ref) {
-                ref.current = node;
+                (ref as React.MutableRefObject<HTMLInputElement | null>).current = node;
               }
             }}
             className={inputClasses}

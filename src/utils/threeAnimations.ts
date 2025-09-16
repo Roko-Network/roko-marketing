@@ -5,8 +5,8 @@
  * providing synchronized animations for 3D elements
  */
 
-import { useFrame, useThree } from '@react-three/fiber';
-import { useSpring, useTransform, MotionValue, useMotionValue } from 'framer-motion';
+import { useFrame } from '@react-three/fiber';
+import { useSpring, MotionValue, useMotionValue } from 'framer-motion';
 import { useRef, useEffect, useMemo } from 'react';
 import * as THREE from 'three';
 
@@ -300,8 +300,8 @@ export const useParticleAnimation = (
 
     timeRef.current += delta;
 
-    const positions = particleSystem.geometry.attributes.position;
-    const colors = particleSystem.geometry.attributes.color;
+    const positions = particleSystem.geometry.attributes['position'];
+    const colors = particleSystem.geometry.attributes['color'];
 
     for (let i = 0; i < config.count; i++) {
       const i3 = i * 3;
@@ -309,7 +309,7 @@ export const useParticleAnimation = (
       // Animate positions with noise
       if (config.noiseStrength) {
         const noise = Math.sin(timeRef.current * (config.speed || 1) + i * 0.1) * (config.noiseStrength || 0.1);
-        positions.setY(i, positions.getY(i) + noise * delta);
+        if (positions) positions.setY(i, positions.getY(i) + noise * delta);
       }
 
       // Animate colors
@@ -320,7 +320,7 @@ export const useParticleAnimation = (
       }
     }
 
-    positions.needsUpdate = true;
+    if (positions) positions.needsUpdate = true;
     if (colors) colors.needsUpdate = true;
   });
 };
@@ -480,24 +480,26 @@ export const rokoAnimations = {
         useFrame((_, delta) => {
           if (!particles.geometry) return;
 
-          const positions = particles.geometry.attributes.position;
-          const particleCount = positions.count;
+          const positions = particles.geometry.attributes['position'];
+          const particleCount = positions?.count || 0;
 
           for (let i = 0; i < particleCount; i++) {
             const i3 = i * 3;
 
             // Move particles along direction
-            positions.setX(i, positions.getX(i) + direction.x * delta);
-            positions.setY(i, positions.getY(i) + direction.y * delta);
-            positions.setZ(i, positions.getZ(i) + direction.z * delta);
+            if (positions) {
+              positions.setX(i, positions.getX(i) + direction.x * delta);
+              positions.setY(i, positions.getY(i) + direction.y * delta);
+              positions.setZ(i, positions.getZ(i) + direction.z * delta);
+            }
 
             // Reset particles when they go out of bounds
-            if (positions.getY(i) > 10) {
+            if (positions && positions.getY(i) > 10) {
               positions.setY(i, -10);
             }
           }
 
-          positions.needsUpdate = true;
+          if (positions) positions.needsUpdate = true;
         });
       },
     };

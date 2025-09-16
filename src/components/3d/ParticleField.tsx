@@ -65,7 +65,7 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({
       positions[i3 + 2] = (Math.random() - 0.5) * spread;
 
       // Temporal flow velocities - creating streams and eddies
-      const flowPattern = Math.sin(positions[i3] * 0.1) * Math.cos(positions[i3 + 2] * 0.1);
+      const flowPattern = Math.sin((positions[i3] || 0) * 0.1) * Math.cos((positions[i3 + 2] || 0) * 0.1);
       velocities[i3] = (Math.random() - 0.5) * 0.02 + flowPattern * 0.01;
       velocities[i3 + 1] = (Math.random() - 0.5) * 0.01;
       velocities[i3 + 2] = (Math.random() - 0.5) * 0.02 + flowPattern * 0.01;
@@ -84,9 +84,11 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({
       }
 
       const color = brandColors[colorIndex];
-      colors[i3] = color.r;
-      colors[i3 + 1] = color.g;
-      colors[i3 + 2] = color.b;
+      if (color) {
+        colors[i3] = color.r;
+        colors[i3 + 1] = color.g;
+        colors[i3 + 2] = color.b;
+      }
 
       // Phase for wave animations
       phases[i] = Math.random() * Math.PI * 2;
@@ -113,33 +115,44 @@ export const ParticleField: React.FC<ParticleFieldProps> = ({
     if (!particlesRef.current || !geometryRef.current) return;
 
     const time = state.clock.elapsedTime;
-    const positions = geometryRef.current.attributes.position.array as Float32Array;
+    const positionAttribute = geometryRef.current.attributes['position'];
+    if (!positionAttribute) return;
+    const positions = positionAttribute.array as Float32Array;
 
     for (let i = 0; i < config.count; i++) {
       const i3 = i * 3;
 
       // Apply velocities with temporal wave modulation
-      const phase = phases[i];
+      const phase = phases?.[i] ?? 0;
       const waveOffset = Math.sin(time * 2 + phase) * 0.005;
 
-      positions[i3] += velocities[i3] * speed * delta * 60 + waveOffset;
-      positions[i3 + 1] += velocities[i3 + 1] * speed * delta * 60;
-      positions[i3 + 2] += velocities[i3 + 2] * speed * delta * 60 + waveOffset;
+      if (velocities[i3] !== undefined && positions[i3] !== undefined) positions[i3] += velocities[i3] * speed * delta * 60 + waveOffset;
+      if (velocities[i3 + 1] !== undefined && positions[i3 + 1] !== undefined) positions[i3 + 1] += velocities[i3 + 1] * speed * delta * 60;
+      if (velocities[i3 + 2] !== undefined && positions[i3 + 2] !== undefined) positions[i3 + 2] += velocities[i3 + 2] * speed * delta * 60 + waveOffset;
 
       // Boundary wrapping for infinite effect
       const halfSpread = spread / 2;
 
-      if (positions[i3] > halfSpread) positions[i3] = -halfSpread;
-      if (positions[i3] < -halfSpread) positions[i3] = halfSpread;
+      if (positions[i3] !== undefined) {
+        if (positions[i3] > halfSpread) positions[i3] = -halfSpread;
+        if (positions[i3] < -halfSpread) positions[i3] = halfSpread;
+      }
 
-      if (positions[i3 + 1] > halfSpread) positions[i3 + 1] = -halfSpread;
-      if (positions[i3 + 1] < -halfSpread) positions[i3 + 1] = halfSpread;
+      if (positions[i3 + 1] !== undefined) {
+        if (positions[i3 + 1] !== undefined && positions[i3 + 1] > halfSpread) positions[i3 + 1] = -halfSpread;
+        if (positions[i3 + 1] !== undefined && positions[i3 + 1] < -halfSpread) positions[i3 + 1] = halfSpread;
+      }
 
-      if (positions[i3 + 2] > halfSpread) positions[i3 + 2] = -halfSpread;
-      if (positions[i3 + 2] < -halfSpread) positions[i3 + 2] = halfSpread;
+      if (positions[i3 + 2] !== undefined) {
+        if (positions[i3 + 2] !== undefined && positions[i3 + 2] > halfSpread) positions[i3 + 2] = -halfSpread;
+        if (positions[i3 + 2] !== undefined && positions[i3 + 2] < -halfSpread) positions[i3 + 2] = halfSpread;
+      }
     }
 
-    geometryRef.current.attributes.position.needsUpdate = true;
+    const positionAttr = geometryRef.current.attributes['position'];
+    if (positionAttr) {
+      positionAttr.needsUpdate = true;
+    }
 
     // Subtle rotation for overall field movement
     particlesRef.current.rotation.y += delta * 0.05;

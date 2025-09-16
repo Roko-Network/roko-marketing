@@ -1,7 +1,6 @@
 import { FC, memo, useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import clsx from 'clsx';
 import { Navigation } from '../molecules/Navigation';
 import { tokens } from '../../styles/tokens';
@@ -14,7 +13,7 @@ export interface HeaderProps {
 /**
  * Header Component
  *
- * Fixed position header with glassmorphism effect, ROKO branding, and wallet connection.
+ * Fixed position header with glassmorphism effect and ROKO branding.
  * Features responsive navigation, active state indicators, and accessibility compliance.
  */
 export const Header: FC<HeaderProps> = memo(({ className }) => {
@@ -133,101 +132,6 @@ export const Header: FC<HeaderProps> = memo(({ className }) => {
             <Navigation />
           </div>
 
-          {/* Connect Wallet Button - Desktop */}
-          <div className={styles.walletContainer}>
-            <ConnectButton.Custom>
-              {({
-                account,
-                chain,
-                openAccountModal,
-                openChainModal,
-                openConnectModal,
-                mounted,
-              }) => {
-                const ready = mounted;
-                const connected = ready && account && chain;
-
-                return (
-                  <div
-                    {...(!ready && {
-                      'aria-hidden': true,
-                      style: {
-                        opacity: 0,
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                      },
-                    })}
-                  >
-                    {(() => {
-                      if (!connected) {
-                        return (
-                          <button
-                            onClick={openConnectModal}
-                            type="button"
-                            className={styles.connectButton}
-                            aria-label="Connect Wallet"
-                          >
-                            Connect Wallet
-                          </button>
-                        );
-                      }
-
-                      if (chain.unsupported) {
-                        return (
-                          <button
-                            onClick={openChainModal}
-                            type="button"
-                            className={clsx(styles.connectButton, styles.unsupported)}
-                            aria-label="Wrong network - Click to switch"
-                          >
-                            Wrong network
-                          </button>
-                        );
-                      }
-
-                      return (
-                        <div className={styles.connectedState}>
-                          <button
-                            onClick={openChainModal}
-                            type="button"
-                            className={styles.chainButton}
-                            aria-label={`Network: ${chain.name}`}
-                          >
-                            {chain.hasIcon && (
-                              <div className={styles.chainIcon}>
-                                {chain.iconUrl && (
-                                  <img
-                                    alt={chain.name ?? 'Chain icon'}
-                                    src={chain.iconUrl}
-                                    width={16}
-                                    height={16}
-                                  />
-                                )}
-                              </div>
-                            )}
-                            {chain.name}
-                          </button>
-
-                          <button
-                            onClick={openAccountModal}
-                            type="button"
-                            className={styles.accountButton}
-                            aria-label={`Account: ${account.displayName}`}
-                          >
-                            {account.displayName}
-                            {account.displayBalance
-                              ? ` (${account.displayBalance})`
-                              : ''}
-                          </button>
-                        </div>
-                      );
-                    })()}
-                  </div>
-                );
-              }}
-            </ConnectButton.Custom>
-          </div>
-
           {/* Mobile Menu Button */}
           <button
             className={styles.mobileMenuButton}
@@ -265,10 +169,6 @@ export const Header: FC<HeaderProps> = memo(({ className }) => {
             >
               <motion.div className={styles.mobileNavigation} variants={menuItemVariants}>
                 <Navigation isMobile />
-              </motion.div>
-
-              <motion.div className={styles.mobileWallet} variants={menuItemVariants}>
-                <ConnectButton />
               </motion.div>
             </motion.div>
           )}

@@ -1,0 +1,115 @@
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  background: rgba(186, 192, 204, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(186, 192, 204, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.statItem {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(186, 192, 204, 0.05);
+  transition: all 0.3s ease;
+}
+
+.statItem:hover {
+  background: rgba(186, 192, 204, 0.08);
+  border-color: rgba(186, 192, 204, 0.15);
+  transform: translateY(-2px);
+}
+
+.statValue {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--roko-teal, #00d4aa);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+.statUnit {
+  font-size: 0.8em;
+  color: var(--roko-primary, #BAC0CC);
+  margin-left: 0.25rem;
+}
+
+.statLabel {
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: 0.875rem;
+  color: var(--roko-primary, #BAC0CC);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.loadingState,
+.errorState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 3rem;
+  background: rgba(186, 192, 204, 0.03);
+  border-radius: 16px;
+  border: 1px solid rgba(186, 192, 204, 0.1);
+  color: var(--roko-primary, #BAC0CC);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(186, 192, 204, 0.3);
+  border-top: 3px solid var(--roko-teal, #00d4aa);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.errorState {
+  color: #ff6b6b;
+}
+
+.errorIcon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .statValue {
+    font-size: 1.5rem;
+  }
+
+  .statLabel {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}

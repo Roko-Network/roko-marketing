@@ -208,6 +208,9 @@ export const AnimatedCard = forwardRef<HTMLDivElement, AnimatedCardProps>(
       onMouseLeave,
       onMouseMove,
       onClick,
+      onAnimationStart,
+      onAnimationEnd,
+      onAnimationIteration,
       ...props
     },
     ref
@@ -320,7 +323,7 @@ export const AnimatedCard = forwardRef<HTMLDivElement, AnimatedCardProps>(
 
     // Animation variants
     const cardVariants = shouldUseReducedMotion
-      ? {}
+      ? undefined
       : {
           hover: {
             y: hoverEffect === 'lift' ? -8 : 0,
@@ -355,12 +358,14 @@ export const AnimatedCard = forwardRef<HTMLDivElement, AnimatedCardProps>(
 
     return (
       <CardComponent
-        ref={(node: HTMLDivElement) => {
-          cardRef.current = node;
+        ref={(node: any) => {
+          if (cardRef) {
+            (cardRef as React.MutableRefObject<any>).current = node;
+          }
           if (typeof ref === 'function') {
             ref(node);
           } else if (ref) {
-            ref.current = node;
+            (ref as React.MutableRefObject<any>).current = node;
           }
         }}
         className={cardClasses}
@@ -371,13 +376,18 @@ export const AnimatedCard = forwardRef<HTMLDivElement, AnimatedCardProps>(
         whileFocus={interactive ? "hover" : undefined}
         href={href}
         tabIndex={interactive ? 0 : undefined}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        onClick={onClick}
-        {...props}
+        onMouseMove={handleMouseMove as any}
+        onMouseEnter={handleMouseEnter as any}
+        onMouseLeave={handleMouseLeave as any}
+        onFocus={(() => setIsFocused(true)) as any}
+        onBlur={(() => setIsFocused(false)) as any}
+        onClick={onClick as any}
+        {...({
+          ...props,
+          onAnimationStart: undefined,
+          onAnimationEnd: undefined,
+          onAnimationIteration: undefined
+        } as any)}
       >
         {/* Background effects */}
         {!shouldUseReducedMotion && interactive && (

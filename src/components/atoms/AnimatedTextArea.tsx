@@ -401,12 +401,14 @@ export const AnimatedTextArea = forwardRef<HTMLTextAreaElement, AnimatedTextArea
 
           {/* TextArea field */}
           <textarea
-            ref={(node) => {
-              textareaRef.current = node;
+            ref={(node: HTMLTextAreaElement | null) => {
+              if (textareaRef) {
+                (textareaRef as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
+              }
               if (typeof ref === 'function') {
                 ref(node);
               } else if (ref) {
-                ref.current = node;
+                (ref as React.MutableRefObject<HTMLTextAreaElement | null>).current = node;
               }
             }}
             className={textareaClasses}

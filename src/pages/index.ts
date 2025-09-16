@@ -6,21 +6,21 @@
 import { lazy, ComponentType } from 'react';
 
 // Types for page components
-export interface PageComponent extends ComponentType<any> {
+export interface PageComponent {
   displayName?: string;
 }
 
 export interface LazyPageComponent {
-  (): Promise<{ default: PageComponent }>;
+  (): Promise<{ default: React.ComponentType<any> }>;
 }
 
 // Lazy load all page components for optimal code splitting
-export const HomePage = lazy(() => import('./Home/HomePage'));
-export const TechnologyPage = lazy(() => import('./Technology/TechnologyPage'));
-export const GovernancePage = lazy(() => import('./Governance/GovernancePage'));
-export const DevelopersPage = lazy(() => import('./Developers/DevelopersPage'));
-export const EcosystemPage = lazy(() => import('./Ecosystem/EcosystemPage'));
-export const NotFoundPage = lazy(() => import('./NotFoundPage'));
+export const HomePage = lazy(() => import('./Home/HomePage') as Promise<{ default: React.ComponentType<any> }>);
+export const TechnologyPage = lazy(() => import('./Technology/TechnologyPage') as Promise<{ default: React.ComponentType<any> }>);
+export const GovernancePage = lazy(() => import('./Governance/GovernancePage') as Promise<{ default: React.ComponentType<any> }>);
+export const DevelopersPage = lazy(() => import('./Developers/DevelopersPage') as Promise<{ default: React.ComponentType<any> }>);
+export const EcosystemPage = lazy(() => import('./Ecosystem/EcosystemPage') as Promise<{ default: React.ComponentType<any> }>);
+export const NotFoundPage = lazy(() => import('./NotFoundPage') as Promise<{ default: React.ComponentType<any> }>);
 
 // Page metadata for routing and navigation
 export interface PageMetadata {
@@ -37,14 +37,14 @@ export const pageMetadata: Record<string, PageMetadata> = {
     title: 'ROKO Network - The Temporal Layer for Web3',
     description: 'Build time-sensitive blockchain applications with nanosecond precision. IEEE 1588 PTP-grade synchronization for Web3.',
     path: '/',
-    component: () => import('./Home/HomePage'),
+    component: () => import('./Home/HomePage') as Promise<{ default: React.ComponentType<any> }>,
     featured: true
   },
   technology: {
     title: 'Technology - ROKO Network',
     description: 'Temporal blockchain infrastructure with nanosecond precision consensus and IEEE 1588 PTP synchronization.',
     path: '/technology',
-    component: () => import('./Technology/TechnologyPage'),
+    component: () => import('./Technology/TechnologyPage') as Promise<{ default: React.ComponentType<any> }>,
     featured: true,
     sections: ['temporal-layer', 'consensus', 'architecture', 'security']
   },
@@ -52,7 +52,7 @@ export const pageMetadata: Record<string, PageMetadata> = {
     title: 'Governance - ROKO Network',
     description: 'Decentralized decision making and proposal system for the ROKO Network temporal blockchain.',
     path: '/governance',
-    component: () => import('./Governance/GovernancePage'),
+    component: () => import('./Governance/GovernancePage') as Promise<{ default: React.ComponentType<any> }>,
     featured: true,
     sections: ['proposals', 'voting', 'validators']
   },
@@ -60,7 +60,7 @@ export const pageMetadata: Record<string, PageMetadata> = {
     title: 'Developers - ROKO Network',
     description: 'Build time-sensitive dApps on ROKO Network with comprehensive SDKs, APIs, and developer tools.',
     path: '/developers',
-    component: () => import('./Developers/DevelopersPage'),
+    component: () => import('./Developers/DevelopersPage') as Promise<{ default: React.ComponentType<any> }>,
     featured: true,
     sections: ['docs', 'api', 'sdks', 'tutorials']
   },
@@ -68,7 +68,7 @@ export const pageMetadata: Record<string, PageMetadata> = {
     title: 'Ecosystem - ROKO Network',
     description: 'Partners, integrations, and community projects building on the ROKO Network temporal blockchain.',
     path: '/ecosystem',
-    component: () => import('./Ecosystem/EcosystemPage'),
+    component: () => import('./Ecosystem/EcosystemPage') as Promise<{ default: React.ComponentType<any> }>,
     featured: true,
     sections: ['partners', 'integrations', 'community']
   },
@@ -76,7 +76,7 @@ export const pageMetadata: Record<string, PageMetadata> = {
     title: '404 - Page Not Found',
     description: 'The page you are looking for does not exist.',
     path: '*',
-    component: () => import('./NotFoundPage')
+    component: () => import('./NotFoundPage') as Promise<{ default: React.ComponentType<any> }>
   }
 };
 
@@ -177,15 +177,3 @@ export const getPageSEO = (path: string) => {
   };
 };
 
-// Export page components for direct use
-export {
-  HomePage,
-  TechnologyPage,
-  GovernancePage,
-  DevelopersPage,
-  EcosystemPage,
-  NotFoundPage
-};
-
-// Export types
-export type { PageComponent, LazyPageComponent };

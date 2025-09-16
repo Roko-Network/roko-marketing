@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import { Navigation } from '@/components/Navigation';
+import { Navigation } from '@/components/molecules/Navigation';
 
 // US-1.2: Navigation System Tests
 describe('Navigation', () => {
@@ -157,7 +157,7 @@ describe('Navigation', () => {
       // Create target section
       const section = document.createElement('div');
       section.id = 'technology';
-      section.offsetTop = 1000;
+      Object.defineProperty(section, 'offsetTop', { value: 1000, configurable: true });
       document.body.appendChild(section);
 
       await user.click(screen.getByRole('link', { name: /technology/i }));

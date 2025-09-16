@@ -239,7 +239,7 @@ TemporalText.displayName = 'TemporalText';
 // TYPING ANIMATION COMPONENT
 // =============================================================================
 
-export interface TypingTextProps extends Omit<NeonTextProps, 'animation' | 'children'> {
+export interface TypingTextProps extends Omit<NeonTextProps, 'animation' | 'children' | 'speed'> {
   /** Text to type */
   text: string;
   /** Typing speed (characters per minute) */

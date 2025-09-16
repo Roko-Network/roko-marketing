@@ -4,19 +4,14 @@
  * @version 1.0.0
  */
 
-import React, { ReactElement, ReactNode } from 'react';
+import * as React from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { render, RenderOptions, RenderResult } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router-dom';
-import { WagmiProvider } from 'wagmi';
-import { RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rainbowkit';
-import { createConfig, http } from 'wagmi';
-import { mainnet, sepolia } from 'wagmi/chains';
-import { connectorsForWallets } from '@rainbow-me/rainbowkit';
-import { injectedWallet, metaMaskWallet } from '@rainbow-me/rainbowkit/wallets';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
-import type { User } from '@testing-library/user-event';
+import type { UserEvent } from '@testing-library/user-event';
 
 // Test data and fixtures
 export const testData = {
@@ -40,7 +35,7 @@ export const testData = {
       title: 'Increase staking rewards',
       description: 'Proposal to increase staking rewards from 5% to 7% APY',
       status: 'active' as const,
-      votes: { for: 1000n, against: 200n },
+      votes: { for: BigInt(1000), against: BigInt(200) },
       startTime: Date.now() - 86400000, // 1 day ago
       endTime: Date.now() + 86400000 * 6, // 6 days from now
       creator: '0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb1'
@@ -50,7 +45,7 @@ export const testData = {
       title: 'Network upgrade proposal',
       description: 'Proposal for network upgrade to improve performance',
       status: 'pending' as const,
-      votes: { for: 0n, against: 0n },
+      votes: { for: BigInt(0), against: BigInt(0) },
       startTime: Date.now() + 86400000, // 1 day from now
       endTime: Date.now() + 86400000 * 7, // 7 days from now
       creator: '0x8ba1f109551bD432803012645Hac136c60143d0'
@@ -66,29 +61,6 @@ export const testData = {
     }
   ]
 };
-
-// Mock Web3 providers and wallets
-const connectors = connectorsForWallets(
-  [
-    {
-      groupName: 'Recommended',
-      wallets: [metaMaskWallet, injectedWallet],
-    },
-  ],
-  {
-    appName: 'ROKO Network Test',
-    projectId: 'test-project-id',
-  }
-);
-
-export const testWagmiConfig = createConfig({
-  chains: [mainnet, sepolia],
-  connectors,
-  transports: {
-    [mainnet.id]: http(),
-    [sepolia.id]: http(),
-  },
-});
 
 // Query client for React Query
 export const createTestQueryClient = () =>
@@ -108,38 +80,27 @@ export const createTestQueryClient = () =>
 interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
   initialEntries?: string[];
   queryClient?: QueryClient;
-  wagmiConfig?: typeof testWagmiConfig;
-  user?: User;
+  user?: UserEvent;
 }
 
 interface AllTheProvidersProps {
   children: ReactNode;
   initialEntries?: string[];
   queryClient?: QueryClient;
-  wagmiConfig?: typeof testWagmiConfig;
 }
 
 const AllTheProviders: React.FC<AllTheProvidersProps> = ({
   children,
   initialEntries = ['/'],
   queryClient = createTestQueryClient(),
-  wagmiConfig = testWagmiConfig,
 }) => {
   return React.createElement(
-    WagmiProvider,
-    { config: wagmiConfig },
+    QueryClientProvider,
+    { client: queryClient },
     React.createElement(
-      QueryClientProvider,
-      { client: queryClient },
-      React.createElement(
-        RainbowKitProvider,
-        { coolMode: false },
-        React.createElement(
-          MemoryRouter,
-          { initialEntries },
-          children
-        )
-      )
+      MemoryRouter,
+      { initialEntries },
+      children
     )
   );
 };
@@ -147,11 +108,10 @@ const AllTheProviders: React.FC<AllTheProvidersProps> = ({
 export const customRender = (
   ui: ReactElement,
   options: CustomRenderOptions = {}
-): RenderResult & { user: User } => {
+): RenderResult & { user: ReturnType<typeof userEvent.setup> } => {
   const {
     initialEntries,
     queryClient,
-    wagmiConfig,
     user = userEvent.setup(),
     ...renderOptions
   } = options;
@@ -160,8 +120,8 @@ export const customRender = (
     React.createElement(AllTheProviders, {
       initialEntries,
       queryClient,
-      wagmiConfig,
-    }, children);
+      children
+    });
 
   return {
     user,
@@ -215,34 +175,6 @@ export const mockResizeObserver = () => {
   return mockResizeObserver;
 };
 
-// Mock Web3 functions
-export const mockWalletConnection = (user = testData.users.alice) => {
-  const mockConnect = vi.fn().mockResolvedValue({
-    accounts: [user.address],
-    chainId: 1,
-  });
-
-  const mockGetBalance = vi.fn().mockResolvedValue({
-    value: BigInt(user.balance),
-    decimals: 18,
-    symbol: 'ETH',
-  });
-
-  const mockSwitchChain = vi.fn().mockResolvedValue(undefined);
-
-  return {
-    mockConnect,
-    mockGetBalance,
-    mockSwitchChain,
-    mockAccount: {
-      address: user.address,
-      isConnected: true,
-      isReconnecting: false,
-      status: 'connected' as const,
-    },
-  };
-};
-
 // Accessibility testing utilities
 export const mockAxeCore = () => {
   return vi.fn().mockResolvedValue({
@@ -286,11 +218,11 @@ export class TestErrorBoundary extends React.Component<
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('Test Error Boundary caught an error:', error, errorInfo);
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       return this.props.fallback || React.createElement('div', 
         { 'data-testid': 'error-boundary' }, 
@@ -406,5 +338,4 @@ export const setupTestEnvironment = () => {
 };
 
 // Export default render as named export for convenience
-export { customRender };
 export default customRender;

@@ -85,8 +85,8 @@ export const NetworkGlobe: React.FC<NetworkGlobeProps> = ({
       // Add some randomization to coordinates for multiple nodes per city
       const latOffset = (Math.random() - 0.5) * 10;
       const lonOffset = (Math.random() - 0.5) * 10;
-      const lat = (city.lat + latOffset) * (Math.PI / 180);
-      const lon = (city.lon + lonOffset) * (Math.PI / 180);
+      const lat = ((city?.lat || 0) + latOffset) * (Math.PI / 180);
+      const lon = ((city?.lon || 0) + lonOffset) * (Math.PI / 180);
 
       // Convert lat/lon to 3D position on sphere
       const radius = 1.02; // Slightly above globe surface
@@ -99,8 +99,8 @@ export const NetworkGlobe: React.FC<NetworkGlobeProps> = ({
       nodes.push({
         id: `node-${i}`,
         position: new THREE.Vector3(x, y, z),
-        country: city.country,
-        city: city.name,
+        country: city?.country || 'Unknown',
+        city: city?.name || 'Unknown',
         status,
         connections: [],
         performance: Math.random()
@@ -116,7 +116,7 @@ export const NetworkGlobe: React.FC<NetworkGlobeProps> = ({
         const randomIndex = Math.floor(Math.random() * availableNodes.length);
         const targetNode = availableNodes[randomIndex];
 
-        if (!node.connections.includes(targetNode.id)) {
+        if (targetNode && !node.connections.includes(targetNode.id)) {
           node.connections.push(targetNode.id);
           // Make connections bidirectional
           if (!targetNode.connections.includes(node.id)) {

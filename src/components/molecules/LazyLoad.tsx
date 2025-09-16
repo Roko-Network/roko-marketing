@@ -210,6 +210,7 @@ export const LazyImage = memo<LazyImageProps>(({
         }
       };
     }
+    return; // Explicit return for when priority/src is falsy
   }, [priority, src]);
 
   const imageClasses = clsx(
@@ -311,7 +312,7 @@ class LazyComponentErrorBoundary extends React.Component<
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     console.error('LazyComponent Error:', error, errorInfo);
     this.props.onError?.(error);
   }
@@ -324,7 +325,7 @@ class LazyComponentErrorBoundary extends React.Component<
     });
   };
 
-  render() {
+  override render() {
     if (this.state.hasError && this.state.error) {
       const FallbackComponent = this.props.fallback;
       if (FallbackComponent) {
@@ -415,7 +416,7 @@ export function LazyComponent<T = {}>({
     <LazyLoad minHeight={minHeight}>
       <LazyComponentErrorBoundary fallback={errorBoundary}>
         <Suspense fallback={fallback}>
-          {Component && <Component {...props} />}
+          {Component && <Component {...(props as any)} />}
         </Suspense>
       </LazyComponentErrorBoundary>
     </LazyLoad>

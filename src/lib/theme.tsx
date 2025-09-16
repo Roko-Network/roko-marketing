@@ -1,10 +1,10 @@
 // Theme provider for ROKO Network design system
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { theme, darkTheme, toggleDarkMode, applyTheme, cssVariables } from '@styles/theme';
-import type { Theme } from '@styles/theme';
+import { theme, darkTheme, toggleDarkMode, applyTheme, cssVariables } from '../styles/theme';
+import type { Theme } from '../styles/theme';
 
 interface ThemeContextType {
-  theme: Theme;
+  theme: any; // Using any to avoid type conflicts between different Theme types
   isDark: boolean;
   toggleTheme: () => void;
   setTheme: (isDark: boolean) => void;
@@ -87,6 +87,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       mediaQuery.addEventListener('change', handleChange);
       return () => mediaQuery.removeEventListener('change', handleChange);
     }
+    return () => {}; // No-op cleanup for SSR
   }, []);
 
   const contextValue: ThemeContextType = {

@@ -58,7 +58,7 @@ interface AlertConfig {
 /**
  * Core Web Vitals Monitor
  */
-export class WebVitalsMonitor {
+class WebVitalsMonitor {
   private metrics: PerformanceMetrics;
   private budget: PerformanceBudget;
   private alertConfig: AlertConfig;
@@ -175,7 +175,7 @@ export class WebVitalsMonitor {
         if (entry.entryType === 'navigation') {
           const navEntry = entry as PerformanceNavigationTiming;
           this.metrics.domContentLoaded = navEntry.domContentLoadedEventEnd - navEntry.domContentLoadedEventStart;
-          this.metrics.loadComplete = navEntry.loadEventEnd - navEntry.navigationStart;
+          this.metrics.loadComplete = navEntry.loadEventEnd - (navEntry.activationStart || navEntry.fetchStart);
         }
       });
     });
@@ -243,6 +243,7 @@ export class WebVitalsMonitor {
         if (!(entry as any).hadRecentInput) {
           const firstSessionEntry = sessionEntries[0];
           const lastSessionEntry = sessionEntries[sessionEntries.length - 1];
+          if (!firstSessionEntry || !lastSessionEntry) return;
 
           if (sessionValue === 0 ||
               entry.startTime - lastSessionEntry.startTime < 1000 &&
@@ -441,7 +442,7 @@ export class WebVitalsMonitor {
   }
 
   private getBudgetViolations(): Array<{ metric: string; value: number; budget: number }> {
-    const violations = [];
+    const violations: Array<{metric: string, value: number, budget: number}> = [];
 
     Object.entries(this.metrics).forEach(([key, value]) => {
       if (value !== null && typeof value === 'number') {
@@ -517,14 +518,14 @@ export class WebVitalsMonitor {
 /**
  * Performance Dashboard for Real-time Monitoring
  */
-export class PerformanceDashboard {
+class PerformanceDashboard {
   private container: HTMLElement | null = null;
   private monitor: WebVitalsMonitor;
   private updateInterval: number;
 
   constructor(monitor: WebVitalsMonitor, containerId?: string) {
     this.monitor = monitor;
-    this.updateInterval = setInterval(() => this.updateDisplay(), 1000);
+    this.updateInterval = window.setInterval(() => this.updateDisplay(), 1000);
 
     if (containerId) {
       this.container = document.getElementById(containerId);
@@ -575,12 +576,13 @@ export class PerformanceDashboard {
     const metricsContainer = document.getElementById('roko-metrics');
     if (!metricsContainer) return;
 
-    const metrics = this.monitor.getMetrics();
-    const budgetStatus = this.monitor.getBudgetStatus();
+    // const metrics = this.monitor.getMetrics();
+    // const budgetStatus = this.monitor.getBudgetStatus();
 
-    metricsContainer.innerHTML = budgetStatus
-      .filter(({ value }) => value > 0)
-      .map(({ metric, value, budget, status }) => {
+    const statusData = this.monitor.getBudgetStatus() || [];
+    metricsContainer.innerHTML = statusData
+      .filter(({ value }: any) => value > 0)
+      .map(({ metric, value, budget, status }: any) => {
         const color = status === 'pass' ? '#00d4aa' : '#ff6b6b';
         const unit = metric.includes('Size') ? 'B' : 'ms';
         return `

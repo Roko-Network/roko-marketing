@@ -1,11 +1,9 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import { compression } from 'vite-plugin-compression2';
-import { VitePWA } from 'vite-plugin-pwa';
-import { visualizer } from 'rollup-plugin-visualizer';
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
+// import { compression } from 'vite-plugin-compression2';
+// import { VitePWA } from 'vite-plugin-pwa';
+// import { visualizer } from 'rollup-plugin-visualizer';
 import path from 'path';
-import type { PluginOption } from 'vite';
 
 // Enhanced configuration with environment support
 export default defineConfig(({ command, mode }) => {
@@ -15,128 +13,27 @@ export default defineConfig(({ command, mode }) => {
 
   const config = {
     plugins: [
-      nodePolyfills({
-        // Enable polyfills for Web3 compatibility
-        globals: {
-          Buffer: true,
-          global: true,
-          process: true,
-        },
-      }),
       react({
         // Use SWC for faster builds and better performance
         jsxRuntime: 'automatic',
-        babel: {
+        babel: isProduction ? {
           plugins: [
             // Remove console.log in production
-            ...(isProduction ? [['babel-plugin-transform-remove-console']] : [])
+            ['babel-plugin-transform-remove-console']
           ]
-        }
+        } : undefined
       }),
-      compression({
-        algorithm: 'brotliCompress',
-        exclude: [/\.(br)$/, /\.(gz)$/],
-        threshold: 1024,
-        compressionOptions: {
-          level: 11 // Maximum compression
-        }
-      }),
-      VitePWA({
-        registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
-        manifest: {
-          name: 'ROKO Network - The Temporal Layer for Web3',
-          short_name: 'ROKO',
-          description: 'Build time-sensitive blockchain applications with nanosecond precision. IEEE 1588 PTP-grade synchronization for Web3.',
-          theme_color: '#00d4aa', // ROKO teal
-          background_color: '#181818', // ROKO dark
-          display: 'standalone',
-          start_url: '/',
-          scope: '/',
-          orientation: 'portrait-primary',
-          categories: ['blockchain', 'web3', 'developer-tools'],
-          icons: [
-            {
-              src: 'pwa-192x192.png',
-              sizes: '192x192',
-              type: 'image/png',
-              purpose: 'any maskable'
-            },
-            {
-              src: 'pwa-512x512.png',
-              sizes: '512x512',
-              type: 'image/png',
-              purpose: 'any maskable'
-            }
-          ]
-        },
-        workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2,glb,gltf}'],
-          maximumFileSizeToCacheInBytes: 5 * 1024 * 1024, // 5MB for 3D models
-          runtimeCaching: [
-            {
-              urlPattern: /^https:\/\/api\.roko\.network\/.*/i,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'roko-api-cache',
-                expiration: {
-                  maxEntries: 50,
-                  maxAgeSeconds: 60 * 60 * 24 // 24 hours
-                },
-                cacheableResponse: {
-                  statuses: [0, 200]
-                }
-              }
-            },
-            {
-              urlPattern: /^https:\/\/.*\.(?:png|jpg|jpeg|svg|webp|gif)$/,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'images-cache',
-                expiration: {
-                  maxEntries: 100,
-                  maxAgeSeconds: 60 * 60 * 24 * 30 // 30 days
-                }
-              }
-            },
-            {
-              urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'google-fonts-cache',
-                expiration: {
-                  maxEntries: 10,
-                  maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
-                }
-              }
-            },
-            {
-              urlPattern: /\.(?:glb|gltf|bin)$/,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: '3d-models-cache',
-                expiration: {
-                  maxEntries: 20,
-                  maxAgeSeconds: 60 * 60 * 24 * 7 // 7 days
-                }
-              }
-            }
-          ],
-          // Skip waiting for faster updates
-          skipWaiting: true,
-          clientsClaim: true
-        }
-      }),
-
-      // Additional plugins for development and production
-      ...(isProduction ? [
-        visualizer({
-          filename: 'dist/stats.html',
-          open: false,
-          gzipSize: true,
-          brotliSize: true
-        })
-      ] : []),
+      // compression({
+      //   algorithm: 'brotliCompress',
+      //   exclude: [/\.(br)$/, /\.(gz)$/],
+      //   threshold: 1024,
+      //   compressionOptions: {
+      //     level: 11 // Maximum compression
+      //   }
+      // }),
+      // PWA and compression disabled for now to fix core issues
+      // VitePWA({ ... }),
+      // visualizer({ ... })
 
       // Performance monitoring
       ...(isDevelopment ? [
@@ -158,9 +55,6 @@ export default defineConfig(({ command, mode }) => {
         '@services': path.resolve(__dirname, './src/services'),
         '@store': path.resolve(__dirname, './src/store'),
         '@tests': path.resolve(__dirname, './tests'),
-        // Fix for use-sync-external-store export issue - use our custom shim
-        'use-sync-external-store/shim/with-selector.js': path.resolve(__dirname, './src/shims/use-sync-external-store-shim.js'),
-        'use-sync-external-store/shim/with-selector': path.resolve(__dirname, './src/shims/use-sync-external-store-shim.js'),
         // Fix for ua-parser-js export issue
         'ua-parser-js': 'ua-parser-js/dist/ua-parser.min.js'
       }
@@ -187,48 +81,15 @@ export default defineConfig(({ command, mode }) => {
       rollupOptions: {
         output: {
           // Enhanced chunk splitting strategy
-          manualChunks: (id) => {
-            // Vendor chunks
-            if (id.includes('node_modules')) {
-              if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-                return 'vendor-react';
-              }
-              if (id.includes('three') || id.includes('@react-three')) {
-                return 'vendor-3d';
-              }
-              if (id.includes('framer-motion')) {
-                return 'vendor-animation';
-              }
-              if (id.includes('recharts') || id.includes('d3')) {
-                return 'vendor-charts';
-              }
-              if (id.includes('wagmi') || id.includes('viem') || id.includes('@rainbow-me')) {
-                return 'vendor-web3';
-              }
-              if (id.includes('zustand') || id.includes('@tanstack/react-query')) {
-                return 'vendor-state';
-              }
-              return 'vendor-misc';
-            }
-
-            // Feature-based chunks
-            if (id.includes('/features/governance/')) {
-              return 'feature-governance';
-            }
-            if (id.includes('/features/validators/')) {
-              return 'feature-validators';
-            }
-            if (id.includes('/features/developers/')) {
-              return 'feature-developers';
-            }
-            if (id.includes('/features/temporal/')) {
-              return 'feature-temporal';
-            }
-
-            // 3D and shader chunks
-            if (id.includes('/three/') || id.includes('.glsl') || id.includes('.vert') || id.includes('.frag')) {
-              return 'chunk-3d';
-            }
+          manualChunks: {
+            // Keep React in its own chunk to prevent undefined errors
+            'vendor-react': ['react', 'react-dom'],
+            'vendor-router': ['react-router-dom'],
+            'vendor-3d': ['three', '@react-three/fiber', '@react-three/drei', '@react-spring/three'],
+            'vendor-animation': ['framer-motion'],
+            'vendor-charts': ['recharts'],
+            'vendor-state': ['zustand', '@tanstack/react-query'],
+            'vendor-utils': ['clsx', 'web-vitals', 'react-intersection-observer']
           },
           chunkFileNames: (chunkInfo) => {
             const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
@@ -258,11 +119,8 @@ export default defineConfig(({ command, mode }) => {
           inlineDynamicImports: false,
           preserveModules: false
         },
-        // External dependencies for better caching
-        external: (id) => {
-          // Keep large libraries external for CDN loading if needed
-          return false; // For now, bundle everything for better performance
-        }
+        // Ensure proper externalization
+        external: []
       },
       reportCompressedSize: true,
       chunkSizeWarningLimit: 50, // 50KB limit for optimal performance
@@ -331,38 +189,20 @@ export default defineConfig(({ command, mode }) => {
         'zustand',
         'web-vitals',
         'clsx',
-        'react-intersection-observer',
-        'eventemitter3',
-        'use-sync-external-store/shim/with-selector',
-        'ua-parser-js'
+        'react-intersection-observer'
       ],
       exclude: [
-        // Exclude large dependencies that should be dynamically imported
-        'wagmi',
-        'viem',
-        '@rainbow-me/rainbowkit',
-        'recharts', // Charts loaded on demand
         // Exclude external project directories
         'roko-info-site',
-        'roko_network',
+        'roko_network', 
         'nexus-marketing',
-        'awesome-claude-code-subagents',
-        'SELF'
+        'awesome-claude-code-subagents'
       ],
       // Enable dependency pre-bundling optimizations
-      force: true, // Force re-optimization to fix export issues
+      force: false,
       // Optimize for ESM
       esbuildOptions: {
-        target: 'es2020',
-        supported: {
-          bigint: true,
-          'top-level-await': true
-        }
-      },
-      // Handle CommonJS modules properly
-      commonjsOptions: {
-        include: [/use-sync-external-store/, /node_modules/],
-        transformMixedEsModules: true
+        target: 'es2020'
       }
     },
 
@@ -397,7 +237,9 @@ export default defineConfig(({ command, mode }) => {
     define: {
       __DEV__: isDevelopment,
       __PROD__: isProduction,
-      __VERSION__: JSON.stringify(env.npm_package_version || '0.1.0')
+      __VERSION__: JSON.stringify(env.npm_package_version || '0.1.0'),
+      // Ensure React is properly defined in production
+      'process.env.NODE_ENV': JSON.stringify(mode)
     }
   };
 

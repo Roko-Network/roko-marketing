@@ -5,10 +5,10 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import AppRouter from './router';
 
 // Providers and configurations
-import { Web3Provider, Web3ErrorBoundary } from './providers/Web3Provider';
 import { ThemeProvider } from '@lib/theme';
 import { PerformanceProvider } from '@lib/performance';
 import { AnalyticsProvider } from '@lib/analytics';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Error Boundary
 import ErrorBoundary from '@components/organisms/ErrorBoundary';
@@ -22,7 +22,16 @@ import { ENV, PERFORMANCE } from '@config/constants';
 // Web Vitals monitoring
 import { reportWebVitals } from '@utils/performance';
 
-// QueryClient is now managed by Web3Provider
+// QueryClient for data fetching
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 10, // 10 minutes
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 // Main App component
 const App: React.FC = () => {
@@ -67,27 +76,25 @@ const App: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <Web3ErrorBoundary>
-        <Web3Provider theme="dark">
-          <ThemeProvider>
-            <PerformanceProvider>
-              <AnalyticsProvider>
-                <div className="App">
-                  <AppRouter />
-                </div>
-              </AnalyticsProvider>
-            </PerformanceProvider>
-          </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <PerformanceProvider>
+            <AnalyticsProvider>
+              <div className="App">
+                <AppRouter />
+              </div>
+            </AnalyticsProvider>
+          </PerformanceProvider>
+        </ThemeProvider>
 
-          {/* Development tools */}
-          {ENV.isDev && (
-            <ReactQueryDevtools
-              initialIsOpen={false}
-              buttonPosition="bottom-right"
-            />
-          )}
-        </Web3Provider>
-      </Web3ErrorBoundary>
+        {/* Development tools */}
+        {ENV.isDev && (
+          <ReactQueryDevtools
+            initialIsOpen={false}
+            buttonPosition="bottom-right"
+          />
+        )}
+      </QueryClientProvider>
     </ErrorBoundary>
   );
 };

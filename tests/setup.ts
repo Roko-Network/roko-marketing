@@ -1,9 +1,11 @@
 import { expect, afterEach, vi } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import * as matchers from '@testing-library/jest-dom/matchers';
+import { toHaveNoViolations } from 'jest-axe';
 
-// Extend Vitest's expect with jest-dom matchers
+// Extend Vitest's expect with jest-dom matchers and jest-axe
 expect.extend(matchers);
+expect.extend({ toHaveNoViolations } as any);
 
 // Cleanup after each test
 afterEach(() => {
@@ -64,8 +66,8 @@ performance.now = vi.fn(() => Date.now());
 
 // Mock crypto.randomUUID
 if (!window.crypto.randomUUID) {
-  window.crypto.randomUUID = vi.fn(() => 'test-uuid-' + Math.random());
+  window.crypto.randomUUID = vi.fn(() => 'test-uuid-' + Math.random().toString().replace('0.', '')) as () => `${string}-${string}-${string}-${string}-${string}`;
 }
 
 // Set up test environment variables
-process.env.NODE_ENV = 'test';
+process.env['NODE_ENV'] = 'test';

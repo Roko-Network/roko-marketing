@@ -98,10 +98,11 @@ export const HomePage: FC<HomePageProps> = ({ className }) => {
 
         return () => observer.disconnect();
       }
+      return () => {}; // No-op cleanup for unsupported browsers
     };
 
     const cleanup = observePerformance();
-    return cleanup;
+    return cleanup || (() => {});
   }, []);
 
   // Smooth scroll handler

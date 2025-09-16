@@ -37,7 +37,7 @@ interface LODConfig {
   materialQuality: ('low' | 'medium' | 'high')[];
 }
 
-interface FrameRateMonitor {
+interface IFrameRateMonitor {
   targetFPS: number;
   currentFPS: number;
   frameCount: number;
@@ -394,10 +394,10 @@ export class MemoryManager {
   private disposeMaterial(material: THREE.Material | THREE.Material[]): void {
     const materials = Array.isArray(material) ? material : [material];
     materials.forEach((mat) => {
-      if ('map' in mat && mat.map) mat.map.dispose();
-      if ('normalMap' in mat && mat.normalMap) mat.normalMap.dispose();
-      if ('roughnessMap' in mat && mat.roughnessMap) mat.roughnessMap.dispose();
-      if ('metalnessMap' in mat && mat.metalnessMap) mat.metalnessMap.dispose();
+      if (mat && typeof mat === 'object' && mat !== null && 'map' in mat && (mat as any).map && typeof (mat as any).map.dispose === 'function') (mat as any).map.dispose();
+      if (mat && typeof mat === 'object' && mat !== null && 'normalMap' in mat && (mat as any).normalMap && typeof (mat as any).normalMap.dispose === 'function') (mat as any).normalMap.dispose();
+      if (mat && typeof mat === 'object' && mat !== null && 'roughnessMap' in mat && (mat as any).roughnessMap && typeof (mat as any).roughnessMap.dispose === 'function') (mat as any).roughnessMap.dispose();
+      if (mat && typeof mat === 'object' && mat !== null && 'metalnessMap' in mat && (mat as any).metalnessMap && typeof (mat as any).metalnessMap.dispose === 'function') (mat as any).metalnessMap.dispose();
       mat.dispose();
     });
   }
@@ -405,9 +405,11 @@ export class MemoryManager {
   cacheGeometry(key: string, geometry: THREE.BufferGeometry): void {
     if (this.geometryCache.size >= this.maxCacheSize) {
       const firstKey = this.geometryCache.keys().next().value;
-      const oldGeometry = this.geometryCache.get(firstKey);
-      oldGeometry?.dispose();
-      this.geometryCache.delete(firstKey);
+      if (firstKey) {
+        const oldGeometry = this.geometryCache.get(firstKey);
+        oldGeometry?.dispose();
+        this.geometryCache.delete(firstKey);
+      }
     }
     this.geometryCache.set(key, geometry);
   }
@@ -462,7 +464,7 @@ export class FrustumCuller {
   }
 
   isVisible(object: THREE.Object3D): boolean {
-    if (!object.geometry) return true;
+    if (!('geometry' in object) || !object.geometry) return true;
 
     const geometry = object.geometry as THREE.BufferGeometry;
     if (!geometry.boundingSphere) {

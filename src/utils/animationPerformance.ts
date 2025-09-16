@@ -244,8 +244,9 @@ export const withPerformanceOptimization = (
   if (optimizedProps.transition) {
     // Limit animation duration for low-end devices
     if (capabilities.isLowEndDevice && typeof optimizedProps.transition === 'object') {
-      optimizedProps.transition.duration = Math.min(
-        optimizedProps.transition.duration || 0.5,
+      const transition = optimizedProps.transition as any;
+      transition.duration = Math.min(
+        transition.duration || 0.5,
         0.5
       );
     }
@@ -266,14 +267,14 @@ export const withPerformanceOptimization = (
     const originalOnAnimationStart = optimizedProps.onAnimationStart;
     const originalOnAnimationComplete = optimizedProps.onAnimationComplete;
 
-    optimizedProps.onAnimationStart = () => {
+    optimizedProps.onAnimationStart = (definition: any) => {
       animationQueue.add(id, () => {}, priority);
-      originalOnAnimationStart?.();
+      originalOnAnimationStart?.(definition);
     };
 
-    optimizedProps.onAnimationComplete = () => {
+    optimizedProps.onAnimationComplete = (definition: any) => {
       animationQueue.remove(id);
-      originalOnAnimationComplete?.();
+      originalOnAnimationComplete?.(definition);
     };
   }
 
