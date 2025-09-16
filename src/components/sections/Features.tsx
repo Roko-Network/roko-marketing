@@ -32,7 +32,7 @@ const features: Feature[] = [
   {
     id: 'global-sync',
     title: 'Global Synchronization',
-    description: 'Worldwide network of validators maintaining temporal consensus.',
+    description: 'Validators maintain temporal consensus.',
     icon: GlobeAltIcon,
     metric: '24/7',
     detail: 'Continuous operation with redundant timing infrastructure'
