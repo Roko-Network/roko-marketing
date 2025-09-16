@@ -16,7 +16,7 @@ const Button: React.FC<{
     hover: {
       scale: 1.02,
       boxShadow: variant === 'primary' 
-        ? '0 8px 32px rgba(0, 212, 170, 0.3)'
+        ? '0 8px 32px rgba(7, 7, 7, 0.3)'
         : '0 8px 32px rgba(186, 192, 204, 0.2)',
       transition: { type: 'spring', stiffness: 300, damping: 25 },
     },

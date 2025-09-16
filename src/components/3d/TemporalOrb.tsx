@@ -93,9 +93,12 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
       metalness: 0.8,
       roughness: 0.2,
       transmission: 0.8,
+      wireframe: true,
       thickness: 0.5,
+      transparent: true,
+      opacity: 0.1,
       ior: 1.5,
-      emissive: '#00d4aa',
+      emissive: '#000000',
       emissiveIntensity: 0.3,
       clearcoat: 1.0,
       clearcoatRoughness: 0.1
@@ -208,9 +211,10 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
       <mesh scale={scale * 0.8}>
         <icosahedronGeometry args={[2, 1]} />
         <meshBasicMaterial
-          color="#00d4aa"
+          color="#000000ff"
           transparent
-          opacity={0.1}
+          opacity={0.01}
+          wireframe
           blending={THREE.AdditiveBlending}
         />
       </mesh>
@@ -219,7 +223,7 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
       <mesh scale={scale * 1.3}>
         <icosahedronGeometry args={[2, 0]} />
         <meshBasicMaterial
-          color="#00d4aa"
+          color="#000000ff"
           transparent
           opacity={0.05}
           blending={THREE.AdditiveBlending}

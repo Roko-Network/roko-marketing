@@ -133,7 +133,8 @@
   border: 2px solid #000000;
   border-radius: 8px;
   margin: 1rem;
-  color: #000000;
+  color: #000000!important;
+  z-index: 10;
 }
 
 .errorFallback h1 {

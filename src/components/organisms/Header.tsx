@@ -122,9 +122,10 @@ export const Header: FC<HeaderProps> = memo(({ className }) => {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
             >
-              ROKO
+              <img src="/favicon-roko.png" alt="" className='headerIcon' />
             </motion.div>
-            <span className={styles.logoSubtext}>Network</span>
+                        <span className={styles.logoSubtext}>ROKO NETWORK</span>
+
           </Link>
 
           {/* Desktop Navigation */}
