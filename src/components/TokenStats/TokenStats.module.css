@@ -1,27 +1,18 @@
 /* Token Statistics Component Styles */
 
 .container {
-  --primary-color: #0078d4;
-  --success-color: #00bcf2;
-  --error-color: #ff6b6b;
-  --background-color: rgba(255, 255, 255, 0.05);
-  --border-color: rgba(255, 255, 255, 0.1);
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.7);
-  --text-muted: rgba(255, 255, 255, 0.5);
-
-  background: var(--background-color);
-  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
   border-radius: 16px;
   padding: 1.5rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  transition: var(--transition-default);
 }
 
 .container:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-primary);
+  background: var(--bg-muted);
 }
 
 /* Variants */
@@ -33,11 +24,7 @@
 .hero {
   padding: 2rem;
   border-radius: 20px;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 120, 212, 0.1) 0%,
-    rgba(0, 188, 242, 0.05) 100%
-  );
+  background: var(--bg-primary);
 }
 
 /* Header */
@@ -47,7 +34,7 @@
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .title {
@@ -65,8 +52,8 @@
 }
 
 .tokenSymbol {
-  background: var(--primary-color);
-  color: white;
+  background: var(--color-black);
+  color: var(--color-white);
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   font-weight: 600;
@@ -74,8 +61,8 @@
 }
 
 .tokenAddress {
-  color: var(--text-secondary);
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
   font-size: 0.75rem;
 }
 
@@ -103,14 +90,14 @@
   text-align: center;
   padding: 1rem 0.5rem;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  transition: all 0.3s ease;
+  background: var(--bg-muted);
+  border: 1px solid var(--border-primary);
+  transition: var(--transition-default);
 }
 
 .statItem:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: var(--bg-muted);
+  border-color: var(--border-primary);
   transform: translateY(-2px);
 }
 
@@ -145,13 +132,13 @@
 .statUnit {
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   margin-left: 0.25rem;
 }
 
 .statLabel {
   font-size: 0.875rem;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -192,7 +179,7 @@
   align-items: center;
   gap: 0.5rem;
   padding-top: 1rem;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-primary);
   font-size: 0.75rem;
 }
 
@@ -204,8 +191,7 @@
 }
 
 .statusDot.connected {
-  background: var(--success-color);
-  box-shadow: 0 0 10px rgba(0, 188, 242, 0.5);
+  background: var(--color-black);
 }
 
 .statusDot.loading {
@@ -223,7 +209,7 @@
 }
 
 .statusText {
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-weight: 500;
 }
 
@@ -238,10 +224,10 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: rgba(255, 107, 107, 0.1);
-  border: 1px solid rgba(255, 107, 107, 0.2);
+  background: var(--bg-muted);
+  border: 1px solid var(--border-primary);
   border-radius: 12px;
-  color: var(--error-color);
+  color: var(--text-primary);
 }
 
 .errorIcon {
@@ -259,26 +245,26 @@
 }
 
 .retryButton {
-  background: var(--error-color);
-  color: white;
+  background: var(--color-black);
+  color: var(--color-white);
   border: none;
   padding: 0.25rem 0.75rem;
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition-fast);
 }
 
 .retryButton:hover {
-  background: #e55555;
+  background: var(--color-gray-dark);
   transform: translateY(-1px);
 }
 
 .notConfigured {
   text-align: center;
   padding: 2rem 1rem;
-  color: var(--text-secondary);
+  color: var(--text-muted);
 }
 
 .notConfigured p {

@@ -2,7 +2,7 @@
 .features {
   position: relative;
   padding: 6rem 0;
-  background: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 50%, #FFFFFF 100%);
+  background: var(--bg-primary);
   color: var(--text-primary);
   overflow: hidden;
 }
@@ -34,18 +34,14 @@
 }
 
 .gradientText {
-  background: linear-gradient(135deg, #0078D4 0%, #1A202C 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  color: var(--text-primary);
 }
 
 .subtitle {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: clamp(1.125rem, 2.5vw, 1.25rem);
   line-height: 1.6;
-  color: var(--text-tertiary);
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -57,33 +53,29 @@
   margin-bottom: 4rem;
 }
 
-/* Feature Card */
+/* Feature Card - using utility classes */
 .card {
   position: relative;
   height: 100%;
 }
 
 .cardContent {
+  /* Extends .card utility class */
   position: relative;
   height: 100%;
-  padding: 2rem;
-  border: 1px solid var(--border-medium);
-  border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(20px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-primary);
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
 }
 
 .cardContent:hover {
-  border-color: rgba(0, 120, 212, 0.5);
-  background: rgba(255, 255, 255, 0.95);
   transform: translateY(-4px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* Icon Container */
@@ -97,7 +89,7 @@
 .icon {
   width: 3rem;
   height: 3rem;
-  color: #0078D4;
+  color: var(--text-primary);
   flex-shrink: 0;
 }
 
@@ -105,11 +97,11 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.125rem;
   font-weight: 700;
-  color: #0078D4;
-  background: rgba(0, 120, 212, 0.1);
+  color: var(--text-primary);
+  background: var(--bg-primary);
   padding: 0.5rem 1rem;
   border-radius: 2rem;
-  border: 1px solid rgba(0, 120, 212, 0.3);
+  border: 1px solid var(--border-primary);
 }
 
 /* Card Content */
@@ -124,7 +116,7 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin: 0;
   letter-spacing: -0.01em;
 }
@@ -133,7 +125,7 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1rem;
   line-height: 1.6;
-  color: var(--text-tertiary);
+  color: var(--text-primary);
   margin: 0;
   flex: 1;
 }
@@ -142,10 +134,10 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.875rem;
   line-height: 1.5;
-  color: var(--text-quaternary);
+  color: var(--text-muted);
   margin: 0;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--border-light);
+  border-top: 1px solid var(--border-primary);
 }
 
 /* Card Effects */
@@ -155,12 +147,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 120, 212, 0.02) 0%,
-    transparent 50%,
-    rgba(0, 120, 212, 0.02) 100%
-  );
+  background: transparent;
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -176,11 +163,7 @@
   right: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(
-    circle,
-    rgba(0, 120, 212, 0.03) 0%,
-    transparent 70%
-  );
+  background: transparent;
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
@@ -190,92 +173,6 @@
   opacity: 1;
 }
 
-/* CTA Section */
-.ctaSection {
-  text-align: center;
-  padding: 3rem 0;
-  border-top: 1px solid var(--border-light);
-}
-
-.ctaTitle {
-  font-family: var(--font-display, 'Rajdhani', sans-serif);
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0 0 1rem 0;
-}
-
-.ctaDescription {
-  font-family: var(--font-body, 'HK Guise', sans-serif);
-  font-size: 1.125rem;
-  line-height: 1.6;
-  color: var(--text-tertiary);
-  margin: 0 0 2rem 0;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.ctaButtons {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-/* CTA Buttons */
-.primaryButton {
-  background: linear-gradient(135deg, #0078D4 0%, #1890FF 100%);
-  color: #ffffff;
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 0.5rem;
-  font-family: var(--font-display, 'Rajdhani', sans-serif);
-  font-size: 1rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-height: 44px;
-  min-width: 44px;
-}
-
-.primaryButton:hover {
-  box-shadow: 0 6px 30px rgba(0, 120, 212, 0.3);
-}
-
-.primaryButton:focus {
-  outline: 3px solid #0078D4;
-  outline-offset: 2px;
-}
-
-.secondaryButton {
-  background: transparent;
-  color: var(--text-secondary);
-  border: 2px solid var(--border-medium);
-  padding: 0.875rem 1.875rem;
-  border-radius: 0.5rem;
-  font-family: var(--font-body, 'HK Guise', sans-serif);
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  min-height: 44px;
-  min-width: 44px;
-}
-
-.secondaryButton:hover {
-  background: rgba(0, 120, 212, 0.05);
-  border-color: #0078D4;
-  color: #0078D4;
-  box-shadow: 0 0 20px rgba(0, 120, 212, 0.1);
-}
-
-.secondaryButton:focus {
-  outline: 3px solid #0078D4;
-  outline-offset: 2px;
-}
 
 /* Background Elements */
 .backgroundElements {
@@ -295,8 +192,8 @@
   right: 0;
   bottom: 0;
   background-image:
-    linear-gradient(rgba(160, 174, 192, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(160, 174, 192, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
   background-size: 50px 50px;
   opacity: 0.3;
 }
@@ -308,12 +205,7 @@
   transform: translate(-50%, -50%);
   width: 800px;
   height: 800px;
-  background: radial-gradient(
-    circle,
-    rgba(0, 120, 212, 0.05) 0%,
-    rgba(0, 120, 212, 0.02) 30%,
-    transparent 70%
-  );
+  background: transparent;
   border-radius: 50%;
   opacity: 0.6;
 }
@@ -342,16 +234,6 @@
     padding: 1.5rem;
   }
 
-  .ctaButtons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .primaryButton,
-  .secondaryButton {
-    width: 100%;
-    max-width: 280px;
-  }
 
   .iconContainer {
     flex-direction: column;
@@ -378,9 +260,6 @@
     height: 2.5rem;
   }
 
-  .ctaSection {
-    padding: 2rem 0;
-  }
 }
 
 /* High contrast mode support */

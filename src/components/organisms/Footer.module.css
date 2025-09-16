@@ -22,8 +22,8 @@
    ============================================================================= */
 
 .footer {
-  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-  border-top: 1px solid var(--border-medium);
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-primary);
   padding: 4rem 0 2rem;
   margin-top: auto;
 }
@@ -76,7 +76,7 @@
 }
 
 .brandLink:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-black);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -92,19 +92,14 @@
   font-size: 2.5rem;
   font-weight: 700;
   letter-spacing: 0.025em;
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% 200%;
-  animation: gradientShift 4s ease-in-out infinite;
+  color: var(--text-primary);
 }
 
 .brandSubtext {
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
@@ -119,7 +114,7 @@
 }
 
 .brandDescription {
-  color: var(--text-secondary);
+  color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 1.125rem;
   line-height: 1.6;
@@ -130,7 +125,7 @@
   display: block;
   font-family: var(--font-display);
   font-weight: 600;
-  color: var(--color-accent);
+  color: var(--text-primary);
   font-size: 1rem;
   letter-spacing: 0.025em;
   margin-top: 0.5rem;
@@ -197,8 +192,8 @@
 }
 
 .subscribeButton {
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
-  color: #ffffff;
+  background: var(--color-black);
+  color: var(--color-white);
   border: none;
   padding: 0 1.5rem;
   border-radius: 6px;
@@ -208,7 +203,7 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition-default);
   min-height: 44px;
   min-width: 100px;
   display: flex;
@@ -218,12 +213,12 @@
 }
 
 .subscribeButton:hover:not(:disabled) {
+  background: var(--color-gray-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(0, 120, 212, 0.3);
 }
 
 .subscribeButton:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-black);
   outline-offset: 2px;
 }
 
@@ -255,13 +250,13 @@
 }
 
 .successMessage {
-  color: var(--color-success);
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 500;
 }
 
 .errorMessage {
-  color: var(--color-error);
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 500;
 }
@@ -307,15 +302,14 @@
 }
 
 .socialLink:hover {
-  background: rgba(0, 120, 212, 0.05);
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  background: var(--bg-muted);
+  border-color: var(--border-primary);
+  color: var(--text-primary);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.1);
 }
 
 .socialLink:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-black);
   outline-offset: 2px;
 }
 
@@ -370,14 +364,14 @@
 }
 
 .footerLink:hover {
-  color: var(--color-accent);
+  color: var(--text-primary);
   transform: translateX(4px);
 }
 
 .footerLink:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-black);
   outline-offset: 2px;
-  color: var(--color-accent);
+  color: var(--text-primary);
 }
 
 .externalIcon {

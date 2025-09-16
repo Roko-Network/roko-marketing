@@ -2,9 +2,10 @@
 .homePage {
   position: relative;
   min-height: 100vh;
-  background: #000000;
-  color: #ffffff;
+  background: transparent; /* Allow background to show through */
+  color: #000000;
   overflow-x: hidden;
+  z-index: 10; /* Ensure content is above fixed background */
 }
 
 /* Progress Bar */
@@ -124,6 +125,7 @@
   z-index: 1;
   pointer-events: none;
   overflow: hidden;
+  background: #FFFFFF;
 }
 
 /* Animated Grid */
@@ -134,8 +136,8 @@
   right: 0;
   bottom: 0;
   background-image:
-    linear-gradient(rgba(186, 192, 204, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(186, 192, 204, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
   background-size: 80px 80px;
   animation: gridMove 20s linear infinite;
   opacity: 0.7;
@@ -164,11 +166,10 @@
   position: absolute;
   width: 2px;
   height: 2px;
-  background: #00d4aa;
+  background: #000000;
   border-radius: 50%;
   opacity: 0;
   filter: blur(0.5px);
-  box-shadow: 0 0 6px rgba(0, 212, 170, 0.8);
 }
 
 /* Gradient Orbs */
@@ -192,7 +193,7 @@
 .orb1 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(0, 212, 170, 0.4) 0%, transparent 70%);
+  background: transparent;
   top: 10%;
   left: 10%;
 }
@@ -200,7 +201,7 @@
 .orb2 {
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(186, 192, 204, 0.3) 0%, transparent 70%);
+  background: transparent;
   top: 60%;
   right: 10%;
 }
@@ -208,7 +209,7 @@
 .orb3 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(0, 212, 170, 0.2) 0%, transparent 70%);
+  background: transparent;
   bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
