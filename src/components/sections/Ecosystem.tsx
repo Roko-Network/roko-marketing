@@ -541,7 +541,7 @@ export const Ecosystem: FC = () => {
 
       {/* Accessibility */}
       <div className="sr-only" aria-live="polite">
-        {inView && 'Ecosystem section loaded with partners, dApps, and testimonials'}
+        {/* Screen reader announcement removed */}
       </div>
     </section>
   );

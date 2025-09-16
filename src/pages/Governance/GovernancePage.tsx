@@ -153,7 +153,7 @@ const GovernancePage: React.FC<GovernancePageProps> = memo(({ section }) => {
 
       {/* Accessibility */}
       <div className="sr-only" aria-live="polite">
-        {inView && 'Governance section loaded with active proposals and validator network information'}
+        {/* Screen reader announcement removed */}
       </div>
     </section>
   );

@@ -197,9 +197,9 @@ export const Hero: FC<HeroProps> = ({ onStartBuilding, onReadDocs }) => {
         <span className={styles.scrollText}>Explore Features</span>
       </motion.div>
 
-      {/* Accessibility Announcements */}
+      {/* Accessibility - Screen reader only */}
       <div className="sr-only" aria-live="polite">
-        {inView && 'Hero section loaded with ROKO Network temporal blockchain information'}
+        {/* Screen reader announcement removed */}
       </div>
     </section>
   );

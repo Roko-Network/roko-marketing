@@ -3,7 +3,7 @@
   position: relative;
   min-height: 100vh;
   background: #000000;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   overflow-x: hidden;
 }
 
@@ -46,7 +46,7 @@
   position: relative;
   background: transparent;
   border: none;
-  color: var(--text-tertiary, #BCC1D1);
+  color: #BCC1D1;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.75rem;
   font-weight: 500;
@@ -505,7 +505,7 @@
 @media (hover: none) {
   .navItem:hover {
     background: transparent;
-    color: var(--text-tertiary, #BCC1D1);
+    color: #BCC1D1;
     transform: none;
   }
 

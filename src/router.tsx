@@ -14,6 +14,13 @@ const GovernancePage = lazy(() => import('@pages/Governance/GovernancePage'));
 const DevelopersPage = lazy(() => import('@pages/Developers/DevelopersPage'));
 const EcosystemPage = lazy(() => import('@pages/Ecosystem/EcosystemPage'));
 
+// Company pages
+const AboutPage = lazy(() => import('@pages/Company/AboutPage'));
+const CareersPage = lazy(() => import('@pages/Company/CareersPage'));
+const PressPage = lazy(() => import('@pages/Company/PressPage'));
+const LegalPage = lazy(() => import('@pages/Company/LegalPage'));
+const ContactPage = lazy(() => import('@pages/Company/ContactPage'));
+
 // 404 and error pages
 const NotFoundPage = lazy(() => import('@pages/NotFoundPage'));
 
@@ -253,6 +260,47 @@ export const router = createBrowserRouter([
       {
         path: 'docs',
         element: <Navigate to="/developers/docs" replace />
+      },
+      // Company routes
+      {
+        path: 'company/about',
+        element: (
+          <LazyPageWrapper>
+            <AboutPage />
+          </LazyPageWrapper>
+        )
+      },
+      {
+        path: 'company/careers',
+        element: (
+          <LazyPageWrapper>
+            <CareersPage />
+          </LazyPageWrapper>
+        )
+      },
+      {
+        path: 'company/press',
+        element: (
+          <LazyPageWrapper>
+            <PressPage />
+          </LazyPageWrapper>
+        )
+      },
+      {
+        path: 'company/legal',
+        element: (
+          <LazyPageWrapper>
+            <LegalPage />
+          </LazyPageWrapper>
+        )
+      },
+      {
+        path: 'company/contact',
+        element: (
+          <LazyPageWrapper>
+            <ContactPage />
+          </LazyPageWrapper>
+        )
       }
     ]
   },

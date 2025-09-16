@@ -203,7 +203,7 @@ console.log('Current time:', timestamp);`}
 
       {/* Accessibility */}
       <div className="sr-only" aria-live="polite">
-        {inView && 'Developer resources section loaded with documentation, SDKs, and API references'}
+        {/* Screen reader announcement removed */}
       </div>
     </section>
   );

@@ -154,7 +154,7 @@ export const Features: FC = () => {
           <h2 className={styles.title}>
             <span className={styles.gradientText}>Temporal Precision</span>
             <br />
-            at Scale
+            <span style={{ color: '#CDD1DB' }}>at Scale</span>
           </h2>
           <p className={styles.subtitle}>
             Revolutionary blockchain infrastructure combining nanosecond timing accuracy
@@ -245,9 +245,9 @@ export const Features: FC = () => {
         <div className={styles.glowSphere} />
       </div>
 
-      {/* Accessibility */}
+      {/* Accessibility - Screen reader only */}
       <div className="sr-only" aria-live="polite">
-        {inView && 'Features section loaded with 6 key ROKO Network capabilities'}
+        {/* Removed visible text announcement */}
       </div>
     </section>
   );

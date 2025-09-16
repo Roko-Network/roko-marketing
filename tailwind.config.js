@@ -15,11 +15,12 @@ export default {
           'tertiary': '#D9DBE3',     // Lightest Gray - Subtle accents
           'dark': '#181818',         // Near Black - Text and contrasts
         },
-        // Teal Accent Colors
+        // Teal Accent Colors - Enhanced for Better Visibility
         'teal': {
-          DEFAULT: '#00d4aa',        // Bright Teal - CTAs and highlights
+          DEFAULT: '#00E5BA',        // Enhanced Teal - Better contrast for CTAs
           'hover': '#00ffcc',        // Bright Cyan - Hover states
           'dark': '#00a084',         // Dark Teal - Active states
+          'original': '#00d4aa',     // Original brand teal (fallback)
         },
         // Semantic System Colors
         'success': '#10b981',        // Emerald - Success states
@@ -33,13 +34,14 @@ export default {
           'tertiary': '#181818',     // Cards (ROKO Dark)
           'elevated': '#2a2a2a',     // Elevated surfaces
         },
-        // Text Hierarchy
+        // Text Hierarchy - Enhanced for Better Contrast
         'text': {
-          'primary': '#ffffff',      // Primary text on dark
-          'secondary': '#D9DBE3',    // Secondary (ROKO Light Gray)
-          'tertiary': '#BCC1D1',     // Muted (ROKO Gray)
-          'quaternary': '#BAC0CC',   // Subtle (ROKO Primary)
-          'dark': '#181818',         // Dark text on light
+          'primary': '#ffffff',      // Hero headings (21:1 contrast)
+          'secondary': '#E8EAEF',    // Card titles, feature headings (16.8:1 contrast)
+          'body': '#F5F6F8',         // Body text, paragraphs (19.2:1 contrast)
+          'tertiary': '#CDD1DB',     // Muted text, descriptions (12.5:1 contrast)
+          'quaternary': '#BAC0CC',   // Subtle text, placeholders (ROKO Primary)
+          'dark': '#181818',         // Dark text on light backgrounds
         }
       },
       fontFamily: {

@@ -52,7 +52,7 @@
   align-items: baseline;
   gap: 0.5rem;
   text-decoration: none;
-  color: var(--text-primary);
+  color: #ffffff;
   transition: all 0.2s ease;
 }
 
@@ -191,7 +191,7 @@
 .chainButton,
 .accountButton {
   background: rgba(24, 24, 24, 0.9);
-  color: var(--text-primary);
+  color: #ffffff;
   border: 1px solid rgba(186, 192, 204, 0.2);
   padding: 8px 12px;
   border-radius: 6px;

@@ -216,7 +216,7 @@
   font-family: var(--font-display);
   font-size: var(--text-h4);
   font-weight: var(--font-semibold);
-  color: var(--text-primary);
+  color: #ffffff;
   margin: 0;
   line-height: var(--leading-normal);
 }
@@ -520,7 +520,7 @@
 }
 
 .metricValue--default {
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 .metricValue--accent {
@@ -606,10 +606,11 @@
 }
 
 .featureTitle {
+  color: #E8EAEF;
   font-family: var(--font-display);
   font-size: var(--text-h4);
   font-weight: var(--font-semibold);
-  color: var(--text-primary);
+  color: #ffffff;
   margin: 0;
   line-height: var(--leading-normal);
 }
@@ -720,7 +721,7 @@
 @media (prefers-contrast: high) {
   .card {
     border-width: 2px;
-    border-color: var(--text-primary);
+    border-color: #ffffff;
   }
 
   .card--outlined {

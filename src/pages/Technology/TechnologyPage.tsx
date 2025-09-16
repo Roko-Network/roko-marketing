@@ -165,7 +165,7 @@ const TechnologyPage: React.FC<TechnologyPageProps> = memo(({ section }) => {
 
       {/* Accessibility */}
       <div className="sr-only" aria-live="polite">
-        {inView && 'Technology section loaded with temporal layer, consensus, and architecture information'}
+        {/* Screen reader announcement removed */}
       </div>
     </section>
   );

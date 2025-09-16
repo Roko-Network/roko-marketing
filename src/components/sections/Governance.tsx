@@ -465,7 +465,7 @@ export const Governance: FC = () => {
 
       {/* Accessibility */}
       <div className="sr-only" aria-live="polite">
-        {inView && 'Governance section loaded with DAO statistics and active proposals'}
+        {/* Screen reader announcement removed */}
       </div>
     </section>
   );

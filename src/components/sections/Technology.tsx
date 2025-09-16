@@ -213,7 +213,7 @@ export const Technology: FC = () => {
           <h2 className={styles.title}>
             <span className={styles.gradientText}>Temporal Architecture</span>
             <br />
-            Reimagined
+            <span style={{ color: '#D9DBE3' }}>Reimagined</span>
           </h2>
           <p className={styles.subtitle}>
             Revolutionary blockchain infrastructure combining nanosecond-precision timing
@@ -327,7 +327,7 @@ export const Technology: FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h4>Temporal Blockchain Architecture</h4>
+                <h4 style={{ color: '#ffffff' }}>Temporal Blockchain Architecture</h4>
                 <div className={styles.timeline}>
                   <div className={styles.timelineItem}>
                     <div className={styles.timelineIcon}>1</div>
@@ -361,7 +361,7 @@ export const Technology: FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h4>ROKO vs Traditional Blockchains</h4>
+                <h4 style={{ color: '#ffffff' }}>ROKO vs Traditional Blockchains</h4>
                 <div className={styles.comparisonTable}>
                   <div className={styles.tableHeader}>
                     <div>Feature</div>
@@ -389,7 +389,7 @@ export const Technology: FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h4>Developer API Example</h4>
+                <h4 style={{ color: '#ffffff' }}>Developer API Example</h4>
                 <div className={styles.codeBlock}>
                   <pre><code>{codeExample}</code></pre>
                 </div>
@@ -448,7 +448,7 @@ export const Technology: FC = () => {
 
       {/* Accessibility */}
       <div className="sr-only" aria-live="polite">
-        {inView && 'Technology section loaded with network visualization and performance metrics'}
+        {/* Screen reader announcement removed */}
       </div>
     </section>
   );

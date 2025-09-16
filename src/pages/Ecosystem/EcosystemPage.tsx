@@ -238,7 +238,7 @@ const EcosystemPage: React.FC<EcosystemPageProps> = memo(({ section }) => {
 
       {/* Accessibility */}
       <div className="sr-only" aria-live="polite">
-        {inView && 'Ecosystem section loaded with applications, partners, and ecosystem statistics'}
+        {/* Screen reader announcement removed */}
       </div>
     </section>
   );

@@ -3,7 +3,7 @@
   position: relative;
   padding: 8rem 0;
   background: linear-gradient(180deg, #181818 0%, #000000 30%, #0a0a0a 70%, #000000 100%);
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   overflow: hidden;
 }
 
@@ -34,7 +34,7 @@
 }
 
 .gradientText {
-  background: linear-gradient(135deg, #BAC0CC 0%, #D9DBE3 100%);
+  background: linear-gradient(135deg, #00d4aa 0%, #ffffff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -45,7 +45,7 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: clamp(1.125rem, 2.5vw, 1.375rem);
   line-height: 1.6;
-  color: var(--text-secondary, #D9DBE3);
+  color: #CDD1DB;
   margin: 0;
 }
 
@@ -59,13 +59,13 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 2.5rem;
   font-weight: 600;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   margin: 0 0 1rem 0;
 }
 
 .sectionHeader p {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: var(--text-tertiary, #BCC1D1);
+  color: #BCC1D1;
   margin: 0;
   font-size: 1.125rem;
 }
@@ -89,7 +89,7 @@
   background: transparent;
   border: 2px solid rgba(186, 192, 204, 0.3);
   border-radius: 2rem;
-  color: var(--text-tertiary, #BCC1D1);
+  color: #BCC1D1;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.875rem;
   font-weight: 500;
@@ -197,14 +197,14 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.5rem;
   font-weight: 600;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   margin: 0 0 0.5rem 0;
 }
 
 .partnerCategory {
   display: inline-block;
   background: rgba(186, 192, 204, 0.1);
-  color: var(--text-tertiary, #BCC1D1);
+  color: #BCC1D1;
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-family: var(--font-body, 'HK Guise', sans-serif);
@@ -216,7 +216,7 @@
 
 .partnerDescription {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: var(--text-secondary, #D9DBE3);
+  color: #CDD1DB;
   line-height: 1.6;
   margin: 0 0 1.5rem 0;
 }
@@ -313,7 +313,7 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   margin: 0;
 }
 
@@ -330,7 +330,7 @@
 
 .dappDescription {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: var(--text-secondary, #D9DBE3);
+  color: #CDD1DB;
   line-height: 1.5;
   margin: 0 0 1.5rem 0;
 }
@@ -346,7 +346,7 @@
   gap: 0.5rem;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.875rem;
-  color: var(--text-tertiary, #BCC1D1);
+  color: #BCC1D1;
 }
 
 .statIcon {
@@ -395,7 +395,7 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1.25rem;
   line-height: 1.6;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   font-style: italic;
   margin: 0 0 2rem 0;
   max-width: 600px;
@@ -426,13 +426,13 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   margin-bottom: 0.25rem;
 }
 
 .authorRole {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: var(--text-tertiary, #BCC1D1);
+  color: #BCC1D1;
   font-size: 0.875rem;
 }
 
@@ -527,13 +527,13 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   margin: 0 0 0.75rem 0;
 }
 
 .integrationDescription {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: var(--text-secondary, #D9DBE3);
+  color: #CDD1DB;
   line-height: 1.5;
   margin: 0 0 1rem 0;
 }
@@ -563,7 +563,7 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   margin: 0 0 1rem 0;
 }
 
@@ -571,7 +571,7 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1.125rem;
   line-height: 1.6;
-  color: var(--text-secondary, #D9DBE3);
+  color: #CDD1DB;
   margin: 0 0 2rem 0;
 }
 
@@ -609,7 +609,7 @@
 
 .secondaryButton {
   background: transparent;
-  color: var(--roko-primary, #BAC0CC);
+  color: #D9DBE3;
   border: 2px solid var(--roko-primary, #BAC0CC);
   padding: 0.875rem 1.875rem;
   border-radius: 0.5rem;

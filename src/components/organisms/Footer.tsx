@@ -73,11 +73,11 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
     {
       title: 'Company',
       links: [
-        { label: 'About', href: '/about', description: 'Learn about ROKO Network' },
-        { label: 'Careers', href: '/careers', description: 'Join our team' },
-        { label: 'Press', href: '/press', description: 'Media resources' },
-        { label: 'Legal', href: '/legal', description: 'Terms and privacy' },
-        { label: 'Contact', href: '/contact', description: 'Get in touch' }
+        { label: 'About', href: '/company/about', description: 'Learn about ROKO Network' },
+        { label: 'Careers', href: '/company/careers', description: 'Join our team' },
+        { label: 'Press', href: '/company/press', description: 'Media resources' },
+        { label: 'Legal', href: '/company/legal', description: 'Terms and privacy' },
+        { label: 'Contact', href: '/company/contact', description: 'Get in touch' }
       ]
     }
   ];

@@ -11,7 +11,7 @@
   padding: 1rem;
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-size: 0.75rem;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   min-width: 200px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
@@ -33,7 +33,7 @@
 .close {
   background: none;
   border: none;
-  color: var(--text-tertiary, #BCC1D1);
+  color: #BCC1D1;
   font-size: 1.25rem;
   cursor: pointer;
   padding: 0;
@@ -48,7 +48,7 @@
 
 .close:hover {
   background: rgba(186, 192, 204, 0.1);
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
 }
 
 .close:focus {
@@ -70,13 +70,13 @@
 }
 
 .label {
-  color: var(--text-tertiary, #BCC1D1);
+  color: #BCC1D1;
   font-weight: 500;
 }
 
 .value {
   font-weight: 700;
-  color: var(--text-primary, #ffffff);
+  color: #ffffff;
   text-align: right;
 }
 
