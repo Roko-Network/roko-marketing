@@ -1,26 +1,49 @@
 # ROKO Marketing Site - UI/UX Specifications
 
 ## Executive Summary
-Based on the Figma design artifacts review, this document provides detailed UI/UX specifications for the ROKO Network marketing site. The design language emphasizes futuristic technology, temporal precision, and Web3 innovation through a sophisticated visual system.
+This comprehensive UI/UX specification document defines the enhanced design system for the ROKO Network marketing site, emphasizing cyberpunk aesthetics, nanosecond precision temporal themes, and exceptional user experience. The system combines cutting-edge visual design with strict accessibility compliance (WCAG 2.2 AA) and performance optimization for enterprise-grade Web3 infrastructure presentation.
+
+**Key Enhancement Areas:**
+- Enhanced cyberpunk aesthetic with temporal precision visual elements
+- Comprehensive accessibility compliance (WCAG 2.2 AA)
+- Advanced 3D visualization integration
+- Mobile-first responsive design with touch optimization
+- Dark/light theme system with preference detection
+- Nanosecond precision theme implementation
+- DAO governance UI components
+- Performance-optimized component patterns
 
 ---
 
 ## 1. Visual Design Language
 
 ### 1.1 Design Philosophy
-**"Temporal Precision Meets Futuristic Innovation"**
+**"Cyberpunk Minimalism Meets Nanosecond Precision"**
 
-The design system combines:
-- **Futuristic Aesthetics**: Clean, modern interfaces with advanced technology feel
-- **Temporal Elements**: Visual representations of time, synchronization, and precision
-- **Web3 Innovation**: Blockchain and decentralized technology visualization
-- **Professional Enterprise**: Trust and reliability for institutional users
+The enhanced design system combines:
+- **Cyberpunk Aesthetics**: Dark interfaces with neon accents, holographic effects, and geometric patterns inspired by Blade Runner meets Swiss Design
+- **Nanosecond Precision Theme**: Visual representations of time granularity, atomic clock synchronization, and temporal accuracy down to nanosecond level
+- **Temporal Blockchain Elements**: IEEE 1588 PTP visualization, OCP-TAP protocol representations, and real-time synchronization indicators
+- **Professional Enterprise Trust**: Institutional-grade reliability through sophisticated visual hierarchy and clear information architecture
+- **Web3 Innovation**: Next-generation blockchain visualization with 3D network topologies and real-time data flows
+- **Accessibility First**: Universal design principles ensuring inclusive experiences for all users
 
-### 1.2 Moodboard Themes
-- **Futuristic Architecture**: Grand, ethereal structures suggesting advanced civilization
-- **Human-AI Synthesis**: Imagery blending human elements with technological enhancement
-- **Sacred Geometry**: Mathematical precision and geometric patterns
-- **Temporal Flow**: Visual representations of time and synchronization
+### 1.2 Enhanced Cyberpunk Aesthetic Elements
+
+#### Core Visual Principles
+- **Temporal Precision Indicators**: Nanosecond timing visualizations, atomic clock synchronization patterns
+- **Holographic Interfaces**: Semi-transparent overlays with data stream effects
+- **Geometric Cyberpunk Patterns**: Circuit board aesthetics, hexagonal grids, neural network visualizations
+- **Neon Accent System**: Strategic use of teal (#00d4aa) as primary cyberpunk accent color
+- **Dark Matter Backgrounds**: Deep space aesthetics with subtle particle effects
+- **Blade Runner Inspired Typography**: Technical font combinations emphasizing precision and futurism
+
+#### Temporal Theme Implementation
+- **Clock Synchronization Visuals**: IEEE 1588 PTP network diagrams
+- **Nanosecond Precision Counters**: Real-time temporal accuracy displays
+- **Time Flow Animations**: Flowing particle systems representing temporal data
+- **Atomic Clock Aesthetics**: Precision timing interface elements
+- **Temporal Network Topology**: 3D visualizations of synchronized validator networks
 
 ---
 
@@ -35,20 +58,47 @@ The design system combines:
 - Loading indicator: Percentage or progress bar
 - Smooth transition to main content
 
-#### Menu Navigation
-**Primary Navigation:**
-- Position: Fixed top header
-- Background: Semi-transparent with blur effect (#0a0e27 @ 95% opacity)
-- Height: 80px desktop / 60px mobile
-- Items: Platform, Technology, Solutions, Developers, Ecosystem, Resources
-- Active state: Underline animation with temporal glow effect
-- Hover: Color transition to primary accent
+#### Enhanced Navigation System
+**Primary Navigation (Cyberpunk Styled):**
+- Position: Fixed top header with glassmorphism effect
+- Background: rgba(24, 24, 24, 0.95) with 10px backdrop blur
+- Border: 1px solid rgba(186, 192, 204, 0.1) bottom border
+- Height: 80px desktop / 64px mobile (increased for touch targets)
+- Typography: HK Guise, 16px, font-weight 500, letter-spacing 0.025em
+- Items: Technology, Governance, Developers, Ecosystem, Documentation
+- Active state: Teal underline (#00d4aa) with 2px height, smooth grow animation
+- Hover: Color transition to #00d4aa with 200ms ease, subtle glow effect
+- Focus: 3px teal outline with 2px offset for keyboard navigation
+- Mobile: Hamburger icon (24x24px) with slide-out menu animation
 
-#### Micro-Interactions
-- **Hover States**: Smooth 300ms transitions
-- **Click Feedback**: Ripple effect emanating from click point
-- **Scroll Triggers**: Parallax effects on key sections
-- **Loading States**: Skeleton screens with pulse animation
+**Accessibility Enhancements:**
+- Skip navigation link (hidden until focused)
+- ARIA landmarks and labels
+- Keyboard navigation support (Tab, Enter, Escape)
+- Screen reader announcements for state changes
+- Touch targets minimum 44x44px on mobile
+
+#### Enhanced Micro-Interactions
+
+**Cyberpunk Animation Patterns:**
+- **Hover States**: 200ms cubic-bezier(0.4, 0, 0.2, 1) with subtle glow expansion
+- **Click Feedback**: Holographic ripple effect with teal accent color
+- **Scroll Triggers**: Intersection Observer-based animations with performance optimization
+- **Loading States**: Cyberpunk-themed skeleton screens with scanning line animation
+- **Focus States**: Neon glow effect matching brand teal color
+- **State Transitions**: Smooth morphing between states with temporal precision timing
+
+**Temporal Precision Effects:**
+- **Clock Synchronization**: Pulsing animations at precise intervals
+- **Data Stream Flows**: Particle systems representing nanosecond data flow
+- **Network Pulse**: Synchronized breathing animations across validator nodes
+- **Time Precision Counters**: Smooth incrementing animations for nanosecond displays
+
+**Performance Considerations:**
+- All animations respect prefers-reduced-motion
+- Hardware acceleration for smooth 60fps performance
+- Intersection Observer for scroll-based animations
+- Will-change properties optimized for layer promotion
 
 ### 2.2 Layout Components
 
@@ -78,25 +128,164 @@ The design system combines:
 
 ### 2.3 Interactive Elements
 
-#### CTAs (Call-to-Action Buttons)
-**Primary CTA:**
-- Background: Linear gradient (#6366f1 to #14b8a6)
-- Padding: 16px 32px
-- Border-radius: 8px
-- Font: 16px semibold
-- Hover: Glow effect + slight scale (1.05)
-- Active: Scale (0.98) with ripple
+#### Enhanced CTA System
 
-**Secondary CTA:**
-- Background: Transparent
-- Border: 2px solid #6366f1
-- Hover: Background fill animation
+**Primary CTA (Cyberpunk Styled):**
+```css
+.btn-primary {
+  /* Base styles */
+  background: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
+  color: #181818;
+  padding: 16px 32px;
+  border-radius: 8px;
+  border: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-#### Page Transitions
-- **Type**: Smooth fade with slight vertical movement
-- **Duration**: 400-600ms
-- **Easing**: cubic-bezier(0.4, 0, 0.2, 1)
-- **Loader**: Temporal progress bar at top of viewport
+  /* Cyberpunk glow effect */
+  box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
+
+  /* Holographic shimmer effect */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transform: rotate(45deg);
+    transition: all 0.5s;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(0, 212, 170, 0.4);
+  }
+
+  &:hover::before {
+    animation: shimmer 0.5s ease;
+  }
+
+  &:focus {
+    outline: 3px solid #00d4aa;
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+```
+
+**Secondary CTA (Ghost Styled):**
+```css
+.btn-secondary {
+  background: transparent;
+  color: #BAC0CC;
+  border: 2px solid #BAC0CC;
+  padding: 14px 30px; /* Adjusted for border */
+  border-radius: 8px;
+  font-family: 'HK Guise', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(186, 192, 204, 0.1);
+    border-color: #00d4aa;
+    color: #00d4aa;
+    box-shadow: 0 0 20px rgba(0, 212, 170, 0.2);
+  }
+
+  &:focus {
+    outline: 3px solid #00d4aa;
+    outline-offset: 2px;
+  }
+}
+```
+
+**Accessibility Features:**
+- Minimum 44x44px touch targets
+- High contrast ratios (tested with color contrast analyzers)
+- Focus indicators with 3px outline and 2px offset
+- Screen reader friendly text and ARIA labels
+- Keyboard activation support
+- Loading states with aria-live announcements
+
+#### Enhanced Page Transitions
+
+**Cyberpunk Page Transitions:**
+```css
+/* Framer Motion variants */
+const pageTransitions = {
+  initial: {
+    opacity: 0,
+    y: 20,
+    filter: 'blur(10px)',
+  },
+  animate: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: {
+      duration: 0.5,
+      ease: [0.4, 0, 0.2, 1],
+      staggerChildren: 0.1,
+      delayChildren: 0.2
+    }
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    filter: 'blur(10px)',
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1]
+    }
+  }
+};
+
+const glitchEffect = {
+  animate: {
+    x: [0, -2, 2, -1, 1, 0],
+    filter: [
+      'hue-rotate(0deg)',
+      'hue-rotate(90deg)',
+      'hue-rotate(-90deg)',
+      'hue-rotate(0deg)'
+    ],
+    transition: {
+      duration: 0.3,
+      repeat: 2
+    }
+  }
+};
+```
+
+**Temporal Progress Loader:**
+- Position: Fixed top, full width
+- Height: 3px
+- Background: Linear gradient with teal accent
+- Animation: Smooth progress with nanosecond precision timing
+- Accessibility: aria-live region with progress announcements
 
 ---
 
@@ -231,28 +420,117 @@ The design system combines:
 
 ## 4. Design Elements
 
-### 4.1 2D/3D Visual Elements
+### 4.1 Enhanced 3D Visual Elements
 
-#### 3D Objects Required
-1. **Geometric Spheres**:
-   - Fragmented/exploding hexagonal patterns
-   - Metallic and glass materials
-   - Animation: Slow rotation and reassembly
+#### Core 3D Assets for Cyberpunk Aesthetic
 
-2. **Temporal Orbs**:
-   - Golden/bronze intricate mechanical spheres
-   - Clock-like internal mechanisms
-   - Holographic data streams
+**1. Nanosecond Precision Temporal Orb:**
+```javascript
+// Three.js implementation specs
+const temporalOrb = {
+  geometry: 'IcosahedronGeometry',
+  radius: 2.5,
+  detail: 3,
+  materials: {
+    base: 'MeshPhysicalMaterial',
+    color: '#181818',
+    metalness: 0.8,
+    roughness: 0.2,
+    transmission: 0.1,
+    emissive: '#00d4aa',
+    emissiveIntensity: 0.1
+  },
+  animations: {
+    rotation: 'continuous slow rotation around Y-axis',
+    pulse: 'emission intensity breathing effect',
+    particles: 'surrounding particle system with nanosecond timing'
+  },
+  performance: {
+    LOD: 'multiple detail levels based on viewport size',
+    culling: 'frustum culling enabled',
+    shadows: 'optimized shadow mapping'
+  }
+};
+```
 
-3. **Abstract Shapes**:
-   - Flowing ribbon-like structures
-   - Crystalline formations
-   - Particle systems for backgrounds
+**2. IEEE 1588 PTP Network Visualization:**
+- Interactive 3D globe with validator nodes
+- Real-time connection lines with data flow animation
+- Nanosecond synchronization pulse effects
+- Geographic accuracy for global validator distribution
+- WebSocket integration for live network data
 
-#### Implementation
-- **Technology**: Three.js with React Three Fiber
-- **Performance**: LOD (Level of Detail) system for optimization
-- **Fallback**: Static images for low-performance devices
+**3. Cyberpunk Geometric Patterns:**
+- Hexagonal grid systems with neon glow effects
+- Circuit board aesthetic with flowing data streams
+- Holographic interface overlays
+- Particle systems representing blockchain transactions
+- Morphing geometric shapes with temporal precision timing
+
+**4. Temporal Flow Visualizations:**
+- Flowing ribbon structures representing time synchronization
+- Clock mechanism 3D models with nanosecond precision indicators
+- Data stream particles flowing between network nodes
+- Atomic clock visualization with precise timing animations
+
+#### Enhanced 3D Implementation Strategy
+
+**Technology Stack:**
+```javascript
+// Enhanced Three.js setup
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Suspense, useMemo } from 'react';
+import {
+  Environment,
+  OrbitControls,
+  useGLTF,
+  Sparkles,
+  Html,
+  useProgress
+} from '@react-three/drei';
+
+// Performance optimization
+const Scene = () => {
+  const { viewport, camera } = useThree();
+
+  // LOD implementation
+  const meshDetail = useMemo(() => {
+    const distance = camera.position.distanceTo(new Vector3(0, 0, 0));
+    return distance > 10 ? 'low' : distance > 5 ? 'medium' : 'high';
+  }, [camera.position]);
+
+  return (
+    <>
+      <TemporalOrb detail={meshDetail} />
+      <NetworkVisualization />
+      <ParticleSystem count={1000} />
+      <Environment preset="night" />
+    </>
+  );
+};
+```
+
+**Performance Optimizations:**
+- Automatic LOD system based on device capabilities
+- Frustum culling for off-screen objects
+- Instanced rendering for particle systems
+- Compressed texture formats (ASTC, ETC2)
+- WebGL 2.0 features with WebGL 1.0 fallback
+- GPU-based particle systems using compute shaders
+- Selective rendering for mobile devices
+
+**Accessibility Considerations:**
+- prefers-reduced-motion detection
+- Static image fallbacks for motion-sensitive users
+- Descriptive alt text for 3D visualizations
+- Keyboard controls for interactive 3D elements
+- Screen reader descriptions of 3D content
+
+**Progressive Loading:**
+- Lightweight placeholder models
+- Streaming texture loading
+- Progressive enhancement of detail levels
+- Bandwidth-aware quality adjustment
 
 ### 4.2 Grid System & Layout
 
@@ -605,7 +883,7 @@ $breakpoints: (
 
 ---
 
-## 10. Accessibility Requirements
+## 10. Enhanced Accessibility Requirements (WCAG 2.2 AA)
 
 ### 10.1 Visual Accessibility
 - **Color Contrast**: Minimum 4.5:1 for body text, 3:1 for large text
@@ -626,7 +904,7 @@ $breakpoints: (
 
 ---
 
-## 11. Performance Guidelines
+## 11. Enhanced Performance Guidelines
 
 ### 11.1 Asset Optimization
 - **Images**: Max 200KB per image, WebP format
@@ -648,7 +926,7 @@ $breakpoints: (
 
 ---
 
-## 12. Implementation Priority
+## 12. Enhanced Implementation Roadmap
 
 ### Phase 1: Foundation (Week 1-2)
 - [ ] Set up color system and typography
@@ -676,7 +954,7 @@ $breakpoints: (
 
 ---
 
-## 13. Design Handoff Checklist
+## 13. Enhanced Design Handoff Package
 
 ### Assets to Deliver
 - [ ] Figma design file with components
@@ -701,7 +979,7 @@ $breakpoints: (
 
 ---
 
-## Conclusion
+## Enhanced Conclusion
 
 This specification provides a comprehensive guide for implementing the ROKO Network marketing site. The design emphasizes temporal precision, futuristic aesthetics, and professional credibility while maintaining high performance and accessibility standards. The modular component system allows for efficient development and future scalability.
 
