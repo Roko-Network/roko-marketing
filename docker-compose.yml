@@ -1,0 +1,72 @@
+# Docker Compose for ROKO Network Marketing Site
+version: '3.8'
+
+services:
+  roko-marketing:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: roko-marketing
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+      - NGINX_WORKER_PROCESSES=auto
+      - NGINX_WORKER_CONNECTIONS=4096
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      # Mount custom nginx config if needed
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx-security.conf:/etc/nginx/conf.d/security.conf:ro
+    networks:
+      - roko-network
+    labels:
+      - "com.roko.service=marketing"
+      - "com.roko.environment=production"
+      - "com.roko.version=1.0.0"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/cache/nginx
+      - /var/run
+
+  # Optional: Add monitoring services
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:0.11.0
+    container_name: nginx-exporter
+    restart: unless-stopped
+    ports:
+      - "9113:9113"
+    command:
+      - -nginx.scrape-uri
+      - http://roko-marketing:80/nginx_status
+    depends_on:
+      - roko-marketing
+    networks:
+      - roko-network
+    profiles:
+      - monitoring
+
+networks:
+  roko-network:
+    driver: bridge
+    name: roko-network
+
+# Optional: Add volumes for persistent data
+volumes:
+  nginx-logs:
+    driver: local

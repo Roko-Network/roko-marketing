@@ -32,11 +32,12 @@ class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center" style={{ background: '#000000' }}>
+          <div className="max-w-md w-full shadow-lg rounded-lg p-6 text-center" style={{ background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)', border: '1px solid rgba(0, 212, 170, 0.2)' }}>
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{ background: 'rgba(239, 68, 68, 0.1)' }}>
               <svg
-                className="w-8 h-8 text-red-600"
+                className="w-8 h-8"
+                style={{ color: '#ef4444' }}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -49,15 +50,16 @@ class ErrorBoundary extends Component<Props, State> {
                 />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold mb-2" style={{ color: '#ffffff' }}>
               Something went wrong
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="mb-6" style={{ color: '#D9DBE3' }}>
               We encountered an unexpected error. Please refresh the page or try again later.
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition-colors"
+              className="px-6 py-2 rounded-md transition-colors"
+              style={{ background: 'linear-gradient(135deg, #00d4aa 0%, #00b894 100%)', color: '#000000' }}
             >
               Refresh Page
             </button>

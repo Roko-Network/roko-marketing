@@ -20,7 +20,11 @@ const NotFoundPage = lazy(() => import('@pages/NotFoundPage'));
 // Wrapper component for lazy-loaded routes with error boundaries
 const LazyPageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <ErrorBoundary>
-    <Suspense fallback={<LoadingSpinner size="lg" className="min-h-screen flex items-center justify-center" />}>
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center" style={{ background: '#000000' }}>
+        <LoadingSpinner size="lg" />
+      </div>
+    }>
       {children}
     </Suspense>
   </ErrorBoundary>

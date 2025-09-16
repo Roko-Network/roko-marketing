@@ -1,73 +1,174 @@
-import React from 'react';
+import React, { memo } from 'react';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import {
+  ClockIcon,
+  CpuChipIcon,
+  ShieldCheckIcon
+} from '@heroicons/react/24/outline';
+import styles from '../shared/ContentPage.module.css';
 
 interface TechnologyPageProps {
   section?: string;
 }
 
-const TechnologyPage: React.FC<TechnologyPageProps> = ({ section }) => {
+const TechnologyPage: React.FC<TechnologyPageProps> = memo(({ section }) => {
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true
+  });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 30,
+      filter: 'blur(10px)'
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: {
+        duration: 0.6,
+        ease: [0.4, 0, 0.2, 1]
+      }
+    }
+  };
+
   return (
-    <div className="min-h-screen py-20">
-      <div className="container mx-auto px-4">
-        <h1 className="text-5xl font-bold text-gray-900 mb-8 font-display text-center">
-          Technology
-        </h1>
-        <p className="text-xl text-gray-600 text-center mb-12 max-w-3xl mx-auto">
-          ROKO Network introduces temporal synchronization to blockchain technology,
-          enabling unprecedented precision in time-sensitive applications.
-        </p>
+    <section
+      ref={ref}
+      className={styles.contentPage}
+      role="region"
+      aria-label="ROKO Network technology overview"
+    >
+      {/* Background Gradient */}
+      <div className={`${styles.backgroundGradient} ${styles.technology}`} />
+
+      <div className={styles.container}>
+        {/* Header Section */}
+        <motion.div
+          className={styles.header}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <h1 className={styles.title}>
+            <span className={styles.gradientText}>Technology</span>
+          </h1>
+          <p className={styles.subtitle}>
+            ROKO Network introduces temporal synchronization to blockchain technology,
+            enabling unprecedented precision in time-sensitive applications.
+          </p>
+        </motion.div>
 
         {section === 'temporal-layer' && (
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Temporal Layer</h2>
-            <p className="text-gray-600 mb-4">
-              Our temporal layer provides nanosecond-precision timestamps using IEEE 1588 PTP protocol.
+          <motion.div
+            className={styles.specialSection}
+            variants={itemVariants}
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+          >
+            <h2 className={styles.sectionTitle}>Temporal Layer</h2>
+            <p className={styles.cardDescription}>
+              Our temporal layer provides nanosecond-precision timestamps using IEEE 1588 PTP protocol,
+              enabling unprecedented synchronization accuracy across global validator networks.
             </p>
-          </section>
+          </motion.div>
         )}
 
         {section === 'consensus' && (
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Consensus Mechanism</h2>
-            <p className="text-gray-600 mb-4">
-              Temporal Proof of Stake (TPoS) ensures both security and temporal accuracy.
+          <motion.div
+            className={styles.specialSection}
+            variants={itemVariants}
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+          >
+            <h2 className={styles.sectionTitle}>Consensus Mechanism</h2>
+            <p className={styles.cardDescription}>
+              Temporal Proof of Stake (TPoS) ensures both security and temporal accuracy,
+              creating a revolutionary consensus mechanism built for time-sensitive applications.
             </p>
-          </section>
+          </motion.div>
         )}
 
         {!section && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Temporal Layer</h3>
-              <p className="text-gray-600 mb-4">
-                IEEE 1588 PTP-grade synchronization for nanosecond precision.
+          <motion.div
+            className={`${styles.cardGrid} ${styles.grid3}`}
+            variants={containerVariants}
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+          >
+            <motion.div className={styles.card} variants={itemVariants}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                <ClockIcon style={{ width: '1.5rem', height: '1.5rem', color: '#00d4aa' }} />
+                <h3 className={styles.cardTitle}>Temporal Layer</h3>
+              </div>
+              <p className={styles.cardDescription}>
+                IEEE 1588 PTP-grade synchronization for nanosecond precision
+                across global validator networks.
               </p>
-              <a href="/technology/temporal-layer" className="text-teal-600 hover:text-teal-700">
-                Learn more →
-              </a>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Consensus</h3>
-              <p className="text-gray-600 mb-4">
-                Temporal Proof of Stake for secure and time-aware validation.
+              <Link to="/technology/temporal-layer" className={styles.cardLink}>
+                Learn more
+              </Link>
+            </motion.div>
+
+            <motion.div className={styles.card} variants={itemVariants}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                <ShieldCheckIcon style={{ width: '1.5rem', height: '1.5rem', color: '#00d4aa' }} />
+                <h3 className={styles.cardTitle}>Consensus</h3>
+              </div>
+              <p className={styles.cardDescription}>
+                Temporal Proof of Stake for secure and time-aware validation
+                with enhanced security guarantees.
               </p>
-              <a href="/technology/consensus" className="text-teal-600 hover:text-teal-700">
-                Learn more →
-              </a>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">Architecture</h3>
-              <p className="text-gray-600 mb-4">
-                Scalable infrastructure designed for time-sensitive applications.
+              <Link to="/technology/consensus" className={styles.cardLink}>
+                Learn more
+              </Link>
+            </motion.div>
+
+            <motion.div className={styles.card} variants={itemVariants}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+                <CpuChipIcon style={{ width: '1.5rem', height: '1.5rem', color: '#00d4aa' }} />
+                <h3 className={styles.cardTitle}>Architecture</h3>
+              </div>
+              <p className={styles.cardDescription}>
+                Scalable infrastructure designed for time-sensitive applications
+                with enterprise-grade performance.
               </p>
-              <a href="/technology/architecture" className="text-teal-600 hover:text-teal-700">
-                Learn more →
-              </a>
-            </div>
-          </div>
+              <Link to="/technology/architecture" className={styles.cardLink}>
+                Learn more
+              </Link>
+            </motion.div>
+          </motion.div>
         )}
       </div>
-    </div>
+
+      {/* Background Elements */}
+      <div className={styles.backgroundElements}>
+        <div className={styles.gridOverlay} />
+        <div className={`${styles.glowEffect} ${styles.technology}`} />
+      </div>
+
+      {/* Accessibility */}
+      <div className="sr-only" aria-live="polite">
+        {inView && 'Technology section loaded with temporal layer, consensus, and architecture information'}
+      </div>
+    </section>
   );
-};
+});
 
 export default TechnologyPage;

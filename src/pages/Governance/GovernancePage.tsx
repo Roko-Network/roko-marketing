@@ -1,63 +1,162 @@
-import React from 'react';
+import React, { memo } from 'react';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import {
+  CheckBadgeIcon,
+  UserGroupIcon
+} from '@heroicons/react/24/outline';
+import styles from '../shared/ContentPage.module.css';
 
 interface GovernancePageProps {
   section?: string;
 }
 
-const GovernancePage: React.FC<GovernancePageProps> = ({ section }) => {
-  return (
-    <div className="min-h-screen py-20">
-      <div className="container mx-auto px-4">
-        <h1 className="text-5xl font-bold text-gray-900 mb-8 font-display text-center">
-          Governance
-        </h1>
-        <p className="text-xl text-gray-600 text-center mb-12 max-w-3xl mx-auto">
-          Participate in the decentralized governance of ROKO Network through
-          proposal voting and validator staking.
-        </p>
+const GovernancePage: React.FC<GovernancePageProps> = memo(({ section }) => {
+  const [ref, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true
+  });
 
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-white p-8 rounded-lg shadow-md">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">Active Proposals</h3>
-            <p className="text-gray-600 mb-6">
-              Vote on network upgrades, parameter changes, and community initiatives.
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 30,
+      filter: 'blur(10px)'
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: 'blur(0px)',
+      transition: {
+        duration: 0.6,
+        ease: [0.4, 0, 0.2, 1]
+      }
+    }
+  };
+
+  return (
+    <section
+      ref={ref}
+      className={styles.contentPage}
+      role="region"
+      aria-label="ROKO Network governance system"
+    >
+      {/* Background Gradient */}
+      <div className={`${styles.backgroundGradient} ${styles.governance}`} />
+
+      <div className={styles.container}>
+        {/* Header Section */}
+        <motion.div
+          className={styles.header}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <h1 className={styles.title}>
+            <span className={styles.gradientText}>Governance</span>
+          </h1>
+          <p className={styles.subtitle}>
+            Participate in the decentralized governance of ROKO Network through
+            proposal voting and validator staking.
+          </p>
+        </motion.div>
+
+        {/* Governance Grid */}
+        <motion.div
+          className={`${styles.cardGrid} ${styles.grid2}`}
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? 'visible' : 'hidden'}
+        >
+          <motion.div className={styles.card} variants={itemVariants}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+              <CheckBadgeIcon style={{ width: '1.5rem', height: '1.5rem', color: '#00d4aa' }} />
+              <h3 className={styles.cardTitle}>Active Proposals</h3>
+            </div>
+            <p className={styles.cardDescription}>
+              Vote on network upgrades, parameter changes, and community initiatives
+              that shape the future of ROKO Network.
             </p>
-            <div className="space-y-4">
-              <div className="border border-gray-200 rounded-lg p-4">
-                <h4 className="font-semibold text-gray-900">Proposal #001</h4>
-                <p className="text-sm text-gray-600">Network parameter adjustment</p>
-                <div className="mt-2 flex justify-between text-sm">
-                  <span className="text-green-600">Status: Active</span>
-                  <span className="text-gray-500">Ends in 5 days</span>
+            <div className={styles.itemList}>
+              <div className={styles.listItem}>
+                <div
+                  className={styles.itemIcon}
+                  style={{ backgroundColor: 'rgba(0, 212, 170, 0.2)' }}
+                />
+                <div>
+                  <div style={{ fontWeight: 600, color: '#ffffff', marginBottom: '0.25rem' }}>
+                    Proposal #001
+                  </div>
+                  <div className={styles.itemText}>Network parameter adjustment</div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginTop: '0.5rem',
+                    fontSize: '0.8rem'
+                  }}>
+                    <span style={{ color: '#00d4aa' }}>Status: Active</span>
+                    <span style={{ color: '#BCC1D1' }}>Ends in 5 days</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="bg-white p-8 rounded-lg shadow-md">
-            <h3 className="text-2xl font-semibold text-gray-900 mb-4">Validator Network</h3>
-            <p className="text-gray-600 mb-6">
-              Secure the network by staking ROKO tokens with trusted validators.
+          <motion.div className={styles.card} variants={itemVariants}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+              <UserGroupIcon style={{ width: '1.5rem', height: '1.5rem', color: '#00d4aa' }} />
+              <h3 className={styles.cardTitle}>Validator Network</h3>
+            </div>
+            <p className={styles.cardDescription}>
+              Secure the network by staking ROKO tokens with trusted validators
+              and participate in consensus.
             </p>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Total Staked</span>
-                <span className="font-semibold">12.5M ROKO</span>
+            <div className={styles.statsGrid}>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>12.5M</div>
+                <div className={styles.statLabel}>Total Staked</div>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Active Validators</span>
-                <span className="font-semibold">127</span>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>127</div>
+                <div className={styles.statLabel}>Active Validators</div>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-600">Staking Ratio</span>
-                <span className="font-semibold">65.8%</span>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>65.8%</div>
+                <div className={styles.statLabel}>Staking Ratio</div>
+              </div>
+              <div className={styles.stat}>
+                <div className={styles.statNumber}>8.2%</div>
+                <div className={styles.statLabel}>APY</div>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
-    </div>
+
+      {/* Background Elements */}
+      <div className={styles.backgroundElements}>
+        <div className={styles.gridOverlay} />
+        <div className={`${styles.glowEffect} ${styles.governance}`} />
+      </div>
+
+      {/* Accessibility */}
+      <div className="sr-only" aria-live="polite">
+        {inView && 'Governance section loaded with active proposals and validator network information'}
+      </div>
+    </section>
   );
-};
+});
 
 export default GovernancePage;

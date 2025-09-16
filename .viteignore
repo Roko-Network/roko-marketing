@@ -1,8 +1,10 @@
-venv
-.venv
 nexus-marketing/
+roko-info-site/
 roko_network/
 SELF/
-roko-info-site/
 awesome-claude-code-subagents/
+venv/
+tools/
+.git/
 node_modules/
+dist/

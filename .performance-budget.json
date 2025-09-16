@@ -1,0 +1,211 @@
+{
+  "name": "ROKO Network Performance Budget",
+  "version": "1.0.0",
+  "description": "Performance budgets for nanosecond-precision standards",
+  "budgets": {
+    "core_web_vitals": {
+      "lcp": {
+        "target": 2500,
+        "good": 2000,
+        "warning": 2200,
+        "unit": "ms",
+        "description": "Largest Contentful Paint"
+      },
+      "inp": {
+        "target": 200,
+        "good": 150,
+        "warning": 180,
+        "unit": "ms",
+        "description": "Interaction to Next Paint"
+      },
+      "cls": {
+        "target": 0.1,
+        "good": 0.05,
+        "warning": 0.08,
+        "unit": "score",
+        "description": "Cumulative Layout Shift"
+      },
+      "fcp": {
+        "target": 1800,
+        "good": 1500,
+        "warning": 1650,
+        "unit": "ms",
+        "description": "First Contentful Paint"
+      },
+      "ttfb": {
+        "target": 600,
+        "good": 400,
+        "warning": 500,
+        "unit": "ms",
+        "description": "Time to First Byte"
+      }
+    },
+    "lighthouse": {
+      "performance": {
+        "target": 95,
+        "good": 98,
+        "warning": 90,
+        "unit": "score",
+        "description": "Lighthouse Performance Score"
+      },
+      "accessibility": {
+        "target": 100,
+        "good": 100,
+        "warning": 95,
+        "unit": "score",
+        "description": "Lighthouse Accessibility Score"
+      },
+      "best_practices": {
+        "target": 100,
+        "good": 100,
+        "warning": 95,
+        "unit": "score",
+        "description": "Lighthouse Best Practices Score"
+      },
+      "seo": {
+        "target": 100,
+        "good": 100,
+        "warning": 95,
+        "unit": "score",
+        "description": "Lighthouse SEO Score"
+      }
+    },
+    "bundle_sizes": {
+      "initial_js": {
+        "target": 51200,
+        "good": 40960,
+        "warning": 46080,
+        "unit": "bytes",
+        "description": "Initial JavaScript bundle size (gzipped)"
+      },
+      "initial_css": {
+        "target": 20480,
+        "good": 15360,
+        "warning": 18432,
+        "unit": "bytes",
+        "description": "Initial CSS bundle size (gzipped)"
+      },
+      "total_initial": {
+        "target": 204800,
+        "good": 153600,
+        "warning": 184320,
+        "unit": "bytes",
+        "description": "Total initial bundle size (gzipped)"
+      },
+      "lazy_chunk": {
+        "target": 204800,
+        "good": 153600,
+        "warning": 184320,
+        "unit": "bytes",
+        "description": "Individual lazy chunk size (gzipped)"
+      },
+      "total_app": {
+        "target": 512000,
+        "good": 409600,
+        "warning": 460800,
+        "unit": "bytes",
+        "description": "Total application size (gzipped)"
+      }
+    },
+    "network": {
+      "initial_requests": {
+        "target": 25,
+        "good": 20,
+        "warning": 23,
+        "unit": "count",
+        "description": "Number of requests for initial load"
+      },
+      "initial_transfer": {
+        "target": 204800,
+        "good": 153600,
+        "warning": 184320,
+        "unit": "bytes",
+        "description": "Total bytes transferred for initial load"
+      },
+      "cache_hit_ratio": {
+        "target": 80,
+        "good": 90,
+        "warning": 75,
+        "unit": "percentage",
+        "description": "Cache hit ratio for return visits"
+      }
+    },
+    "runtime": {
+      "fps": {
+        "target": 60,
+        "good": 60,
+        "warning": 55,
+        "unit": "fps",
+        "description": "Frames per second for animations"
+      },
+      "jank_budget": {
+        "target": 0,
+        "good": 0,
+        "warning": 1,
+        "unit": "count",
+        "description": "Number of dropped frames"
+      },
+      "memory_usage": {
+        "target": 52428800,
+        "good": 41943040,
+        "warning": 47185920,
+        "unit": "bytes",
+        "description": "JavaScript heap usage"
+      },
+      "3d_init_time": {
+        "target": 1000,
+        "good": 800,
+        "warning": 900,
+        "unit": "ms",
+        "description": "Three.js initialization time"
+      },
+      "webgl_context_time": {
+        "target": 500,
+        "good": 300,
+        "warning": 400,
+        "unit": "ms",
+        "description": "WebGL context creation time"
+      }
+    },
+    "images": {
+      "load_time": {
+        "target": 2000,
+        "good": 1500,
+        "warning": 1800,
+        "unit": "ms",
+        "description": "Average image load time"
+      },
+      "format_optimization": {
+        "target": 90,
+        "good": 95,
+        "warning": 85,
+        "unit": "percentage",
+        "description": "Percentage of images in modern formats"
+      },
+      "compression_ratio": {
+        "target": 70,
+        "good": 80,
+        "warning": 65,
+        "unit": "percentage",
+        "description": "Image compression efficiency"
+      }
+    }
+  },
+  "conditions": {
+    "network": "4G",
+    "cpu": "4x slowdown",
+    "device": "Moto G4",
+    "viewport": "375x667"
+  },
+  "alerts": {
+    "slack_webhook": "${SLACK_PERFORMANCE_WEBHOOK}",
+    "email": "${PERFORMANCE_ALERT_EMAIL}",
+    "console": true,
+    "ci_fail_on_budget_exceed": true
+  },
+  "reporting": {
+    "dashboard_url": "https://performance.roko.network",
+    "api_endpoint": "https://api.roko.network/performance",
+    "retention_days": 90
+  }
+}

@@ -185,27 +185,22 @@ export const Layout: FC<LayoutProps> = memo(({
     }
   }, [location.pathname]);
 
-  // Page transition variants
+  // Simplified page transition for smooth routing without double animations
   const pageVariants = {
     initial: {
       opacity: 0,
-      y: 20,
     },
     animate: {
       opacity: 1,
-      y: 0,
       transition: {
-        duration: 0.4,
+        duration: 0.2,
         ease: 'easeOut',
-        staggerChildren: 0.1,
-        delayChildren: 0.1,
       },
     },
     exit: {
       opacity: 0,
-      y: -10,
       transition: {
-        duration: 0.3,
+        duration: 0.15,
         ease: 'easeIn',
       },
     },
@@ -272,6 +267,9 @@ export const Layout: FC<LayoutProps> = memo(({
           role="main"
           tabIndex={-1}
           aria-label="Main content"
+          style={{
+            background: 'linear-gradient(135deg, #000000 0%, #0a0a0a 25%, #141414 50%, #0a0a0a 75%, #000000 100%)'
+          }}
         >
           <AnimatePresence mode="wait">
             <motion.div
@@ -281,8 +279,52 @@ export const Layout: FC<LayoutProps> = memo(({
               initial="initial"
               animate="animate"
               exit="exit"
+              style={{
+                background: `
+                  linear-gradient(135deg, #000000 0%, #0a0a0a 25%, #141414 50%, #0a0a0a 75%, #000000 100%),
+                  radial-gradient(ellipse at 50% 50%, rgba(0, 212, 170, 0.03) 0%, transparent 50%),
+                  radial-gradient(ellipse at 20% 80%, rgba(186, 192, 204, 0.02) 0%, transparent 40%)
+                `,
+                backgroundBlendMode: 'normal, screen, screen',
+                position: 'relative',
+                minHeight: '100vh',
+              }}
             >
-              {children}
+              {/* Mystical grid overlay */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundImage: `
+                  linear-gradient(rgba(186, 192, 204, 0.015) 1px, transparent 1px),
+                  linear-gradient(90deg, rgba(186, 192, 204, 0.015) 1px, transparent 1px)
+                `,
+                backgroundSize: '60px 60px',
+                pointerEvents: 'none',
+                opacity: 0.6,
+                zIndex: 1,
+              }} />
+
+              {/* Subtle animated glow */}
+              <div style={{
+                position: 'absolute',
+                top: '30%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: '600px',
+                height: '600px',
+                background: 'radial-gradient(circle, rgba(0, 212, 170, 0.02) 0%, transparent 70%)',
+                filter: 'blur(80px)',
+                pointerEvents: 'none',
+                zIndex: 1,
+              }} />
+
+              {/* Content wrapper */}
+              <div style={{ position: 'relative', zIndex: 2 }}>
+                {children}
+              </div>
             </motion.div>
           </AnimatePresence>
         </main>
