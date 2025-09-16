@@ -1,0 +1,91 @@
+# Caddyfile for roko-marketing
+{
+    admin 0.0.0.0:2019
+    # Disable automatic HTTPS since we're running locally without SSL
+    auto_https off
+}
+
+# Serve on port 80 inside container
+:80 {
+    # Document root
+    root * /srv/www
+    
+    # Enable compression
+    encode gzip zstd
+    
+    # Security headers
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()"
+        -Server
+    }
+    
+    # CSP header for React SPA
+    header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https:; connect-src 'self' https:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    
+    # Health check endpoint
+    handle /health {
+        respond "OK" 200
+    }
+    
+    # Handle file requests first, then fall back to index.html for SPA routes
+    try_files {path} {path}/ /index.html
+    
+    # File server configuration
+    file_server {
+        hide .*
+        index index.html
+    }
+    
+    # Ensure correct MIME types for modules
+    @jsmodule {
+        path *.js *.mjs
+    }
+    header @jsmodule Content-Type "application/javascript"
+    
+    # Cache static assets
+    @static {
+        path *.js *.css *.png *.jpg *.jpeg *.gif *.ico *.svg *.woff *.woff2 *.ttf *.eot
+    }
+    header @static Cache-Control "public, max-age=31536000, immutable"
+    
+    # Don't cache HTML files (for SPA updates)
+    @html {
+        path *.html
+    }
+    header @html Cache-Control "no-cache, no-store, must-revalidate"
+    
+    # Don't cache service worker
+    @sw {
+        path /sw.js /service-worker.js
+    }
+    header @sw Cache-Control "no-cache, no-store, must-revalidate"
+    
+    # Logging
+    log {
+        output file /var/log/caddy/access.log {
+            roll_size 100mb
+            roll_keep 10
+            roll_keep_for 720h
+        }
+        format json
+        level INFO
+    }
+    
+    # Custom error pages
+    handle_errors {
+        @404 {
+            expression {http.error.status_code} == 404
+        }
+        handle @404 {
+            # For SPA, always return index.html on 404
+            root * /srv/www
+            rewrite * /index.html
+            file_server
+        }
+        respond "{http.error.status_code} {http.error.status_text}" {http.error.status_code}
+    }
+}

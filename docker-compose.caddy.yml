@@ -1,0 +1,39 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    container_name: roko-marketing-server
+    restart: unless-stopped
+    
+    ports:
+      - "82:80"  # Expose on host port 82, container port 80 (avoiding conflict with other services)
+    
+    volumes:
+      # Caddy data and config
+      - ./caddy_data:/data
+      - ./caddy_config:/config
+      
+      # Caddyfile configuration
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      
+      # Logs directory
+      - ./logs:/var/log/caddy
+      
+      # Static content - mount the production directory
+      - /home/roctinam/production-deploy/roko-marketing:/srv/www:ro
+    
+    environment:
+      - SITE_PORT=80
+    
+    networks:
+      - roko_web
+    
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+networks:
+  roko_web:
+    driver: bridge
