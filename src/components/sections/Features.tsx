@@ -209,34 +209,6 @@ export const Features: FC = () => {
           ))}
         </motion.div>
 
-        {/* CTA Section */}
-        <motion.div
-          className={styles.ctaSection}
-          initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-        >
-          <h3 className={styles.ctaTitle}>Ready to Build?</h3>
-          <p className={styles.ctaDescription}>
-            Start developing with ROKO's temporal blockchain infrastructure today.
-          </p>
-          <div className={styles.ctaButtons}>
-            <motion.button
-              className={styles.primaryButton}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Explore Developer Tools
-            </motion.button>
-            <motion.button
-              className={styles.secondaryButton}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              View Documentation
-            </motion.button>
-          </div>
-        </motion.div>
       </div>
 
       {/* Background Elements */}

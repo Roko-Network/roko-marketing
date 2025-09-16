@@ -2,8 +2,8 @@
 .governance {
   position: relative;
   padding: 8rem 0;
-  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 30%, #ffffff 70%, #f8f9fa 100%);
-  color: #1a1a1a;
+  background: #FFFFFF;
+  color: #000000;
   overflow: hidden;
 }
 
@@ -34,18 +34,14 @@
 }
 
 .gradientText {
-  background: linear-gradient(135deg, #00a085 0%, #0066cc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  color: #000000;
 }
 
 .subtitle {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: clamp(1.125rem, 2.5vw, 1.375rem);
   line-height: 1.6;
-  color: #4a5568;
+  color: #000000;
   margin: 0;
 }
 
@@ -58,29 +54,27 @@
 }
 
 .statCard {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 160, 133, 0.15);
+  background: #FFFFFF;
+  border: 1px solid #000000;
   border-radius: 1rem;
   padding: 2rem;
   display: flex;
   align-items: center;
   gap: 1.5rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 24px rgba(0, 160, 133, 0.08);
 }
 
 .statCard:hover {
-  border-color: rgba(0, 160, 133, 0.25);
+  border-color: #000000;
   transform: translateY(-2px);
-  box-shadow: 0 8px 40px rgba(0, 160, 133, 0.12);
 }
 
 .statIcon {
   width: 4rem;
   height: 4rem;
   border-radius: 1rem;
-  background: linear-gradient(135deg, rgba(0, 160, 133, 0.15) 0%, rgba(0, 160, 133, 0.08) 100%);
+  background: #f5f5f5;
+  border: 1px solid #000000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,7 +84,7 @@
 .icon {
   width: 1.5rem;
   height: 1.5rem;
-  color: #00a085;
+  color: #000000;
 }
 
 .statContent {
@@ -101,14 +95,14 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.75rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #000000;
   margin-bottom: 0.25rem;
 }
 
 .statLabel {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.875rem;
-  color: #4a5568;
+  color: #000000;
   font-weight: 500;
 }
 
@@ -122,12 +116,10 @@
 
 /* Proposals Section */
 .proposalsSection {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 160, 133, 0.15);
+  background: #FFFFFF;
+  border: 1px solid #000000;
   border-radius: 1.5rem;
   padding: 2.5rem;
-  box-shadow: 0 4px 24px rgba(0, 160, 133, 0.08);
 }
 
 .sectionHeader {
@@ -138,13 +130,13 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.75rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #000000;
   margin: 0 0 0.5rem 0;
 }
 
 .sectionHeader p {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: #4a5568;
+  color: #000000;
   margin: 0;
 }
 
@@ -156,8 +148,8 @@
 
 /* Proposal Card */
 .proposalCard {
-  background: rgba(248, 249, 250, 0.8);
-  border: 1px solid rgba(0, 160, 133, 0.1);
+  background: #f9f9f9;
+  border: 1px solid #000000;
   border-radius: 1rem;
   padding: 2rem;
   cursor: pointer;
@@ -165,15 +157,14 @@
 }
 
 .proposalCard:hover {
-  border-color: rgba(0, 160, 133, 0.2);
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 20px rgba(0, 160, 133, 0.08);
+  border-color: #000000;
+  background: #FFFFFF;
   transform: translateY(-2px);
 }
 
 .proposalCard.selected {
-  border-color: #00a085;
-  background: rgba(0, 160, 133, 0.05);
+  border-color: #000000;
+  background: #f5f5f5;
 }
 
 .proposalHeader {
@@ -199,28 +190,29 @@
 }
 
 .status.active {
-  background: rgba(0, 160, 133, 0.15);
-  color: #00a085;
-  border: 1px solid rgba(0, 160, 133, 0.2);
+  background: #f5f5f5;
+  color: #000000;
+  border: 1px solid #000000;
 }
 
 .status.passed {
-  background: rgba(16, 185, 129, 0.2);
-  color: #10b981;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  background: #f5f5f5;
+  color: #000000;
+  border: 1px solid #000000;
 }
 
 .status.failed {
-  background: rgba(239, 68, 68, 0.2);
-  color: #ef4444;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: #f5f5f5;
+  color: #000000;
+  border: 1px solid #000000;
 }
 
 .category {
   padding: 0.25rem 0.75rem;
-  background: rgba(0, 160, 133, 0.08);
-  color: #4a5568;
+  background: #f5f5f5;
+  color: #000000;
   border-radius: 1rem;
+  border: 1px solid #000000;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.75rem;
   font-weight: 500;
@@ -231,7 +223,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #4a5568;
+  color: #000000;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.875rem;
 }
@@ -245,14 +237,14 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.25rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #000000;
   margin: 0 0 0.75rem 0;
   line-height: 1.3;
 }
 
 .proposalDescription {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: #4a5568;
+  color: #000000;
   line-height: 1.5;
   margin: 0 0 1.5rem 0;
 }
@@ -273,25 +265,26 @@
   margin-bottom: 0.5rem;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.875rem;
-  color: #4a5568;
+  color: #000000;
 }
 
 .progressBar {
   height: 0.5rem;
-  background: rgba(0, 160, 133, 0.08);
+  background: #f5f5f5;
+  border: 1px solid #000000;
   border-radius: 0.25rem;
   overflow: hidden;
 }
 
 .progressFill {
   height: 100%;
-  background: linear-gradient(90deg, #00a085 0%, #0066cc 100%);
+  background: #000000;
   border-radius: 0.25rem;
   transition: width 0.3s ease;
 }
 
 .progressFill.quorum {
-  background: linear-gradient(90deg, #00a085 0%, #4299e1 100%);
+  background: #666666;
 }
 
 /* Vote Statistics */
@@ -311,13 +304,13 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #000000;
 }
 
 .voteLabel {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.75rem;
-  color: #4a5568;
+  color: #000000;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -343,25 +336,26 @@
 }
 
 .voteFor {
-  background: linear-gradient(135deg, #00a085 0%, #0066cc 100%);
+  background: #000000;
   color: #ffffff;
+  border: 1px solid #000000;
 }
 
 .voteFor:hover {
-  box-shadow: 0 4px 20px rgba(0, 160, 133, 0.3);
+  background: #333333;
   transform: translateY(-1px);
 }
 
 .voteAgainst {
-  background: transparent;
-  border: 2px solid rgba(0, 160, 133, 0.2);
-  color: #4a5568;
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  color: #000000;
 }
 
 .voteAgainst:hover {
-  border-color: rgba(239, 68, 68, 0.5);
-  background: rgba(239, 68, 68, 0.1);
-  color: #ef4444;
+  border-color: #000000;
+  background: #f5f5f5;
+  color: #000000;
 }
 
 /* Sidebar Section */
@@ -373,12 +367,10 @@
 
 /* Staking Card */
 .stakingCard {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 160, 133, 0.15);
+  background: #FFFFFF;
+  border: 1px solid #000000;
   border-radius: 1.5rem;
   padding: 2rem;
-  box-shadow: 0 4px 24px rgba(0, 160, 133, 0.08);
 }
 
 .cardHeader {
@@ -389,13 +381,13 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.5rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #000000;
   margin: 0 0 0.5rem 0;
 }
 
 .cardHeader p {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: #4a5568;
+  color: #000000;
   margin: 0;
   font-size: 0.875rem;
 }
@@ -412,28 +404,29 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
-  background: rgba(248, 249, 250, 0.7);
+  background: #f5f5f5;
+  border: 1px solid #000000;
   border-radius: 0.5rem;
 }
 
 .stakingStat .label {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: #4a5568;
+  color: #000000;
   font-size: 0.875rem;
 }
 
 .stakingStat .value {
   font-family: var(--font-display, 'Rajdhani', sans-serif);
-  color: #1a1a1a;
+  color: #000000;
   font-weight: 700;
 }
 
 .stakeButton {
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(135deg, #00a085 0%, #0066cc 100%);
+  background: #000000;
   color: #ffffff;
-  border: none;
+  border: 1px solid #000000;
   border-radius: 0.5rem;
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1rem;
@@ -443,27 +436,24 @@
   cursor: pointer;
   transition: all 0.3s ease;
   min-height: 44px;
-  box-shadow: 0 4px 16px rgba(0, 160, 133, 0.2);
 }
 
 .stakeButton:hover {
-  box-shadow: 0 6px 30px rgba(0, 160, 133, 0.3);
+  background: #333333;
   transform: translateY(-2px);
 }
 
 .stakeButton:focus {
-  outline: 3px solid #00a085;
+  outline: 3px solid #000000;
   outline-offset: 2px;
 }
 
 /* Treasury Card */
 .treasuryCard {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 160, 133, 0.15);
+  background: #FFFFFF;
+  border: 1px solid #000000;
   border-radius: 1.5rem;
   padding: 2rem;
-  box-shadow: 0 4px 24px rgba(0, 160, 133, 0.08);
 }
 
 .treasuryChart {
@@ -480,7 +470,8 @@
 
 .allocationBar {
   height: 0.5rem;
-  background: rgba(0, 160, 133, 0.08);
+  background: #f5f5f5;
+  border: 1px solid #000000;
   border-radius: 0.25rem;
   overflow: hidden;
 }
@@ -499,22 +490,20 @@
 }
 
 .allocationLabel .category {
-  color: #4a5568;
+  color: #000000;
 }
 
 .allocationLabel .amount {
-  color: #1a1a1a;
+  color: #000000;
   font-weight: 600;
 }
 
 /* Validator Card */
 .validatorCard {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 160, 133, 0.15);
+  background: #FFFFFF;
+  border: 1px solid #000000;
   border-radius: 1.5rem;
   padding: 2rem;
-  box-shadow: 0 4px 24px rgba(0, 160, 133, 0.08);
 }
 
 .validatorStats {
@@ -533,28 +522,28 @@
 .validatorIcon {
   width: 1.5rem;
   height: 1.5rem;
-  color: #00a085;
+  color: #000000;
 }
 
 .statNumber {
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #000000;
 }
 
 .statLabel {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: #4a5568;
+  color: #000000;
   font-size: 0.875rem;
 }
 
 .validatorButton {
   width: 100%;
   padding: 1rem;
-  background: transparent;
-  color: #4a5568;
-  border: 2px solid rgba(0, 160, 133, 0.2);
+  background: #FFFFFF;
+  color: #000000;
+  border: 2px solid #000000;
   border-radius: 0.5rem;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1rem;
@@ -565,13 +554,13 @@
 }
 
 .validatorButton:hover {
-  background: rgba(0, 160, 133, 0.05);
-  border-color: #00a085;
-  color: #00a085;
+  background: #f5f5f5;
+  border-color: #000000;
+  color: #000000;
 }
 
 .validatorButton:focus {
-  outline: 3px solid #00a085;
+  outline: 3px solid #000000;
   outline-offset: 2px;
 }
 
@@ -579,9 +568,8 @@
 .joinDaoCta {
   text-align: center;
   padding: 4rem 3rem;
-  background: rgba(24, 24, 24, 0.6);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(186, 192, 204, 0.2);
+  background: #000000;
+  border: 1px solid #000000;
   border-radius: 1.5rem;
 }
 
@@ -597,7 +585,7 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1.125rem;
   line-height: 1.6;
-  color: #CDD1DB;
+  color: #ffffff;
   margin: 0 0 2rem 0;
   max-width: 600px;
   margin-left: auto;
@@ -613,9 +601,9 @@
 
 /* CTA Buttons */
 .primaryButton {
-  background: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
-  color: #181818;
-  border: none;
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #ffffff;
   padding: 1rem 2rem;
   border-radius: 0.5rem;
   font-family: var(--font-display, 'Rajdhani', sans-serif);
@@ -630,18 +618,18 @@
 }
 
 .primaryButton:hover {
-  box-shadow: 0 6px 30px rgba(0, 212, 170, 0.4);
+  background: #f5f5f5;
 }
 
 .primaryButton:focus {
-  outline: 3px solid #00d4aa;
+  outline: 3px solid #ffffff;
   outline-offset: 2px;
 }
 
 .secondaryButton {
   background: transparent;
-  color: #D9DBE3;
-  border: 2px solid var(--roko-primary, #BAC0CC);
+  color: #ffffff;
+  border: 2px solid #ffffff;
   padding: 0.875rem 1.875rem;
   border-radius: 0.5rem;
   font-family: var(--font-body, 'HK Guise', sans-serif);
@@ -654,14 +642,13 @@
 }
 
 .secondaryButton:hover {
-  background: rgba(186, 192, 204, 0.1);
-  border-color: #00d4aa;
-  color: #00d4aa;
-  box-shadow: 0 0 20px rgba(0, 212, 170, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+  color: #ffffff;
 }
 
 .secondaryButton:focus {
-  outline: 3px solid #00d4aa;
+  outline: 3px solid #ffffff;
   outline-offset: 2px;
 }
 
@@ -682,9 +669,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image:
-    radial-gradient(circle at 25% 25%, rgba(0, 160, 133, 0.02) 0%, transparent 50%),
-    radial-gradient(circle at 75% 75%, rgba(0, 160, 133, 0.015) 0%, transparent 50%);
+  background: transparent;
   background-size: 400px 400px;
 }
 
@@ -694,12 +679,7 @@
   right: 10%;
   width: 600px;
   height: 600px;
-  background: radial-gradient(
-    circle,
-    rgba(0, 160, 133, 0.06) 0%,
-    rgba(0, 160, 133, 0.03) 30%,
-    transparent 70%
-  );
+  background: transparent;
   border-radius: 50%;
   opacity: 0.4;
   animation: float 10s ease-in-out infinite;
