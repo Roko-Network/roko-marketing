@@ -6,3 +6,4 @@ SELF/
 roko-info-site/
 awesome-claude-code-subagents/
 node_modules/
+dist/
