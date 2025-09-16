@@ -2,8 +2,8 @@
 .features {
   position: relative;
   padding: 6rem 0;
-  background: #FFFFFF;
-  color: #000000;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   overflow: hidden;
 }
 
@@ -34,14 +34,14 @@
 }
 
 .gradientText {
-  color: #000000;
+  color: var(--text-primary);
 }
 
 .subtitle {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: clamp(1.125rem, 2.5vw, 1.25rem);
   line-height: 1.6;
-  color: #000000;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -53,20 +53,16 @@
   margin-bottom: 4rem;
 }
 
-/* Feature Card */
+/* Feature Card - using utility classes */
 .card {
   position: relative;
   height: 100%;
 }
 
 .cardContent {
+  /* Extends .card utility class */
   position: relative;
   height: 100%;
-  padding: 2rem;
-  border: 1px solid #000000;
-  border-radius: 1rem;
-  background: #FFFFFF;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -74,8 +70,6 @@
 }
 
 .cardContent:hover {
-  border-color: #000000;
-  background: #FFFFFF;
   transform: translateY(-4px);
 }
 
@@ -90,7 +84,7 @@
 .icon {
   width: 3rem;
   height: 3rem;
-  color: #000000;
+  color: var(--text-primary);
   flex-shrink: 0;
 }
 
@@ -98,11 +92,11 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.125rem;
   font-weight: 700;
-  color: #000000;
-  background: #FFFFFF;
+  color: var(--text-primary);
+  background: var(--bg-primary);
   padding: 0.5rem 1rem;
   border-radius: 2rem;
-  border: 1px solid #000000;
+  border: 1px solid var(--border-primary);
 }
 
 /* Card Content */
@@ -117,7 +111,7 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.5rem;
   font-weight: 600;
-  color: #000000;
+  color: var(--text-primary);
   margin: 0;
   letter-spacing: -0.01em;
 }
@@ -126,7 +120,7 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1rem;
   line-height: 1.6;
-  color: #000000;
+  color: var(--text-primary);
   margin: 0;
   flex: 1;
 }
@@ -135,10 +129,10 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.875rem;
   line-height: 1.5;
-  color: #666666;
+  color: var(--text-muted);
   margin: 0;
   padding-top: 0.5rem;
-  border-top: 1px solid #000000;
+  border-top: 1px solid var(--border-primary);
 }
 
 /* Card Effects */

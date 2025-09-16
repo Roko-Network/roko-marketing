@@ -64,23 +64,23 @@
 }
 
 .desktopLink:hover {
-  color: var(--color-accent);
+  color: var(--text-primary);
   transform: translateY(-1px);
 }
 
 .desktopLink:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-black);
   outline-offset: 2px;
-  color: var(--color-accent);
+  color: var(--text-primary);
 }
 
 .desktopLink.active {
-  color: var(--color-accent);
+  color: var(--text-primary);
   font-weight: 600;
 }
 
 .desktopLink.focused {
-  color: var(--color-accent);
+  color: var(--text-primary);
 }
 
 /* Active indicator line */
@@ -88,10 +88,9 @@
   position: absolute;
   bottom: -2px;
   height: 2px;
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  background: var(--color-black);
   border-radius: 1px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 8px rgba(0, 212, 170, 0.4);
 }
 
 /* External link icon */
@@ -134,7 +133,7 @@
   font-family: var(--font-body);
   border-radius: 8px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  background: rgba(186, 192, 204, 0.05);
+  background: var(--bg-muted);
   border: 1px solid transparent;
   position: relative;
   min-height: 48px;
@@ -142,23 +141,23 @@
 }
 
 .mobileLink:hover {
-  background: rgba(0, 212, 170, 0.1);
-  border-color: rgba(0, 212, 170, 0.2);
-  color: var(--color-accent);
+  background: var(--bg-muted);
+  border-color: var(--border-primary);
+  color: var(--text-primary);
   transform: translateX(4px);
 }
 
 .mobileLink:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-black);
   outline-offset: 2px;
-  background: rgba(0, 212, 170, 0.1);
-  color: var(--color-accent);
+  background: var(--bg-muted);
+  color: var(--text-primary);
 }
 
 .mobileLink.active {
-  background: rgba(0, 212, 170, 0.15);
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  background: var(--bg-muted);
+  border-color: var(--border-primary);
+  color: var(--text-primary);
 }
 
 .mobileLink.active::before {
@@ -168,9 +167,8 @@
   top: 0;
   bottom: 0;
   width: 3px;
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  background: var(--color-black);
   border-radius: 0 2px 2px 0;
-  box-shadow: 0 0 8px rgba(0, 212, 170, 0.4);
 }
 
 .mobileLinkText {
@@ -185,7 +183,7 @@
 .mobileLinkDescription {
   font-size: 14px;
   font-weight: 400;
-  color: var(--text-tertiary);
+  color: var(--text-muted);
   margin-top: 0.25rem;
   line-height: 1.4;
 }
