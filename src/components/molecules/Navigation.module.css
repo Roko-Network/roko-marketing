@@ -1,0 +1,344 @@
+/* =============================================================================
+   Navigation Component Styles
+   ============================================================================= */
+
+@import '../../styles/index.css';
+
+/* Screen reader only text */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =============================================================================
+   Desktop Navigation Styles
+   ============================================================================= */
+
+.desktopNavigation {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.desktopList {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.desktopItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.desktopLink {
+  position: relative;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  padding: 0.75rem 0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 44px;
+  white-space: nowrap;
+}
+
+.desktopLink:hover {
+  color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.desktopLink:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  color: var(--color-accent);
+}
+
+.desktopLink.active {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.desktopLink.focused {
+  color: var(--color-accent);
+}
+
+/* Active indicator line */
+.activeIndicator {
+  position: absolute;
+  bottom: -2px;
+  height: 2px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  border-radius: 1px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(0, 212, 170, 0.4);
+}
+
+/* External link icon */
+.externalIcon {
+  font-size: 12px;
+  opacity: 0.7;
+  transition: all 0.2s ease;
+  margin-left: 2px;
+}
+
+.desktopLink:hover .externalIcon {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+/* =============================================================================
+   Mobile Navigation Styles
+   ============================================================================= */
+
+.mobileNavigation {
+  width: 100%;
+}
+
+.mobileList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mobileLink {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-family: var(--font-body);
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(186, 192, 204, 0.05);
+  border: 1px solid transparent;
+  position: relative;
+  min-height: 48px;
+  justify-content: center;
+}
+
+.mobileLink:hover {
+  background: rgba(0, 212, 170, 0.1);
+  border-color: rgba(0, 212, 170, 0.2);
+  color: var(--color-accent);
+  transform: translateX(4px);
+}
+
+.mobileLink:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  background: rgba(0, 212, 170, 0.1);
+  color: var(--color-accent);
+}
+
+.mobileLink.active {
+  background: rgba(0, 212, 170, 0.15);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.mobileLink.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 8px rgba(0, 212, 170, 0.4);
+}
+
+.mobileLinkText {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobileLinkDescription {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+/* External link styling for mobile */
+.mobileLink .externalIcon {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-left: 0.25rem;
+}
+
+.mobileLink:hover .externalIcon {
+  opacity: 1;
+}
+
+/* =============================================================================
+   Responsive Breakpoints
+   ============================================================================= */
+
+/* Small tablets and large phones */
+@media (max-width: 640px) {
+  .desktopList {
+    gap: 1.5rem;
+  }
+
+  .desktopLink {
+    font-size: 15px;
+    padding: 0.5rem 0;
+  }
+
+  .mobileLink {
+    padding: 0.875rem;
+  }
+
+  .mobileLinkText {
+    font-size: 16px;
+  }
+
+  .mobileLinkDescription {
+    font-size: 13px;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 480px) {
+  .mobileList {
+    gap: 0.25rem;
+  }
+
+  .mobileLink {
+    padding: 0.75rem;
+  }
+
+  .mobileLinkText {
+    font-size: 16px;
+  }
+}
+
+/* =============================================================================
+   Accessibility Enhancements
+   ============================================================================= */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .desktopLink,
+  .mobileLink {
+    border: 1px solid var(--text-secondary);
+  }
+
+  .desktopLink:hover,
+  .desktopLink:focus,
+  .mobileLink:hover,
+  .mobileLink:focus {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    color: var(--color-dark);
+  }
+
+  .activeIndicator {
+    height: 3px;
+    box-shadow: none;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .desktopLink,
+  .mobileLink,
+  .activeIndicator,
+  .externalIcon {
+    transition: none;
+  }
+
+  .desktopLink:hover,
+  .mobileLink:hover {
+    transform: none;
+  }
+}
+
+/* Focus visible for better accessibility */
+@supports selector(:focus-visible) {
+  .desktopLink:focus:not(:focus-visible),
+  .mobileLink:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .desktopLink:focus-visible,
+  .mobileLink:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .desktopLink,
+  .mobileLink {
+    min-height: 48px;
+  }
+
+  .desktopLink:hover {
+    transform: none;
+  }
+
+  .mobileLink:hover {
+    transform: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .mobileNavigation,
+  .desktopNavigation {
+    display: none;
+  }
+}
+
+/* =============================================================================
+   Animation States
+   ============================================================================= */
+
+/* Loading state for dynamic content */
+.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Error state */
+.error {
+  color: var(--color-error);
+}
+
+/* Success state for completed actions */
+.success {
+  color: var(--color-success);
+}

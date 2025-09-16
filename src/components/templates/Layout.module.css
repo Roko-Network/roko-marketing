@@ -1,0 +1,399 @@
+/* =============================================================================
+   Layout Component Styles
+   ============================================================================= */
+
+@import '../../styles/index.css';
+
+/* =============================================================================
+   Main Layout Container
+   ============================================================================= */
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+/* =============================================================================
+   Accessibility Features
+   ============================================================================= */
+
+/* Skip links for keyboard navigation */
+.skipLink {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  z-index: var(--z-skip-link);
+  background: var(--color-accent);
+  color: var(--color-dark);
+  padding: 8px 16px;
+  border-radius: 0 0 4px 4px;
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  transition: top 0.2s ease;
+  box-shadow: var(--shadow-lg);
+}
+
+.skipLink:focus {
+  top: 0;
+}
+
+.skipLink:hover {
+  background: var(--color-accent-hover);
+}
+
+/* Screen reader only content */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* =============================================================================
+   Main Content Area
+   ============================================================================= */
+
+.main {
+  flex: 1;
+  padding-top: 80px; /* Account for fixed header */
+  min-height: calc(100vh - 80px);
+  position: relative;
+  isolation: isolate;
+}
+
+/* Responsive header spacing */
+@media (max-width: 767px) {
+  .main {
+    padding-top: 64px;
+    min-height: calc(100vh - 64px);
+  }
+}
+
+/* Focus management for accessibility */
+.main:focus {
+  outline: none;
+}
+
+/* =============================================================================
+   Error Boundaries
+   ============================================================================= */
+
+.errorFallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 8px;
+  margin: 1rem;
+  color: var(--text-primary);
+}
+
+.errorFallback h1 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-error);
+  margin: 0 0 1rem 0;
+}
+
+.errorFallback p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+.retryButton {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: var(--color-dark);
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.retryButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+}
+
+.retryButton:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.retryButton:active {
+  transform: translateY(0);
+}
+
+/* =============================================================================
+   Performance Optimizations
+   ============================================================================= */
+
+/* Hardware acceleration for animations */
+.layout {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimize paint and composite layers */
+.main {
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* =============================================================================
+   Loading States
+   ============================================================================= */
+
+/* Loading spinner for dynamic imports */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingSpinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(186, 192, 204, 0.3);
+  border-top: 3px solid var(--color-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 2rem auto;
+}
+
+/* Skeleton loading for content */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(186, 192, 204, 0.1) 0%,
+    rgba(186, 192, 204, 0.2) 50%,
+    rgba(186, 192, 204, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* =============================================================================
+   Print Styles
+   ============================================================================= */
+
+@media print {
+  .layout {
+    background: white;
+    color: black;
+  }
+
+  .skipLink,
+  .errorFallback {
+    display: none;
+  }
+
+  .main {
+    padding-top: 0;
+    min-height: auto;
+  }
+
+  /* Force all text to be black for printing */
+  * {
+    color: black !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Remove animations for print */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* =============================================================================
+   High Contrast Mode Support
+   ============================================================================= */
+
+@media (prefers-contrast: high) {
+  .layout {
+    background: black;
+    color: white;
+  }
+
+  .errorFallback {
+    background: white;
+    border: 2px solid black;
+    color: black;
+  }
+
+  .skipLink {
+    background: yellow;
+    color: black;
+    border: 2px solid black;
+  }
+}
+
+/* =============================================================================
+   Reduced Motion Support
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .layout,
+  .main,
+  .skipLink,
+  .retryButton {
+    transition: none;
+    animation: none;
+  }
+
+  .loadingSpinner {
+    animation: none;
+    border: 3px solid var(--color-accent);
+    border-radius: 50%;
+  }
+
+  .skeleton {
+    animation: none;
+    background: rgba(186, 192, 204, 0.2);
+  }
+
+  /* Disable hardware acceleration if motion is reduced */
+  .layout {
+    transform: none;
+    backface-visibility: visible;
+    perspective: none;
+  }
+
+  .main {
+    will-change: auto;
+  }
+}
+
+/* =============================================================================
+   Dark/Light Theme Support
+   ============================================================================= */
+
+/* Light theme (if ever implemented) */
+@media (prefers-color-scheme: light) {
+  .layout {
+    /* Keep dark theme for now as per brand guidelines */
+    background: var(--bg-primary);
+    color: var(--text-primary);
+  }
+}
+
+/* =============================================================================
+   Container Queries (Future Enhancement)
+   ============================================================================= */
+
+/* When container queries are better supported */
+@container (max-width: 768px) {
+  .main {
+    padding-top: 64px;
+  }
+}
+
+/* =============================================================================
+   Focus Management
+   ============================================================================= */
+
+/* Improve focus indicators throughout the layout */
+.layout *:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Remove focus outline for mouse users */
+.layout *:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* =============================================================================
+   Responsive Optimizations
+   ============================================================================= */
+
+/* Large screens */
+@media (min-width: 1920px) {
+  .main {
+    padding-top: 88px; /* Slightly larger header spacing */
+  }
+}
+
+/* Ultra-wide screens */
+@media (min-width: 2560px) {
+  .layout {
+    font-size: 18px; /* Scale up base font size */
+  }
+}
+
+/* Mobile landscape orientation */
+@media (max-width: 896px) and (orientation: landscape) and (max-height: 414px) {
+  .main {
+    padding-top: 56px; /* Reduced header height for landscape mobile */
+  }
+}
+
+/* =============================================================================
+   Performance Hints
+   ============================================================================= */
+
+/* Optimize rendering for complex layouts */
+.layout {
+  contain: layout style;
+}
+
+/* Optimize scrolling performance */
+@supports (scroll-behavior: smooth) {
+  .layout {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Modern browsers with scroll timeline support */
+@supports (animation-timeline: scroll()) {
+  .main {
+    /* Future enhancement for scroll-driven animations */
+  }
+}

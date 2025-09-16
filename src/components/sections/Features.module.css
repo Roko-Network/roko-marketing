@@ -1,0 +1,447 @@
+/* Features Section Styles */
+.features {
+  position: relative;
+  padding: 6rem 0;
+  background: linear-gradient(180deg, #000000 0%, #0a0a0a 50%, #000000 100%);
+  color: var(--text-primary, #ffffff);
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Section Header */
+.header {
+  text-align: center;
+  margin-bottom: 4rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.title {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0 0 1.5rem 0;
+  letter-spacing: -0.02em;
+}
+
+.gradientText {
+  background: linear-gradient(135deg, #BAC0CC 0%, #D9DBE3 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: clamp(1.125rem, 2.5vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--text-secondary, #D9DBE3);
+  margin: 0;
+}
+
+/* Features Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+/* Feature Card */
+.card {
+  position: relative;
+  height: 100%;
+}
+
+.cardContent {
+  position: relative;
+  height: 100%;
+  padding: 2rem;
+  border: 1px solid rgba(186, 192, 204, 0.2);
+  border-radius: 1rem;
+  background: rgba(24, 24, 24, 0.8);
+  backdrop-filter: blur(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.cardContent:hover {
+  border-color: rgba(0, 212, 170, 0.5);
+  background: rgba(24, 24, 24, 0.95);
+  transform: translateY(-4px);
+}
+
+/* Icon Container */
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.icon {
+  width: 3rem;
+  height: 3rem;
+  color: #00d4aa;
+  flex-shrink: 0;
+}
+
+.metric {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #00d4aa;
+  background: rgba(0, 212, 170, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  border: 1px solid rgba(0, 212, 170, 0.3);
+}
+
+/* Card Content */
+.textContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cardTitle {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.cardDescription {
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary, #D9DBE3);
+  margin: 0;
+  flex: 1;
+}
+
+.cardDetail {
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-tertiary, #BCC1D1);
+  margin: 0;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(186, 192, 204, 0.1);
+}
+
+/* Card Effects */
+.hoverOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 212, 170, 0.02) 0%,
+    transparent 50%,
+    rgba(0, 212, 170, 0.02) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.cardContent:hover .hoverOverlay {
+  opacity: 1;
+}
+
+.backgroundPattern {
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 212, 170, 0.03) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.cardContent:hover .backgroundPattern {
+  opacity: 1;
+}
+
+/* CTA Section */
+.ctaSection {
+  text-align: center;
+  padding: 3rem 0;
+  border-top: 1px solid rgba(186, 192, 204, 0.1);
+}
+
+.ctaTitle {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary, #ffffff);
+  margin: 0 0 1rem 0;
+}
+
+.ctaDescription {
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--text-secondary, #D9DBE3);
+  margin: 0 0 2rem 0;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* CTA Buttons */
+.primaryButton {
+  background: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
+  color: #181818;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.primaryButton:hover {
+  box-shadow: 0 6px 30px rgba(0, 212, 170, 0.4);
+}
+
+.primaryButton:focus {
+  outline: 3px solid #00d4aa;
+  outline-offset: 2px;
+}
+
+.secondaryButton {
+  background: transparent;
+  color: var(--roko-primary, #BAC0CC);
+  border: 2px solid var(--roko-primary, #BAC0CC);
+  padding: 0.875rem 1.875rem;
+  border-radius: 0.5rem;
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.secondaryButton:hover {
+  background: rgba(186, 192, 204, 0.1);
+  border-color: #00d4aa;
+  color: #00d4aa;
+  box-shadow: 0 0 20px rgba(0, 212, 170, 0.2);
+}
+
+.secondaryButton:focus {
+  outline: 3px solid #00d4aa;
+  outline-offset: 2px;
+}
+
+/* Background Elements */
+.backgroundElements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.gridPattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(186, 192, 204, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(186, 192, 204, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.5;
+}
+
+.glowSphere {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 212, 170, 0.1) 0%,
+    rgba(0, 212, 170, 0.05) 30%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .features {
+    padding: 4rem 0;
+  }
+
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .cardContent {
+    padding: 1.5rem;
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .iconContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .metric {
+    align-self: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .cardContent {
+    padding: 1.25rem;
+  }
+
+  .icon {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .ctaSection {
+    padding: 2rem 0;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .cardContent {
+    border-color: #ffffff;
+    background: #000000;
+  }
+
+  .cardContent:hover {
+    border-color: #00d4aa;
+    background: #181818;
+  }
+
+  .gradientText {
+    background: none;
+    -webkit-text-fill-color: initial;
+    color: #ffffff;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .cardContent {
+    transition: none;
+  }
+
+  .cardContent:hover {
+    transform: none;
+  }
+
+  .hoverOverlay,
+  .backgroundPattern {
+    transition: none;
+  }
+}
+
+/* Performance optimizations */
+.cardContent {
+  will-change: transform, box-shadow;
+}
+
+.hoverOverlay,
+.backgroundPattern {
+  will-change: opacity;
+}
+
+/* Focus management */
+.card:focus-within .cardContent {
+  border-color: rgba(0, 212, 170, 0.5);
+  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.2);
+}
+
+/* Glass morphism enhancement */
+@supports (backdrop-filter: blur(20px)) {
+  .cardContent {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+@supports not (backdrop-filter: blur(20px)) {
+  .cardContent {
+    background: rgba(24, 24, 24, 0.95);
+  }
+}

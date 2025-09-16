@@ -1,0 +1,546 @@
+/**
+ * Button Component Styles
+ * Cyberpunk-themed button with holographic effects and temporal animations
+ */
+
+/* =============================================================================
+   BASE BUTTON STYLES
+   ============================================================================= */
+
+.button {
+  /* Base Properties */
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+
+  /* Typography */
+  font-family: var(--font-body);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wider);
+  text-decoration: none;
+  white-space: nowrap;
+
+  /* Layout */
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+
+  /* Transitions */
+  transition: all var(--duration-normal) var(--ease-in-out);
+
+  /* Accessibility */
+  min-height: var(--min-touch-target);
+
+  /* Performance */
+  will-change: transform, box-shadow, filter;
+
+  /* Focus States */
+  &:focus-visible {
+    outline: var(--focus-ring-width) solid var(--border-focus);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  /* Disabled State */
+  &:disabled,
+  &.button--disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none !important;
+    box-shadow: none !important;
+
+    &:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+  }
+}
+
+/* =============================================================================
+   BUTTON VARIANTS
+   ============================================================================= */
+
+/* Primary Button - Cyberpunk Gradient */
+.button--primary {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+  color: var(--text-dark);
+  box-shadow: var(--shadow-glow);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow-hover);
+    background: linear-gradient(135deg, var(--color-accent-hover) 0%, var(--color-accent) 100%);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+    transition-duration: var(--duration-fast);
+  }
+}
+
+/* Secondary Button - Glass Morphism */
+.button--secondary {
+  background: rgba(186, 192, 204, 0.1);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  &:hover:not(:disabled) {
+    background: rgba(186, 192, 204, 0.2);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    box-shadow: var(--shadow-glow);
+  }
+
+  &:active:not(:disabled) {
+    background: rgba(186, 192, 204, 0.3);
+  }
+}
+
+/* Ghost Button - Minimal */
+.button--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+
+  &:hover:not(:disabled) {
+    background: rgba(186, 192, 204, 0.1);
+    color: var(--color-accent);
+  }
+
+  &:active:not(:disabled) {
+    background: rgba(186, 192, 204, 0.2);
+  }
+}
+
+/* Outline Button - Border Focus */
+.button--outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 2px solid var(--border-primary);
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    box-shadow: 0 0 20px rgba(0, 212, 170, 0.2);
+  }
+
+  &:active:not(:disabled) {
+    background: rgba(0, 212, 170, 0.1);
+  }
+}
+
+/* Temporal Button - Special Effect */
+.button--temporal {
+  background: linear-gradient(135deg, rgba(0, 212, 170, 0.2) 0%, rgba(186, 192, 204, 0.1) 100%);
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  box-shadow: var(--shadow-temporal);
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(0, 212, 170, 0.3) 0%, rgba(186, 192, 204, 0.2) 100%);
+    box-shadow: var(--shadow-neon);
+  }
+}
+
+/* =============================================================================
+   BUTTON SIZES
+   ============================================================================= */
+
+.button--sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-caption);
+  min-height: 2rem;
+  gap: var(--space-1);
+}
+
+.button--md {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-body-sm);
+  min-height: 2.5rem;
+  gap: var(--space-2);
+}
+
+.button--lg {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-body);
+  min-height: 3rem;
+  gap: var(--space-2);
+}
+
+.button--xl {
+  padding: var(--space-5) var(--space-10);
+  font-size: var(--text-body-lg);
+  min-height: 3.5rem;
+  gap: var(--space-3);
+}
+
+/* =============================================================================
+   BUTTON MODIFIERS
+   ============================================================================= */
+
+/* Full Width */
+.button--full-width {
+  width: 100%;
+}
+
+/* Loading State */
+.button--loading {
+  cursor: wait;
+
+  .content {
+    opacity: 0.7;
+  }
+}
+
+/* Holographic Effect */
+.button--holographic {
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transform: rotate(45deg) translateX(-100%);
+    transition: transform var(--duration-slow) var(--ease-out);
+    opacity: 0;
+  }
+
+  &:hover:not(:disabled)::before {
+    transform: rotate(45deg) translateX(100%);
+    opacity: 1;
+  }
+}
+
+/* Temporal Animation */
+.button--temporal {
+  animation: temporal-pulse 3s ease-in-out infinite;
+}
+
+@keyframes temporal-pulse {
+  0%, 100% {
+    box-shadow: var(--shadow-temporal);
+  }
+  50% {
+    box-shadow: var(--shadow-neon);
+  }
+}
+
+/* Glitch Effect */
+.button--glitch:hover:not(:disabled) {
+  animation: glitch-effect 0.3s ease-in-out;
+}
+
+@keyframes glitch-effect {
+  0% {
+    transform: translateX(0);
+    filter: hue-rotate(0deg);
+  }
+  20% {
+    transform: translateX(-2px);
+    filter: hue-rotate(90deg);
+  }
+  40% {
+    transform: translateX(2px);
+    filter: hue-rotate(-90deg);
+  }
+  60% {
+    transform: translateX(-1px);
+    filter: hue-rotate(180deg);
+  }
+  80% {
+    transform: translateX(1px);
+    filter: hue-rotate(-180deg);
+  }
+  100% {
+    transform: translateX(0);
+    filter: hue-rotate(0deg);
+  }
+}
+
+/* =============================================================================
+   BUTTON CONTENT & ICONS
+   ============================================================================= */
+
+.content {
+  position: relative;
+  z-index: 1;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.iconLeft,
+.iconRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+
+  /* Icon sizing */
+  width: 1em;
+  height: 1em;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Loading Spinner */
+.loadingSpinner {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+    stroke-dashoffset: 32;
+  }
+  to {
+    transform: rotate(360deg);
+    stroke-dashoffset: 0;
+  }
+}
+
+/* =============================================================================
+   SPECIAL EFFECTS
+   ============================================================================= */
+
+/* Holographic Shine */
+.holographicShine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: all var(--duration-slow) var(--ease-out);
+}
+
+.button--holographic:hover .holographicShine {
+  animation: shimmer var(--duration-slow) ease;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+/* Temporal Particles */
+.temporalParticles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particle-float 2s ease-in-out infinite;
+}
+
+.particle:nth-child(1) {
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+  left: 50%;
+  animation-delay: 0.7s;
+}
+
+.particle:nth-child(3) {
+  left: 80%;
+  animation-delay: 1.4s;
+}
+
+@keyframes particle-float {
+  0%, 100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  50% {
+    transform: translateY(-100%);
+    opacity: 1;
+  }
+}
+
+/* =============================================================================
+   ICON BUTTON VARIANT
+   ============================================================================= */
+
+.iconButton {
+  min-width: var(--min-touch-target);
+  padding: var(--space-3);
+
+  &.button--sm {
+    min-width: 2rem;
+    padding: var(--space-2);
+  }
+
+  &.button--md {
+    min-width: 2.5rem;
+    padding: var(--space-3);
+  }
+
+  &.button--lg {
+    min-width: 3rem;
+    padding: var(--space-4);
+  }
+
+  &.button--xl {
+    min-width: 3.5rem;
+    padding: var(--space-5);
+  }
+}
+
+/* =============================================================================
+   BUTTON GROUP
+   ============================================================================= */
+
+.buttonGroup {
+  display: flex;
+  gap: var(--space-4);
+
+  &.buttonGroup--center {
+    justify-content: center;
+  }
+
+  &.buttonGroup--right {
+    justify-content: flex-end;
+  }
+
+  &.buttonGroup--spacing-sm {
+    gap: var(--space-2);
+  }
+
+  &.buttonGroup--spacing-lg {
+    gap: var(--space-6);
+  }
+
+  /* Stack on mobile */
+  &.buttonGroup--stack-mobile {
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+
+      .button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+/* =============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .button {
+    /* Ensure minimum touch target on mobile */
+    min-height: var(--min-touch-target);
+    min-width: var(--min-touch-target);
+  }
+
+  .button--xl {
+    padding: var(--space-4) var(--space-8);
+    font-size: var(--text-body);
+  }
+
+  .button--lg {
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--text-body-sm);
+  }
+}
+
+/* =============================================================================
+   HIGH CONTRAST MODE SUPPORT
+   ============================================================================= */
+
+@media (prefers-contrast: high) {
+  .button--primary {
+    border: 2px solid var(--color-accent);
+  }
+
+  .button--secondary,
+  .button--outline {
+    border-width: 2px;
+    border-color: currentColor;
+  }
+
+  .button--ghost:hover {
+    border: 2px solid currentColor;
+  }
+}
+
+/* =============================================================================
+   REDUCED MOTION SUPPORT
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .button {
+    transition: none;
+  }
+
+  .button--holographic::before,
+  .holographicShine,
+  .particle,
+  .spinner {
+    animation: none;
+  }
+
+  .button--temporal {
+    animation: none;
+  }
+
+  .button--glitch:hover {
+    animation: none;
+  }
+}

@@ -1,0 +1,835 @@
+/**
+ * Temporal Counter Component Styles
+ * Atomic clock aesthetics with nanosecond precision temporal theme
+ */
+
+/* =============================================================================
+   BASE TEMPORAL COUNTER STYLES
+   ============================================================================= */
+
+.temporalCounter {
+  /* Base Properties */
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+
+  /* Layout */
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+
+  /* Performance */
+  will-change: transform, filter;
+
+  /* Accessibility */
+  &:focus-within {
+    outline: var(--focus-ring-width) solid var(--border-focus);
+    outline-offset: var(--focus-ring-offset);
+  }
+}
+
+/* =============================================================================
+   COUNTER VARIANTS
+   ============================================================================= */
+
+/* Default Variant - Clean Minimal */
+.temporalCounter--default {
+  background: rgba(24, 24, 24, 0.8);
+  border: 1px solid var(--border-secondary);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Atomic Variant - Clock Aesthetic */
+.temporalCounter--atomic {
+  background: radial-gradient(
+    circle at center,
+    rgba(0, 212, 170, 0.1) 0%,
+    rgba(24, 24, 24, 0.9) 60%
+  );
+  border: 2px solid rgba(0, 212, 170, 0.3);
+  box-shadow:
+    var(--shadow-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Quantum Variant - Particle Effects */
+.temporalCounter--quantum {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 212, 170, 0.15) 0%,
+    rgba(24, 24, 24, 0.9) 30%,
+    rgba(186, 192, 204, 0.1) 100%
+  );
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      var(--color-accent) 0%,
+      transparent 30%,
+      var(--color-primary) 70%,
+      transparent 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: quantum-border-flow 3s linear infinite;
+  }
+}
+
+/* Precision Variant - Technical Grid */
+.temporalCounter--precision {
+  background: rgba(24, 24, 24, 0.95);
+  border: 1px solid var(--color-accent);
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 212, 170, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 170, 0.1) 1px, transparent 1px);
+    background-size: 10px 10px;
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
+/* Sync Variant - Synchronization Theme */
+.temporalCounter--sync {
+  background: rgba(24, 24, 24, 0.9);
+  border: 2px solid var(--border-primary);
+  animation: sync-pulse 2s ease-in-out infinite;
+}
+
+/* =============================================================================
+   COUNTER SIZES
+   ============================================================================= */
+
+.temporalCounter--sm {
+  padding: var(--space-2) var(--space-3);
+  gap: var(--space-1);
+}
+
+.temporalCounter--md {
+  padding: var(--space-4) var(--space-6);
+  gap: var(--space-2);
+}
+
+.temporalCounter--lg {
+  padding: var(--space-6) var(--space-8);
+  gap: var(--space-3);
+}
+
+.temporalCounter--xl {
+  padding: var(--space-8) var(--space-10);
+  gap: var(--space-4);
+}
+
+/* =============================================================================
+   COUNTER DISPLAY
+   ============================================================================= */
+
+.counterDisplay {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  position: relative;
+  z-index: 2;
+}
+
+.counterValue {
+  font-family: var(--font-mono);
+  font-size: var(--text-h2);
+  font-weight: var(--font-bold);
+  color: var(--color-accent);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+
+  /* Tabular numbers for consistent width */
+  font-feature-settings: 'tnum' 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.counterUnit {
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin-left: var(--space-1);
+}
+
+/* Size-specific typography */
+.temporalCounter--sm .counterValue {
+  font-size: var(--text-h4);
+}
+
+.temporalCounter--sm .counterUnit {
+  font-size: var(--text-caption);
+}
+
+.temporalCounter--lg .counterValue {
+  font-size: var(--text-h1);
+}
+
+.temporalCounter--lg .counterUnit {
+  font-size: var(--text-body);
+}
+
+.temporalCounter--xl .counterValue {
+  font-size: var(--text-hero);
+}
+
+.temporalCounter--xl .counterUnit {
+  font-size: var(--text-body-lg);
+}
+
+/* =============================================================================
+   ACCURACY INDICATOR
+   ============================================================================= */
+
+.accuracyIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  max-width: 200px;
+}
+
+.accuracyBar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.accuracyFill {
+  height: 100%;
+  border-radius: inherit;
+  transition: width var(--duration-normal) var(--ease-out);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      transparent 100%
+    );
+    animation: accuracy-shimmer 2s ease-in-out infinite;
+  }
+}
+
+.accuracyBar--high .accuracyFill {
+  background: linear-gradient(90deg, var(--color-success), var(--color-accent));
+}
+
+.accuracyBar--medium .accuracyFill {
+  background: linear-gradient(90deg, var(--color-warning), var(--color-accent));
+}
+
+.accuracyBar--low .accuracyFill {
+  background: linear-gradient(90deg, var(--color-error), var(--color-warning));
+}
+
+.accuracyValue {
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  color: var(--text-tertiary);
+  font-feature-settings: 'tnum' 1;
+}
+
+/* =============================================================================
+   SYNCHRONIZATION STATUS
+   ============================================================================= */
+
+.syncStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.syncIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    opacity: 0.5;
+    animation: sync-ripple 2s ease-out infinite;
+  }
+}
+
+.syncIndicator--synced {
+  background: var(--color-success);
+  box-shadow: 0 0 10px var(--color-success);
+
+  &::after {
+    background: var(--color-success);
+  }
+}
+
+.syncIndicator--syncing {
+  background: var(--color-accent);
+  box-shadow: 0 0 10px var(--color-accent);
+  animation: syncing-pulse 1s ease-in-out infinite;
+
+  &::after {
+    background: var(--color-accent);
+  }
+}
+
+.syncIndicator--drift {
+  background: var(--color-warning);
+  box-shadow: 0 0 10px var(--color-warning);
+  animation: drift-flicker 1.5s ease-in-out infinite;
+
+  &::after {
+    background: var(--color-warning);
+  }
+}
+
+.syncIndicator--error {
+  background: var(--color-error);
+  box-shadow: 0 0 10px var(--color-error);
+  animation: error-blink 0.5s ease-in-out infinite;
+
+  &::after {
+    background: var(--color-error);
+  }
+}
+
+.syncLabel {
+  font-family: var(--font-body);
+  font-size: var(--text-caption);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* =============================================================================
+   SPECIAL EFFECTS
+   ============================================================================= */
+
+/* Quantum Particles */
+.quantumField {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.quantumParticle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  opacity: 0;
+  animation: quantum-particle 4s ease-in-out infinite;
+}
+
+.quantumParticle:nth-child(1) {
+  left: 20%;
+  top: 20%;
+  animation-delay: 0s;
+}
+
+.quantumParticle:nth-child(2) {
+  left: 80%;
+  top: 30%;
+  animation-delay: 1s;
+}
+
+.quantumParticle:nth-child(3) {
+  left: 60%;
+  top: 80%;
+  animation-delay: 2s;
+}
+
+.quantumParticle:nth-child(4) {
+  left: 30%;
+  top: 70%;
+  animation-delay: 3s;
+}
+
+/* Atomic Clock */
+.atomicClock {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+}
+
+.clockFace {
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(0, 212, 170, 0.5);
+  border-radius: 50%;
+  position: relative;
+  background: rgba(24, 24, 24, 0.8);
+}
+
+.clockHand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 8px;
+  background: var(--color-accent);
+  transform-origin: bottom center;
+  transition: transform var(--duration-fast) var(--ease-out);
+  margin-left: -0.5px;
+  margin-top: -8px;
+}
+
+.clockCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Precision Grid */
+.precisionGrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+}
+
+.gridLines {
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(0, 212, 170, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 170, 0.2) 1px, transparent 1px);
+  background-size: 8px 8px;
+  animation: grid-scan 3s linear infinite;
+}
+
+/* =============================================================================
+   ANIMATION VARIANTS
+   ============================================================================= */
+
+/* Count Animation */
+.temporalCounter--animation-count .counterValue {
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.temporalCounter--animating .counterValue {
+  text-shadow:
+    0 0 10px rgba(0, 212, 170, 0.8),
+    0 0 20px rgba(0, 212, 170, 0.6);
+}
+
+/* Pulse Animation */
+.temporalCounter--animation-pulse {
+  animation: temporal-pulse 2s ease-in-out infinite;
+}
+
+.temporalCounter--animation-pulse .counterValue {
+  animation: value-pulse 2s ease-in-out infinite;
+}
+
+/* Drift Animation */
+.temporalCounter--animation-drift {
+  animation: temporal-drift 4s ease-in-out infinite;
+}
+
+.temporalCounter--animation-drift .counterValue {
+  animation: value-drift 4s ease-in-out infinite;
+}
+
+/* Glitch Animation */
+.temporalCounter--animation-glitch {
+  animation: temporal-glitch 3s ease-in-out infinite;
+}
+
+.temporalCounter--animation-glitch .counterValue {
+  animation: value-glitch 3s steps(10) infinite;
+}
+
+/* Real-time Indicator */
+.temporalCounter--real-time {
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 6px;
+    height: 6px;
+    background: var(--color-success);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--color-success);
+    animation: real-time-blink 1s ease-in-out infinite;
+  }
+}
+
+/* =============================================================================
+   COUNTDOWN TIMER STYLES
+   ============================================================================= */
+
+.countdownTimer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.timerUnits {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.timerUnit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.timerUnit + .timerUnit::before {
+  content: ':';
+  color: var(--text-tertiary);
+  font-size: var(--text-h3);
+  font-weight: var(--font-bold);
+  margin: 0 var(--space-2);
+  align-self: center;
+  animation: separator-blink 1s ease-in-out infinite;
+}
+
+/* =============================================================================
+   KEYFRAME ANIMATIONS
+   ============================================================================= */
+
+/* Quantum Effects */
+@keyframes quantum-border-flow {
+  0% {
+    background: linear-gradient(
+      135deg,
+      var(--color-accent) 0%,
+      transparent 30%,
+      var(--color-primary) 70%,
+      transparent 100%
+    );
+  }
+  50% {
+    background: linear-gradient(
+      135deg,
+      var(--color-primary) 0%,
+      transparent 30%,
+      var(--color-accent) 70%,
+      transparent 100%
+    );
+  }
+  100% {
+    background: linear-gradient(
+      135deg,
+      var(--color-accent) 0%,
+      transparent 30%,
+      var(--color-primary) 70%,
+      transparent 100%
+    );
+  }
+}
+
+@keyframes quantum-particle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) translateY(-10px);
+  }
+}
+
+/* Synchronization Effects */
+@keyframes sync-pulse {
+  0%, 100% {
+    border-color: var(--border-primary);
+    box-shadow: none;
+  }
+  50% {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+@keyframes sync-ripple {
+  0% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes syncing-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes drift-flicker {
+  0%, 80%, 100% {
+    opacity: 1;
+  }
+  85%, 95% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes error-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+
+/* Value Animations */
+@keyframes temporal-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.02);
+    filter: brightness(1.1);
+  }
+}
+
+@keyframes value-pulse {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+  }
+  50% {
+    text-shadow:
+      0 0 15px rgba(0, 212, 170, 0.8),
+      0 0 25px rgba(0, 212, 170, 0.6);
+  }
+}
+
+@keyframes temporal-drift {
+  0%, 100% {
+    filter: blur(0px);
+  }
+  50% {
+    filter: blur(0.5px);
+  }
+}
+
+@keyframes value-drift {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    text-shadow: 0 0 8px rgba(0, 212, 170, 0.3);
+    filter: hue-rotate(10deg);
+  }
+}
+
+@keyframes temporal-glitch {
+  0%, 90%, 100% {
+    transform: translateX(0);
+  }
+  92% {
+    transform: translateX(-2px);
+  }
+  94% {
+    transform: translateX(2px);
+  }
+  96% {
+    transform: translateX(-1px);
+  }
+  98% {
+    transform: translateX(1px);
+  }
+}
+
+@keyframes value-glitch {
+  0%, 90%, 100% {
+    filter: hue-rotate(0deg);
+    text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+  }
+  91% {
+    filter: hue-rotate(90deg);
+    text-shadow: 0 0 5px rgba(255, 0, 100, 0.8);
+  }
+  93% {
+    filter: hue-rotate(-90deg);
+    text-shadow: 0 0 5px rgba(0, 255, 150, 0.8);
+  }
+  95% {
+    filter: hue-rotate(180deg);
+    text-shadow: 0 0 8px rgba(100, 150, 255, 0.6);
+  }
+}
+
+/* Utility Animations */
+@keyframes accuracy-shimmer {
+  0%, 100% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes grid-scan {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 8px 8px;
+  }
+}
+
+@keyframes real-time-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.3;
+  }
+}
+
+@keyframes separator-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0.5;
+  }
+}
+
+/* =============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================================= */
+
+@media (max-width: 768px) {
+  .temporalCounter--xl {
+    padding: var(--space-6);
+  }
+
+  .temporalCounter--xl .counterValue {
+    font-size: var(--text-h1);
+  }
+
+  .temporalCounter--lg .counterValue {
+    font-size: var(--text-h2);
+  }
+
+  .timerUnits {
+    gap: var(--space-2);
+  }
+
+  .timerUnit + .timerUnit::before {
+    margin: 0 var(--space-1);
+    font-size: var(--text-h4);
+  }
+
+  /* Reduce particle effects on mobile for performance */
+  .quantumParticle {
+    display: none;
+  }
+}
+
+/* =============================================================================
+   REDUCED MOTION SUPPORT
+   ============================================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .temporalCounter,
+  .counterValue,
+  .quantumParticle,
+  .clockHand,
+  .gridLines,
+  .accuracyFill,
+  .syncIndicator {
+    animation: none;
+    transition: none;
+  }
+
+  .temporalCounter--animation-count .counterValue {
+    transition: none;
+  }
+
+  .temporalCounter--real-time::before {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* =============================================================================
+   HIGH CONTRAST MODE SUPPORT
+   ============================================================================= */
+
+@media (prefers-contrast: high) {
+  .temporalCounter {
+    border-width: 2px;
+    border-color: currentColor;
+  }
+
+  .counterValue {
+    text-shadow: none;
+    font-weight: var(--font-bold);
+  }
+
+  .accuracyBar {
+    border: 1px solid currentColor;
+  }
+
+  .syncIndicator {
+    border: 2px solid currentColor;
+    box-shadow: none;
+  }
+}

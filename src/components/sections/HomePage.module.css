@@ -1,0 +1,584 @@
+/* HomePage Styles */
+.homePage {
+  position: relative;
+  min-height: 100vh;
+  background: #000000;
+  color: var(--text-primary, #ffffff);
+  overflow-x: hidden;
+}
+
+/* Progress Bar */
+.progressBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00d4aa 0%, #00ffcc 100%);
+  transform-origin: 0%;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+}
+
+/* Floating Navigation */
+.floatingNav {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  pointer-events: auto;
+}
+
+.navContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background: rgba(24, 24, 24, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(186, 192, 204, 0.2);
+  border-radius: 2rem;
+  padding: 1rem 0.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.navItem {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary, #BCC1D1);
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.75rem 1rem;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  writing-mode: horizontal-tb;
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navItem:hover {
+  color: #00d4aa;
+  background: rgba(0, 212, 170, 0.1);
+  transform: translateX(-2px);
+}
+
+.navItem:focus {
+  outline: 2px solid #00d4aa;
+  outline-offset: 2px;
+  color: #00d4aa;
+}
+
+.navItem.active {
+  color: #00d4aa;
+  background: rgba(0, 212, 170, 0.2);
+}
+
+.navItem::before {
+  content: '';
+  position: absolute;
+  left: -0.5rem;
+  width: 2px;
+  height: 0;
+  background: #00d4aa;
+  border-radius: 1px;
+  transition: height 0.3s ease;
+}
+
+.navItem:hover::before,
+.navItem.active::before {
+  height: 1.5rem;
+}
+
+/* Main Content */
+.mainContent {
+  position: relative;
+  z-index: 2;
+}
+
+.section {
+  position: relative;
+  width: 100%;
+}
+
+/* Parallax Container */
+.parallaxContainer {
+  position: relative;
+  will-change: transform;
+}
+
+/* Background Effects */
+.backgroundEffects {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Animated Grid */
+.animatedGrid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(rgba(186, 192, 204, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(186, 192, 204, 0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+  animation: gridMove 20s linear infinite;
+  opacity: 0.7;
+}
+
+@keyframes gridMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(80px, 80px);
+  }
+}
+
+/* Floating Particles */
+.floatingParticles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: #00d4aa;
+  border-radius: 50%;
+  opacity: 0;
+  filter: blur(0.5px);
+  box-shadow: 0 0 6px rgba(0, 212, 170, 0.8);
+}
+
+/* Gradient Orbs */
+.gradientOrbs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.3;
+  mix-blend-mode: screen;
+}
+
+.orb1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 212, 170, 0.4) 0%, transparent 70%);
+  top: 10%;
+  left: 10%;
+}
+
+.orb2 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(186, 192, 204, 0.3) 0%, transparent 70%);
+  top: 60%;
+  right: 10%;
+}
+
+.orb3 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(0, 212, 170, 0.2) 0%, transparent 70%);
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Skip Link for Accessibility */
+.skipLink {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #00d4aa;
+  color: #181818;
+  padding: 8px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-weight: 600;
+  z-index: 1001;
+  transition: top 0.3s ease;
+}
+
+.skipLink:focus {
+  top: 6px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .floatingNav {
+    right: 1rem;
+  }
+
+  .navItem {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.6875rem;
+  }
+
+  .orb1 {
+    width: 300px;
+    height: 300px;
+  }
+
+  .orb2 {
+    width: 250px;
+    height: 250px;
+  }
+
+  .orb3 {
+    width: 400px;
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .floatingNav {
+    position: fixed;
+    bottom: 2rem;
+    right: 50%;
+    transform: translateX(50%);
+    top: auto;
+  }
+
+  .navContainer {
+    flex-direction: row;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    gap: 0.25rem;
+  }
+
+  .navItem {
+    padding: 0.5rem;
+    font-size: 0.625rem;
+    min-width: auto;
+    writing-mode: horizontal-tb;
+  }
+
+  .navItem::before {
+    display: none;
+  }
+
+  .progressBar {
+    height: 2px;
+  }
+
+  .animatedGrid {
+    background-size: 60px 60px;
+  }
+
+  .orb1,
+  .orb2,
+  .orb3 {
+    filter: blur(20px);
+    opacity: 0.2;
+  }
+
+  .orb1 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .orb2 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .orb3 {
+    width: 250px;
+    height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .floatingNav {
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    transform: none;
+  }
+
+  .navContainer {
+    justify-content: center;
+    padding: 0.5rem;
+  }
+
+  .navItem {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.5rem;
+  }
+
+  .animatedGrid {
+    background-size: 40px 40px;
+  }
+
+  .particle {
+    width: 1px;
+    height: 1px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .navContainer {
+    background: #000000;
+    border-color: #ffffff;
+  }
+
+  .navItem {
+    color: #ffffff;
+  }
+
+  .navItem:hover,
+  .navItem:focus,
+  .navItem.active {
+    background: #00d4aa;
+    color: #000000;
+  }
+
+  .progressBar {
+    background: #00d4aa;
+  }
+
+  .particle {
+    background: #00d4aa;
+    box-shadow: none;
+  }
+
+  .animatedGrid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animatedGrid {
+    animation: none;
+  }
+
+  .particle {
+    animation: none;
+    opacity: 0.3;
+  }
+
+  .orb1,
+  .orb2,
+  .orb3 {
+    animation: none;
+  }
+
+  .parallaxContainer {
+    transform: none !important;
+  }
+
+  .progressBar {
+    transition: none;
+  }
+
+  .navItem {
+    transition: none;
+  }
+}
+
+/* Performance optimizations */
+.floatingNav {
+  will-change: transform;
+}
+
+.navItem {
+  will-change: transform, background-color;
+}
+
+.progressBar {
+  will-change: transform;
+}
+
+.parallaxContainer {
+  will-change: transform;
+}
+
+.particle {
+  will-change: transform, opacity;
+}
+
+.orb1,
+.orb2,
+.orb3 {
+  will-change: transform;
+}
+
+/* Focus management */
+.homePage:focus-within .floatingNav {
+  z-index: 1001;
+}
+
+.navItem:focus {
+  z-index: 1002;
+}
+
+/* Glass morphism enhancement */
+@supports (backdrop-filter: blur(20px)) {
+  .navContainer {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
+
+@supports not (backdrop-filter: blur(20px)) {
+  .navContainer {
+    background: rgba(24, 24, 24, 0.95);
+  }
+}
+
+/* Container queries for navigation */
+@container (max-width: 600px) {
+  .navItem {
+    font-size: 0.5rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
+/* Print styles */
+@media print {
+  .floatingNav,
+  .progressBar,
+  .backgroundEffects {
+    display: none;
+  }
+
+  .homePage {
+    background: white;
+    color: black;
+  }
+}
+
+/* Dark theme specific adjustments */
+@media (prefers-color-scheme: dark) {
+  .homePage {
+    background: #000000;
+  }
+
+  .navContainer {
+    background: rgba(24, 24, 24, 0.9);
+  }
+}
+
+/* Light theme fallback */
+@media (prefers-color-scheme: light) {
+  .homePage {
+    background: #000000; /* Keep dark for brand consistency */
+  }
+}
+
+/* Hover states for touch devices */
+@media (hover: none) {
+  .navItem:hover {
+    background: transparent;
+    color: var(--text-tertiary, #BCC1D1);
+    transform: none;
+  }
+
+  .navItem:hover::before {
+    height: 0;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+  .floatingNav {
+    right: 1rem;
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+  }
+
+  .navContainer {
+    flex-direction: column;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .navItem {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.5rem;
+  }
+}
+
+/* Ultra-wide screen adjustments */
+@media (min-width: 1920px) {
+  .floatingNav {
+    right: calc((100vw - 1920px) / 2 + 2rem);
+  }
+
+  .orb1 {
+    width: 600px;
+    height: 600px;
+  }
+
+  .orb2 {
+    width: 450px;
+    height: 450px;
+  }
+
+  .orb3 {
+    width: 750px;
+    height: 750px;
+  }
+}
+
+/* Animation performance on low-end devices */
+@media (prefers-reduced-data: reduce) {
+  .animatedGrid,
+  .floatingParticles,
+  .gradientOrbs {
+    display: none;
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+.homePage::-webkit-scrollbar {
+  width: 8px;
+}
+
+.homePage::-webkit-scrollbar-track {
+  background: rgba(24, 24, 24, 0.3);
+}
+
+.homePage::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #00d4aa 0%, #00ffcc 100%);
+  border-radius: 4px;
+}
+
+.homePage::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #00ffcc 0%, #00d4aa 100%);
+}
