@@ -80,12 +80,17 @@
   color: var(--text-secondary);
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  margin: auto 1rem;
+  line-height: 1;
 }
 
 @keyframes gradientShift {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -143,12 +148,10 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: linear-gradient(
-    45deg,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
+  background: linear-gradient(45deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent);
   transform: rotate(45deg);
   transition: all 0.5s;
 }
@@ -177,8 +180,13 @@
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
 }
 
 /* Connected state */
@@ -359,6 +367,7 @@
 
 /* Touch target improvements for mobile */
 @media (hover: none) and (pointer: coarse) {
+
   .connectButton,
   .chainButton,
   .accountButton {
@@ -389,6 +398,7 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
   .logo,
   .connectButton,
   .hamburgerLine,

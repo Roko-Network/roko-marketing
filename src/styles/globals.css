@@ -6,7 +6,7 @@
 @font-face {
   font-family: 'HK Guise';
   src: url('/fonts/HKGuise-Regular.woff2') format('woff2'),
-       url('/fonts/HKGuise-Regular.woff') format('woff');
+    url('/fonts/HKGuise-Regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -15,7 +15,7 @@
 @font-face {
   font-family: 'HK Guise';
   src: url('/fonts/HKGuise-Medium.woff2') format('woff2'),
-       url('/fonts/HKGuise-Medium.woff') format('woff');
+    url('/fonts/HKGuise-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -24,7 +24,7 @@
 @font-face {
   font-family: 'HK Guise';
   src: url('/fonts/HKGuise-SemiBold.woff2') format('woff2'),
-       url('/fonts/HKGuise-SemiBold.woff') format('woff');
+    url('/fonts/HKGuise-SemiBold.woff') format('woff');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -33,7 +33,7 @@
 @font-face {
   font-family: 'HK Guise';
   src: url('/fonts/HKGuise-Bold.woff2') format('woff2'),
-       url('/fonts/HKGuise-Bold.woff') format('woff');
+    url('/fonts/HKGuise-Bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -42,38 +42,62 @@
 /* CSS Custom Properties - Official ROKO Brand Guidelines */
 :root {
   /* BLACK AND WHITE THEME - Core Colors */
-  --color-black: #000000;       /* Pure black */
-  --color-white: #FFFFFF;       /* Pure white */
-  --color-gray-light: #f5f5f5;  /* Light gray for subtle backgrounds */
-  --color-gray-medium: #666666; /* Medium gray for muted text */
-  --color-gray-dark: #333333;   /* Dark gray for hover states */
+  --color-black: #000000;
+  /* Pure black */
+  --color-white: #FFFFFF;
+  /* Pure white */
+  --color-gray-light: #f5f5f5;
+  /* Light gray for subtle backgrounds */
+  --color-gray-medium: #666666;
+  /* Medium gray for muted text */
+  --color-gray-dark: #333333;
+  /* Dark gray for hover states */
 
   /* System Colors - Minimal for essential states */
-  --color-success: #000000;     /* Black for success (keeping minimal) */
-  --color-warning: #000000;     /* Black for warnings (keeping minimal) */
-  --color-error: #000000;       /* Black for errors (keeping minimal) */
-  --color-info: #000000;        /* Black for info (keeping minimal) */
+  --color-success: #000000;
+  /* Black for success (keeping minimal) */
+  --color-warning: #000000;
+  /* Black for warnings (keeping minimal) */
+  --color-error: #000000;
+  /* Black for errors (keeping minimal) */
+  --color-info: #000000;
+  /* Black for info (keeping minimal) */
 
   /* Background System */
-  --bg-primary: var(--color-white);     /* Main background */
-  --bg-secondary: var(--color-white);   /* Panels */
-  --bg-tertiary: var(--color-white);    /* Cards */
-  --bg-elevated: var(--color-white);    /* Elevated surfaces */
-  --bg-muted: var(--color-gray-light);  /* Subtle background accent */
-  --bg-inverse: var(--color-black);     /* Inverted backgrounds */
+  --bg-primary: var(--color-white);
+  /* Main background */
+  --bg-secondary: var(--color-white);
+  /* Panels */
+  --bg-tertiary: var(--color-white);
+  /* Cards */
+  --bg-elevated: var(--color-white);
+  /* Elevated surfaces */
+  --bg-muted: var(--color-gray-light);
+  /* Subtle background accent */
+  --bg-inverse: var(--color-black);
+  /* Inverted backgrounds */
 
   /* Text System */
-  --text-primary: var(--color-black);    /* Primary text */
-  --text-secondary: var(--color-black);  /* Secondary text */
-  --text-body: var(--color-black);       /* Body text */
-  --text-muted: var(--color-gray-medium); /* Muted text */
-  --text-inverse: var(--color-white);    /* Text on dark backgrounds */
+  --text-primary: var(--color-black);
+  /* Primary text */
+  --text-secondary: var(--color-black);
+  /* Secondary text */
+  --text-body: var(--color-black);
+  /* Body text */
+  --text-muted: var(--color-gray-medium);
+  /* Muted text */
+  --text-inverse: var(--color-white);
+  /* Text on dark backgrounds */
 
   /* Border System */
-  --border-primary: var(--color-black);  /* Primary borders */
-  --border-light: var(--color-black);    /* Light borders */
-  --border-medium: var(--color-black);   /* Medium borders */
-  --border-dark: var(--color-black);     /* Dark borders */
+  --border-primary: var(--color-black);
+  /* Primary borders */
+  --border-light: var(--color-black);
+  /* Light borders */
+  --border-medium: var(--color-black);
+  /* Medium borders */
+  --border-dark: var(--color-black);
+  /* Dark borders */
 
   /* Effects - Minimal for flat design */
   --gradient-none: none;
@@ -81,10 +105,14 @@
   --backdrop-blur: blur(10px);
 
   /* Official ROKO Typography */
-  --font-display: 'Rajdhani', sans-serif;      /* Headlines, Hero text */
-  --font-body: 'HK Guise', sans-serif;         /* Body text, UI elements */
-  --font-accent: 'Aeonik TRIAL', sans-serif;   /* Special features */
-  --font-mono: 'JetBrains Mono', monospace;    /* Code blocks */
+  --font-display: 'Rajdhani', sans-serif;
+  /* Headlines, Hero text */
+  --font-body: 'Rajdhani', sans-serif;
+  /* Body text, UI elements */
+  --font-accent: 'Rajdhani', sans-serif;
+  /* Special features */
+  --font-mono: 'JetBrains Mono', monospace;
+  /* Code blocks */
 
   /* Font Sizes */
   --text-xs: 0.75rem;
@@ -92,14 +120,22 @@
   --text-base: 1rem;
   --text-lg: 1.125rem;
   --text-xl: 1.25rem;
-  --text-2xl: 1.25rem;      /* 20px (was 24px) */
-  --text-3xl: 1.5rem;       /* 24px (was 30px) */
-  --text-4xl: 1.875rem;     /* 30px (was 36px) */
-  --text-5xl: 2.25rem;      /* 36px (was 48px) */
-  --text-6xl: 2.75rem;      /* 44px (was 60px) */
-  --text-7xl: 3.5rem;       /* 56px (was 72px) */
-  --text-8xl: 4.5rem;       /* 72px (was 96px) */
-  --text-9xl: 6rem;         /* 96px (was 128px) */
+  --text-2xl: 1.25rem;
+  /* 20px (was 24px) */
+  --text-3xl: 1.5rem;
+  /* 24px (was 30px) */
+  --text-4xl: 1.875rem;
+  /* 30px (was 36px) */
+  --text-5xl: 2.25rem;
+  /* 36px (was 48px) */
+  --text-6xl: 2.75rem;
+  /* 44px (was 60px) */
+  --text-7xl: 3.5rem;
+  /* 56px (was 72px) */
+  --text-8xl: 4.5rem;
+  /* 72px (was 96px) */
+  --text-9xl: 6rem;
+  /* 96px (was 128px) */
 
   /* Spacing */
   --spacing-xs: 0.25rem;
@@ -163,6 +199,10 @@
   color: var(--text-primary) !important;
 }
 
+footer {
+  z-index: 10;
+}
+
 /* Dark theme overrides (optional for future use) */
 :root.dark {
   --bg-primary: #000000;
@@ -223,7 +263,8 @@ h6 {
   font-family: var(--font-display);
   font-weight: 600;
   line-height: 1.25;
-  color: #000000; /* Black text for all headings */
+  color: #000000;
+  /* Black text for all headings */
   margin-bottom: var(--spacing-md);
 }
 
@@ -288,14 +329,16 @@ p {
 /* Link Styles - ROKO Brand */
 a {
   color: var(--roko-primary);
-  text-decoration: none;
+  text-decoration: none !important;
   transition: var(--transition-fast);
+  position: relative;
 }
 
 a:hover {
   color: var(--roko-teal);
-  text-decoration: underline;
+  text-decoration: none !important;
 }
+
 
 /* Code Styles */
 code,
@@ -348,8 +391,12 @@ select {
 
 button {
   cursor: pointer;
-  border: none;
+  border-radius: 0.5rem;
+  padding: 1rem 2rem !important;
+  box-shadow: unset !important;
   background: none;
+  line-height: 1rem;
+  backdrop-filter: blur(16px) !important;
   transition: var(--transition-default);
 }
 
@@ -505,6 +552,13 @@ textarea::placeholder {
   transition: width 0.3s ease;
 }
 
+.headerIcon {
+  height: 3rem;
+  margin: auto;
+  line-height: 1;
+  display: flex;
+}
+
 /* Icon Components */
 .icon {
   display: inline-flex;
@@ -619,93 +673,295 @@ textarea::placeholder {
   padding: 0 var(--spacing-md);
 }
 
-.container-sm { max-width: var(--container-sm); }
-.container-md { max-width: var(--container-md); }
-.container-lg { max-width: var(--container-lg); }
-.container-xl { max-width: var(--container-xl); }
-.container-2xl { max-width: var(--container-2xl); }
+.container-sm {
+  max-width: var(--container-sm);
+}
 
-.text-center { text-align: center; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
+.container-md {
+  max-width: var(--container-md);
+}
 
-.font-display { font-family: var(--font-display); }
-.font-body { font-family: var(--font-body); }
-.font-mono { font-family: var(--font-mono); }
+.container-lg {
+  max-width: var(--container-lg);
+}
 
-.font-light { font-weight: 300; }
-.font-normal { font-weight: 400; }
-.font-medium { font-weight: 500; }
-.font-semibold { font-weight: 600; }
-.font-bold { font-weight: 700; }
+.container-xl {
+  max-width: var(--container-xl);
+}
 
-.text-primary { color: var(--text-primary); }
-.text-secondary { color: var(--text-secondary); }
-.text-body { color: var(--text-body); }
-.text-muted { color: var(--text-muted); }
-.text-inverse { color: var(--text-inverse); }
+.container-2xl {
+  max-width: var(--container-2xl);
+}
 
-.bg-primary { background-color: var(--bg-primary); }
-.bg-secondary { background-color: var(--bg-secondary); }
-.bg-muted { background-color: var(--bg-muted); }
-.bg-inverse { background-color: var(--bg-inverse); }
+.text-center {
+  text-align: center;
+}
 
-.border-primary { border-color: var(--border-primary); }
-.border-light { border-color: var(--border-light); }
-.border-medium { border-color: var(--border-medium); }
-.border-dark { border-color: var(--border-dark); }
+.text-left {
+  text-align: left;
+}
 
-.rounded-sm { border-radius: var(--radius-sm); }
-.rounded-md { border-radius: var(--radius-md); }
-.rounded-lg { border-radius: var(--radius-lg); }
-.rounded-xl { border-radius: var(--radius-xl); }
-.rounded-2xl { border-radius: var(--radius-2xl); }
-.rounded-full { border-radius: var(--radius-full); }
+.text-right {
+  text-align: right;
+}
 
-.shadow-sm { box-shadow: var(--shadow-sm); }
-.shadow-md { box-shadow: var(--shadow-md); }
-.shadow-lg { box-shadow: var(--shadow-lg); }
-.shadow-xl { box-shadow: var(--shadow-xl); }
-.shadow-2xl { box-shadow: var(--shadow-2xl); }
-.shadow-glow { box-shadow: var(--shadow-glow); }
+.font-display {
+  font-family: var(--font-display);
+}
 
-.transition-fast { transition: var(--transition-fast); }
-.transition-default { transition: var(--transition-default); }
-.transition-slow { transition: var(--transition-slow); }
-.transition-spring { transition: var(--transition-spring); }
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-body {
+  color: var(--text-body);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-inverse {
+  color: var(--text-inverse);
+}
+
+.bg-primary {
+  background-color: var(--bg-primary);
+}
+
+.bg-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.bg-muted {
+  background-color: var(--bg-muted);
+}
+
+.bg-inverse {
+  background-color: var(--bg-inverse);
+}
+
+.border-primary {
+  border-color: var(--border-primary);
+}
+
+.border-light {
+  border-color: var(--border-light);
+}
+
+.border-medium {
+  border-color: var(--border-medium);
+}
+
+.border-dark {
+  border-color: var(--border-dark);
+}
+
+.rounded-sm {
+  border-radius: var(--radius-sm);
+}
+
+.rounded-md {
+  border-radius: var(--radius-md);
+}
+
+.rounded-lg {
+  border-radius: var(--radius-lg);
+}
+
+.rounded-xl {
+  border-radius: var(--radius-xl);
+}
+
+.rounded-2xl {
+  border-radius: var(--radius-2xl);
+}
+
+.rounded-full {
+  border-radius: var(--radius-full);
+}
+
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+.shadow-xl {
+  box-shadow: var(--shadow-xl);
+}
+
+.shadow-2xl {
+  box-shadow: var(--shadow-2xl);
+}
+
+.shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+.transition-fast {
+  transition: var(--transition-fast);
+}
+
+.transition-default {
+  transition: var(--transition-default);
+}
+
+.transition-slow {
+  transition: var(--transition-slow);
+}
+
+.transition-spring {
+  transition: var(--transition-spring);
+}
 
 /* Spacing utilities */
-.m-0 { margin: 0; }
-.m-xs { margin: var(--spacing-xs); }
-.m-sm { margin: var(--spacing-sm); }
-.m-md { margin: var(--spacing-md); }
-.m-lg { margin: var(--spacing-lg); }
-.m-xl { margin: var(--spacing-xl); }
+.m-0 {
+  margin: 0;
+}
 
-.p-0 { padding: 0; }
-.p-xs { padding: var(--spacing-xs); }
-.p-sm { padding: var(--spacing-sm); }
-.p-md { padding: var(--spacing-md); }
-.p-lg { padding: var(--spacing-lg); }
-.p-xl { padding: var(--spacing-xl); }
+.m-xs {
+  margin: var(--spacing-xs);
+}
+
+.m-sm {
+  margin: var(--spacing-sm);
+}
+
+.m-md {
+  margin: var(--spacing-md);
+}
+
+.m-lg {
+  margin: var(--spacing-lg);
+}
+
+.m-xl {
+  margin: var(--spacing-xl);
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.p-xs {
+  padding: var(--spacing-xs);
+}
+
+.p-sm {
+  padding: var(--spacing-sm);
+}
+
+.p-md {
+  padding: var(--spacing-md);
+}
+
+.p-lg {
+  padding: var(--spacing-lg);
+}
+
+.p-xl {
+  padding: var(--spacing-xl);
+}
 
 /* Flexbox utilities */
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.flex-row { flex-direction: row; }
-.items-center { align-items: center; }
-.items-start { align-items: flex-start; }
-.items-end { align-items: flex-end; }
-.justify-center { justify-content: center; }
-.justify-start { justify-content: flex-start; }
-.justify-end { justify-content: flex-end; }
-.justify-between { justify-content: space-between; }
-.justify-around { justify-content: space-around; }
+.flex {
+  display: flex;
+}
 
-.grid { display: grid; }
-.inline-block { display: inline-block; }
-.block { display: block; }
-.hidden { display: none; }
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.grid {
+  display: grid;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.block {
+  display: block;
+}
+
+.hidden {
+  display: none;
+}
 
 /* Animation utilities */
 .animate-fade-in {
@@ -722,8 +978,13 @@ textarea::placeholder {
 
 /* Keyframe animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
@@ -731,6 +992,7 @@ textarea::placeholder {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -742,6 +1004,7 @@ textarea::placeholder {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -749,8 +1012,15 @@ textarea::placeholder {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
 }
 
 .animate-pulse {
@@ -773,6 +1043,7 @@ textarea::placeholder {
 }
 
 @media (max-width: 768px) {
+
   .grid-2,
   .grid-3 {
     grid-template-columns: 1fr;
@@ -811,9 +1082,17 @@ textarea::placeholder {
     padding: 0 var(--spacing-sm);
   }
 
-  h1 { font-size: var(--text-4xl); }
-  h2 { font-size: var(--text-3xl); }
-  h3 { font-size: var(--text-2xl); }
+  h1 {
+    font-size: var(--text-4xl);
+  }
+
+  h2 {
+    font-size: var(--text-3xl);
+  }
+
+  h3 {
+    font-size: var(--text-2xl);
+  }
 
   .section {
     padding: var(--spacing-2xl) 0;
@@ -857,6 +1136,7 @@ a:focus {
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
+
   .card,
   .metric {
     border-width: 2px;
@@ -876,6 +1156,7 @@ a:focus {
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
   .card,
   .metric,
   .btn,
@@ -892,6 +1173,7 @@ a:focus {
 
 /* Touch device optimizations */
 @media (hover: none) and (pointer: coarse) {
+
   .btn,
   .metric {
     min-height: 48px;
@@ -942,7 +1224,12 @@ a:focus {
     line-height: 1.5;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     page-break-after: avoid;
   }
 }

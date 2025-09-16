@@ -232,12 +232,13 @@ export const Technology: FC = () => {
     inactive: {
       backgroundColor: '#FFFFFF',
       color: '#000000',
-      borderBottom: '3px solid transparent'
+      borderRadius: 'unset'
     },
     active: {
       backgroundColor: '#f0f0f0',
       color: '#000000',
-      borderBottom: '3px solid #000000'
+      borderRadius: 'unset'
+
     }
   };
 

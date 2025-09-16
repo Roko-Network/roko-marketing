@@ -28,7 +28,7 @@ export const COLORS = {
     body: '#4A5568',        // Body text (9.7:1 contrast)
     tertiary: '#718096',    // Muted text (7.0:1 contrast)
     quaternary: '#A0AEC0',  // Subtle text (4.8:1 contrast)
-    accent: '#0078D4',      // Professional blue links
+    accent: '#000000ff',      // Professional blue links
     inverse: '#FFFFFF'      // White text for dark areas
   },
 
