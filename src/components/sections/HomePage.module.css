@@ -2,9 +2,10 @@
 .homePage {
   position: relative;
   min-height: 100vh;
-  background: #FFFFFF;
+  background: transparent; /* Allow background to show through */
   color: #000000;
   overflow-x: hidden;
+  z-index: 10; /* Ensure content is above fixed background */
 }
 
 /* Progress Bar */

@@ -12,7 +12,7 @@
 
 /* Background Gradient */
 .backgroundGradient {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -34,7 +34,7 @@
 
 /* 3D Scene Container */
 .sceneContainer {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
