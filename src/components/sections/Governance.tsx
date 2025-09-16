@@ -330,6 +330,7 @@ export const Governance: FC = () => {
           <div className={styles.ctaButtons}>
             <motion.button
               className={styles.primaryButton}
+              onClick={() => window.open('https://app.uniswap.org/explore/tokens/ethereum/0x6f222e04f6c53cc688ffb0abe7206aac66a8ff98', '_blank', 'noopener,noreferrer')}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -337,6 +338,7 @@ export const Governance: FC = () => {
             </motion.button>
             <motion.button
               className={styles.secondaryButton}
+              onClick={() => window.open('https://snapshot.org/#/rokonetwork.eth', '_blank', 'noopener,noreferrer')}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
