@@ -40,29 +40,21 @@ export const Navigation: FC<NavigationProps> = memo(({
   // Navigation items configuration
   const navigationItems: NavigationItem[] = [
     {
-      label: 'Technology',
-      href: '/technology',
-      description: 'Temporal blockchain infrastructure'
-    },
-    {
-      label: 'Governance',
-      href: '/governance',
-      description: 'Decentralized decision making'
-    },
-    {
-      label: 'Developers',
-      href: '/developers',
-      description: 'Build on ROKO Network'
-    },
-    {
-      label: 'Ecosystem',
-      href: '/ecosystem',
-      description: 'Partners and integrations'
-    },
-    {
       label: 'Documentation',
-      href: 'https://docs.rokonetwork.com',
-      description: 'Technical documentation',
+      href: 'https://docs.roko.network/',
+      description: 'Technical documentation and guides',
+      external: true
+    },
+    {
+      label: 'DAO Governance',
+      href: 'https://snapshot.org/#/rokonetwork.eth',
+      description: 'Participate in ROKO Network governance',
+      external: true
+    },
+    {
+      label: 'Get ROKO',
+      href: 'https://app.uniswap.org/explore/tokens/ethereum/0x6f222e04f6c53cc688ffb0abe7206aac66a8ff98',
+      description: 'Buy ROKO tokens on Uniswap',
       external: true
     }
   ];
@@ -161,112 +153,41 @@ export const Navigation: FC<NavigationProps> = memo(({
       <motion.nav
         ref={navigationRef}
         className={clsx(styles.mobileNavigation, className)}
-        role="navigation"
-        aria-label="Main navigation"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
+        role="navigation"
+        aria-label="Mobile navigation"
       >
         <ul className={styles.mobileList}>
-          {navigationItems.map((item) => {
-            const isActive = !item.external && location.pathname === item.href;
-            const isExternal = item.external || item.href.startsWith('http');
-
-            return (
-              <motion.li key={item.href} variants={itemVariants}>
-                {isExternal ? (
-                  <a
-                    href={item.href}
-                    className={clsx(styles.mobileLink, {
-                      [styles.active]: isActive
-                    })}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => handleClick(item.href, item.external)}
-                    onKeyDown={(e) => handleKeyDown(e, item.href)}
-                    onFocus={() => setFocusedItem(item.href)}
-                    onBlur={() => setFocusedItem(null)}
-                    aria-describedby={item.description ? `${item.href}-desc` : undefined}
-                  >
-                    <span className={styles.mobileLinkText}>{item.label}</span>
-                    <span className={styles.externalIcon} aria-label="Opens in new tab">
-                      ↗
-                    </span>
-                    {item.description && (
-                      <span
-                        id={`${item.href}-desc`}
-                        className={styles.mobileLinkDescription}
-                      >
-                        {item.description}
-                      </span>
-                    )}
-                  </a>
-                ) : (
-                  <NavLink
-                    to={item.href}
-                    className={({ isActive }) => clsx(styles.mobileLink, {
-                      [styles.active]: isActive
-                    })}
-                    onClick={() => handleClick(item.href, item.external)}
-                    onFocus={() => setFocusedItem(item.href)}
-                    onBlur={() => setFocusedItem(null)}
-                    aria-describedby={item.description ? `${item.href}-desc` : undefined}
-                  >
-                    <span className={styles.mobileLinkText}>{item.label}</span>
-                    {item.description && (
-                      <span
-                        id={`${item.href}-desc`}
-                        className={styles.mobileLinkDescription}
-                      >
-                        {item.description}
-                      </span>
-                    )}
-                  </NavLink>
-                )}
-              </motion.li>
-            );
-          })}
-        </ul>
-      </motion.nav>
-    );
-  }
-
-  return (
-    <nav
-      ref={navigationRef}
-      className={clsx(styles.desktopNavigation, className)}
-      role="navigation"
-      aria-label="Main navigation"
-    >
-      <ul className={styles.desktopList}>
-        {navigationItems.map((item) => {
-          const isActive = !item.external && location.pathname === item.href;
-          const isExternal = item.external || item.href.startsWith('http');
-
-          return (
-            <li key={item.href} className={styles.desktopItem}>
-              {isExternal ? (
+          {navigationItems.map((item) => (
+            <motion.li key={item.href} variants={itemVariants}>
+              {item.external ? (
                 <a
                   href={item.href}
-                  className={clsx(styles.desktopLink, {
-                    [styles.active]: isActive,
-                    [styles.focused]: focusedItem === item.href
-                  })}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className={styles.mobileLink}
                   onClick={() => handleClick(item.href, item.external)}
                   onKeyDown={(e) => handleKeyDown(e, item.href)}
                   onFocus={() => setFocusedItem(item.href)}
                   onBlur={() => setFocusedItem(null)}
-                  aria-describedby={item.description ? `${item.href}-desc` : undefined}
+                  aria-describedby={item.description ? `${item.href.replace(/[^a-zA-Z0-9]/g, '')}-desc` : undefined}
                 >
-                  {item.label}
-                  <span className={styles.externalIcon} aria-label="Opens in new tab">
-                    ↗
-                  </span>
+                  <div className={styles.mobileLinkText}>
+                    {item.label}
+                    <span className={styles.externalIcon} aria-label="Opens in new tab">
+                      ↗
+                    </span>
+                  </div>
+                  {item.description && (
+                    <div className={styles.mobileLinkDescription}>
+                      {item.description}
+                    </div>
+                  )}
                   {item.description && (
                     <span
-                      id={`${item.href}-desc`}
+                      id={`${item.href.replace(/[^a-zA-Z0-9]/g, '')}-desc`}
                       className={styles.srOnly}
                     >
                       {item.description}
@@ -276,19 +197,22 @@ export const Navigation: FC<NavigationProps> = memo(({
               ) : (
                 <NavLink
                   to={item.href}
-                  className={({ isActive }) => clsx(styles.desktopLink, {
-                    [styles.active]: isActive,
-                    [styles.focused]: focusedItem === item.href
-                  })}
+                  className={({ isActive }) =>
+                    clsx(styles.mobileLink, {
+                      [styles.active]: isActive,
+                      [styles.focused]: focusedItem === item.href
+                    })
+                  }
                   onClick={() => handleClick(item.href, item.external)}
+                  onKeyDown={(e) => handleKeyDown(e, item.href)}
                   onFocus={() => setFocusedItem(item.href)}
                   onBlur={() => setFocusedItem(null)}
-                  aria-describedby={item.description ? `${item.href}-desc` : undefined}
+                  aria-describedby={item.description ? `${item.href.replace(/[^a-zA-Z0-9]/g, '')}-desc` : undefined}
                 >
                   {item.label}
                   {item.description && (
                     <span
-                      id={`${item.href}-desc`}
+                      id={`${item.href.replace(/[^a-zA-Z0-9]/g, '')}-desc`}
                       className={styles.srOnly}
                     >
                       {item.description}
@@ -296,23 +220,97 @@ export const Navigation: FC<NavigationProps> = memo(({
                   )}
                 </NavLink>
               )}
-            </li>
-          );
-        })}
+            </motion.li>
+          ))}
+        </ul>
+      </motion.nav>
+    );
+  }
+
+  // Desktop navigation
+  return (
+    <motion.nav
+      ref={navigationRef}
+      className={clsx(styles.desktopNavigation, className)}
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <ul className={styles.desktopList}>
+        {navigationItems.map((item) => (
+          <motion.li key={item.href} variants={itemVariants}>
+            {item.external ? (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.desktopLink}
+                onClick={() => handleClick(item.href, item.external)}
+                onKeyDown={(e) => handleKeyDown(e, item.href)}
+                onFocus={() => setFocusedItem(item.href)}
+                onBlur={() => setFocusedItem(null)}
+                aria-describedby={item.description ? `${item.href.replace(/[^a-zA-Z0-9]/g, '')}-desc` : undefined}
+              >
+                {item.label}
+                <span className={styles.externalIcon} aria-label="Opens in new tab">
+                  ↗
+                </span>
+                {item.description && (
+                  <span
+                    id={`${item.href.replace(/[^a-zA-Z0-9]/g, '')}-desc`}
+                    className={styles.srOnly}
+                  >
+                    {item.description}
+                  </span>
+                )}
+              </a>
+            ) : (
+              <NavLink
+                to={item.href}
+                className={({ isActive }) =>
+                  clsx(styles.desktopLink, {
+                    [styles.active]: isActive,
+                    [styles.focused]: focusedItem === item.href
+                  })
+                }
+                onClick={() => handleClick(item.href, item.external)}
+                onKeyDown={(e) => handleKeyDown(e, item.href)}
+                onFocus={() => setFocusedItem(item.href)}
+                onBlur={() => setFocusedItem(null)}
+                aria-describedby={item.description ? `${item.href.replace(/[^a-zA-Z0-9]/g, '')}-desc` : undefined}
+              >
+                {item.label}
+                {item.description && (
+                  <span
+                    id={`${item.href.replace(/[^a-zA-Z0-9]/g, '')}-desc`}
+                    className={styles.srOnly}
+                  >
+                    {item.description}
+                  </span>
+                )}
+              </NavLink>
+            )}
+          </motion.li>
+        ))}
       </ul>
 
       {/* Active indicator for desktop */}
-      <motion.div
-        className={styles.activeIndicator}
-        variants={indicatorVariants}
-        initial="initial"
-        animate="animate"
-        style={{
-          width: activeIndicator.width,
-          left: activeIndicator.left,
-        }}
-      />
-    </nav>
+      {activeIndicator.width > 0 && (
+        <motion.div
+          className={styles.activeIndicator}
+          style={{
+            width: activeIndicator.width,
+            left: activeIndicator.left
+          }}
+          variants={indicatorVariants}
+          initial="initial"
+          animate="animate"
+          layout
+        />
+      )}
+    </motion.nav>
   );
 });
 

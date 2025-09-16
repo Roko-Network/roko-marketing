@@ -80,7 +80,7 @@ export const HeroSection: React.FC<HeroSectionProps> = memo(({ navigate, onRende
           className={styles.subheadline}
           variants={itemVariants}
         >
-          Build time-sensitive blockchain applications with nanosecond precision.
+          Build time-sensitive blockchain applications with hardware-grade timing infrastructure.
           IEEE 1588 PTP-grade synchronization for the next generation of Web3.
         </motion.p>
 

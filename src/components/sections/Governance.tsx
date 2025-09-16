@@ -4,24 +4,19 @@ import { useInView } from 'react-intersection-observer';
 import {
   BanknotesIcon,
   UsersIcon,
-  DocumentTextIcon,
   ChartBarIcon,
-  ShieldCheckIcon,
   ClockIcon,
   CurrencyDollarIcon,
   TrophyIcon
+  // DocumentTextIcon, ShieldCheckIcon removed - Issues #13, #15
 } from '@heroicons/react/24/outline';
 import styles from './Governance.module.css';
 
 interface DAOStats {
   totalSupply: string;
-  stakedTokens: string;
-  stakingApy: string;
-  activeValidators: string;
   totalHolders: string;
-  treasuryValue: string;
   avgVotingPower: string;
-  proposalsPassed: string;
+  // Staking, validator, and treasury data removed
 }
 
 interface Proposal {
@@ -36,22 +31,13 @@ interface Proposal {
   category: 'treasury' | 'governance' | 'technical' | 'community';
 }
 
-interface TreasuryAllocation {
-  category: string;
-  amount: string;
-  percentage: number;
-  color: string;
-}
+// TreasuryAllocation interface removed - Issue #14
 
 const daoStats: DAOStats = {
   totalSupply: '1,000,000,000',
-  stakedTokens: '450,000,000',
-  stakingApy: '12.5%',
-  activeValidators: '1,247',
   totalHolders: '89,432',
-  treasuryValue: '$45.2M',
-  avgVotingPower: '2.8%',
-  proposalsPassed: '127'
+  avgVotingPower: '2.8%'
+  // Staking, validator, and treasury data removed
 };
 
 const mockProposals: Proposal[] = [
@@ -90,13 +76,7 @@ const mockProposals: Proposal[] = [
   }
 ];
 
-const treasuryAllocations: TreasuryAllocation[] = [
-  { category: 'Development', amount: '$18.1M', percentage: 40, color: '#00d4aa' },
-  { category: 'Operations', amount: '$11.3M', percentage: 25, color: '#BAC0CC' },
-  { category: 'Community Grants', amount: '$9.0M', percentage: 20, color: '#BCC1D1' },
-  { category: 'Marketing', amount: '$4.5M', percentage: 10, color: '#D9DBE3' },
-  { category: 'Emergency Fund', amount: '$2.3M', percentage: 5, color: '#666666' }
-];
+// Treasury allocations data removed - Issue #14
 
 export const Governance: FC = () => {
   const [ref, inView] = useInView({
@@ -105,7 +85,7 @@ export const Governance: FC = () => {
   });
 
   const [selectedProposal, setSelectedProposal] = useState<string | null>(null);
-  const [showStakingModal, setShowStakingModal] = useState(false);
+  // Staking modal state removed - Issue #8
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -207,18 +187,8 @@ export const Governance: FC = () => {
               <ChartBarIcon className={styles.icon} />
             </div>
             <div className={styles.statContent}>
-              <div className={styles.statValue}>{daoStats.stakedTokens}</div>
-              <div className={styles.statLabel}>Staked Tokens</div>
-            </div>
-          </motion.div>
-
-          <motion.div className={styles.statCard} variants={itemVariants}>
-            <div className={styles.statIcon}>
-              <TrophyIcon className={styles.icon} />
-            </div>
-            <div className={styles.statContent}>
-              <div className={styles.statValue}>{daoStats.stakingApy}</div>
-              <div className={styles.statLabel}>Staking APY</div>
+              <div className={styles.statValue}>{daoStats.avgVotingPower}</div>
+              <div className={styles.statLabel}>Avg Voting Power</div>
             </div>
           </motion.div>
 
@@ -335,93 +305,12 @@ export const Governance: FC = () => {
             </div>
           </motion.div>
 
-          {/* Staking & Treasury Section */}
+          {/* Sidebar Section - Staking & Treasury removed */}
           <motion.div className={styles.sidebarSection} variants={itemVariants}>
-            {/* Staking Interface */}
-            <div className={styles.stakingCard}>
-              <div className={styles.cardHeader}>
-                <h3>Stake ROKO</h3>
-                <p>Earn rewards and voting power</p>
-              </div>
-
-              <div className={styles.stakingStats}>
-                <div className={styles.stakingStat}>
-                  <span className={styles.label}>Your Balance</span>
-                  <span className={styles.value}>0 ROKO</span>
-                </div>
-                <div className={styles.stakingStat}>
-                  <span className={styles.label}>Staked Amount</span>
-                  <span className={styles.value}>0 pwROKO</span>
-                </div>
-                <div className={styles.stakingStat}>
-                  <span className={styles.label}>Voting Power</span>
-                  <span className={styles.value}>0%</span>
-                </div>
-              </div>
-
-              <button
-                className={styles.stakeButton}
-                onClick={() => setShowStakingModal(true)}
-              >
-                Connect Wallet to Stake
-              </button>
-            </div>
-
-            {/* Treasury Allocation */}
-            <div className={styles.treasuryCard}>
-              <div className={styles.cardHeader}>
-                <h3>Treasury</h3>
-                <p>Current allocation: {daoStats.treasuryValue}</p>
-              </div>
-
-              <div className={styles.treasuryChart}>
-                {treasuryAllocations.map((allocation, index) => (
-                  <div key={allocation.category} className={styles.allocationItem}>
-                    <div className={styles.allocationBar}>
-                      <motion.div
-                        className={styles.allocationFill}
-                        style={{ backgroundColor: allocation.color }}
-                        initial={{ width: 0 }}
-                        animate={inView ? { width: `${allocation.percentage}%` } : { width: 0 }}
-                        transition={{ duration: 1, delay: index * 0.1 }}
-                      />
-                    </div>
-                    <div className={styles.allocationLabel}>
-                      <span className={styles.category}>{allocation.category}</span>
-                      <span className={styles.amount}>{allocation.amount}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Validator Stats */}
-            <div className={styles.validatorCard}>
-              <div className={styles.cardHeader}>
-                <h3>Validator Network</h3>
-                <p>Decentralized temporal consensus</p>
-              </div>
-
-              <div className={styles.validatorStats}>
-                <div className={styles.validatorStat}>
-                  <ShieldCheckIcon className={styles.validatorIcon} />
-                  <div>
-                    <div className={styles.statNumber}>{daoStats.activeValidators}</div>
-                    <div className={styles.statLabel}>Active Validators</div>
-                  </div>
-                </div>
-                <div className={styles.validatorStat}>
-                  <DocumentTextIcon className={styles.validatorIcon} />
-                  <div>
-                    <div className={styles.statNumber}>{daoStats.proposalsPassed}</div>
-                    <div className={styles.statLabel}>Proposals Passed</div>
-                  </div>
-                </div>
-              </div>
-
-              <button className={styles.validatorButton}>
-                Become a Validator
-              </button>
+            <div className={styles.placeholderContent}>
+              <p className={styles.placeholderText}>
+                Additional governance features coming soon...
+              </p>
             </div>
           </motion.div>
         </motion.div>
@@ -436,7 +325,7 @@ export const Governance: FC = () => {
           <h3>Join the ROKO DAO</h3>
           <p>
             Become part of the decentralized governance that shapes the future of temporal blockchain.
-            Stake your ROKO tokens to earn voting power and help guide network development.
+            Join the community to help guide network development.
           </p>
           <div className={styles.ctaButtons}>
             <motion.button

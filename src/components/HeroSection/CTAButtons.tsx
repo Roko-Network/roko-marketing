@@ -97,14 +97,7 @@ export const CTAButtons: React.FC<CTAButtonsProps> = memo(({ onNavigate }) => {
           Join DAO Governance
         </button>
         
-        <button
-          className={styles.linkButton}
-          onClick={() => onNavigate('/staking')}
-          type="button"
-        >
-          <span className={styles.linkIcon}>💎</span>
-          Stake pwROKO
-        </button>
+        {/* Staking button removed - Issue #8 */}
       </motion.div>
     </motion.div>
   );

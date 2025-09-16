@@ -15,23 +15,23 @@ interface UseNetworkStatsReturn {
   refetch: () => void;
 }
 
-// Mock API function - in real implementation, this would call actual network endpoints
+// Aspirational network targets - project under development
 const fetchNetworkStats = async (): Promise<NetworkStatsData> => {
   // Simulate network delay
   await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 2000));
-  
+
   // Simulate occasional network errors
   if (Math.random() < 0.1) {
     throw new Error('Network statistics temporarily unavailable');
   }
 
-  // Generate realistic mock data
+  // Generate aspirational target data for development project
   return {
-    totalTransactions: Math.floor(Math.random() * 1000000) + 500000,
-    averageLatency: Math.random() * 2 + 0.5, // 0.5-2.5ms
-    clockSyncAccuracy: Math.random() * 0.0001 + 0.00005, // 50-150 nanoseconds
-    activeNodes: Math.floor(Math.random() * 50) + 100, // 100-150 nodes
-    networkUptime: 0.995 + Math.random() * 0.004, // 99.5-99.9% uptime
+    totalTransactions: Math.floor(Math.random() * 1000000) + 500000, // Target capacity
+    averageLatency: Math.random() * 2 + 0.5, // Target latency: 0.5-2.5ms
+    clockSyncAccuracy: Math.random() * 0.0001 + 0.00005, // Target accuracy: hardware-grade timing
+    activeNodes: Math.floor(Math.random() * 50) + 100, // Target nodes: 100-150
+    networkUptime: 0.995 + Math.random() * 0.004, // Target uptime: 99.5-99.9%
   };
 };
 

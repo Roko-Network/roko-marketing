@@ -45,41 +45,13 @@ const LazyPageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) 
   </ErrorBoundary>
 );
 
-// Route configuration for easy management
+// Route configuration for easy management - keeping only home
 export const routeConfig: RouteConfig[] = [
   {
     path: '/',
     element: <HomePage />,
     label: 'Home',
     description: 'ROKO Network - The Temporal Layer for Web3'
-  },
-  {
-    path: '/technology',
-    element: <TechnologyPage />,
-    label: 'Technology',
-    description: 'Temporal blockchain infrastructure with nanosecond precision',
-    featured: true
-  },
-  {
-    path: '/governance',
-    element: <GovernancePage />,
-    label: 'Governance',
-    description: 'Decentralized decision making and proposal system',
-    featured: true
-  },
-  {
-    path: '/developers',
-    element: <DevelopersPage />,
-    label: 'Developers',
-    description: 'Build time-sensitive dApps on ROKO Network',
-    featured: true
-  },
-  {
-    path: '/ecosystem',
-    element: <EcosystemPage />,
-    label: 'Ecosystem',
-    description: 'Partners, integrations, and community projects',
-    featured: true
   }
 ];
 
@@ -103,171 +75,40 @@ export const router = createBrowserRouter([
           </LazyPageWrapper>
         )
       },
-      // Main navigation routes
-      {
-        path: 'technology',
-        element: (
-          <LazyPageWrapper>
-            <TechnologyPage />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'governance',
-        element: (
-          <LazyPageWrapper>
-            <GovernancePage />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'developers',
-        element: (
-          <LazyPageWrapper>
-            <DevelopersPage />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'ecosystem',
-        element: (
-          <LazyPageWrapper>
-            <EcosystemPage />
-          </LazyPageWrapper>
-        )
-      },
-      // Technology sub-routes
-      {
-        path: 'technology/temporal-layer',
-        element: (
-          <LazyPageWrapper>
-            <TechnologyPage section="temporal-layer" />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'technology/consensus',
-        element: (
-          <LazyPageWrapper>
-            <TechnologyPage section="consensus" />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'technology/architecture',
-        element: (
-          <LazyPageWrapper>
-            <TechnologyPage section="architecture" />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'technology/security',
-        element: (
-          <LazyPageWrapper>
-            <TechnologyPage section="security" />
-          </LazyPageWrapper>
-        )
-      },
-      // Developers sub-routes
-      {
-        path: 'developers/docs',
-        element: (
-          <LazyPageWrapper>
-            <DevelopersPage section="docs" />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'developers/api',
-        element: (
-          <LazyPageWrapper>
-            <DevelopersPage section="api" />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'developers/sdks',
-        element: (
-          <LazyPageWrapper>
-            <DevelopersPage section="sdks" />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'developers/tutorials',
-        element: (
-          <LazyPageWrapper>
-            <DevelopersPage section="tutorials" />
-          </LazyPageWrapper>
-        )
-      },
-      // Governance sub-routes
-      {
-        path: 'governance/proposals',
-        element: (
-          <LazyPageWrapper>
-            <GovernancePage section="proposals" />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'governance/voting',
-        element: (
-          <LazyPageWrapper>
-            <GovernancePage section="voting" />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'governance/validators',
-        element: (
-          <LazyPageWrapper>
-            <GovernancePage section="validators" />
-          </LazyPageWrapper>
-        )
-      },
-      // Ecosystem sub-routes
-      {
-        path: 'ecosystem/partners',
-        element: (
-          <LazyPageWrapper>
-            <EcosystemPage section="partners" />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'ecosystem/integrations',
-        element: (
-          <LazyPageWrapper>
-            <EcosystemPage section="integrations" />
-          </LazyPageWrapper>
-        )
-      },
-      {
-        path: 'ecosystem/community',
-        element: (
-          <LazyPageWrapper>
-            <EcosystemPage section="community" />
-          </LazyPageWrapper>
-        )
-      },
-      // Redirects for legacy routes
+      // No additional main navigation routes - home only
+      // No sub-routes needed
+      // Redirects for legacy routes - all redirect to home
       {
         path: 'home',
         element: <Navigate to="/" replace />
       },
       {
         path: 'tech',
-        element: <Navigate to="/technology" replace />
+        element: <Navigate to="/" replace />
+      },
+      {
+        path: 'technology',
+        element: <Navigate to="/" replace />
+      },
+      {
+        path: 'governance',
+        element: <Navigate to="/" replace />
+      },
+      {
+        path: 'developers',
+        element: <Navigate to="/" replace />
+      },
+      {
+        path: 'ecosystem',
+        element: <Navigate to="/" replace />
       },
       {
         path: 'dev',
-        element: <Navigate to="/developers" replace />
+        element: <Navigate to="/" replace />
       },
       {
         path: 'docs',
-        element: <Navigate to="/developers/docs" replace />
+        element: <Navigate to="/" replace />
       },
       // Company routes
       {
@@ -338,7 +179,7 @@ export const getFeaturedRoutes = (): RouteConfig[] => {
 };
 
 export const getMainNavigationRoutes = (): RouteConfig[] => {
-  return routeConfig.filter(route => route.path !== '/' && route.featured);
+  return []; // No navigation routes - home only
 };
 
 // Export types

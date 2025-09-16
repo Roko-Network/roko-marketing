@@ -41,33 +41,11 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
   // Footer navigation sections
   const footerSections: FooterSection[] = [
     {
-      title: 'Product',
+      title: 'Resources',
       links: [
-        { label: 'Technology', href: '/technology', description: 'Temporal blockchain infrastructure' },
-        { label: 'Network', href: '/network', description: 'Validator network overview' },
-        { label: 'Security', href: '/security', description: 'Protocol security features' },
-        { label: 'Performance', href: '/performance', description: 'Nanosecond precision metrics' },
-        { label: 'Roadmap', href: '/roadmap', description: 'Development timeline' }
-      ]
-    },
-    {
-      title: 'Developers',
-      links: [
-        { label: 'Documentation', href: 'https://docs.rokonetwork.com', external: true, description: 'Technical documentation' },
-        { label: 'API Reference', href: 'https://api.rokonetwork.com', external: true, description: 'API documentation' },
-        { label: 'SDKs', href: '/developers/sdks', description: 'Software development kits' },
-        { label: 'Tutorials', href: '/developers/tutorials', description: 'Step-by-step guides' },
-        { label: 'GitHub', href: 'https://github.com/rokonetwork', external: true, description: 'Open source repositories' }
-      ]
-    },
-    {
-      title: 'Community',
-      links: [
-        { label: 'Discord', href: 'https://discord.gg/rokonetwork', external: true, description: 'Join our Discord server' },
-        { label: 'Twitter', href: 'https://twitter.com/rokonetwork', external: true, description: 'Follow us on Twitter' },
-        { label: 'Telegram', href: 'https://t.me/rokonetwork', external: true, description: 'Join Telegram community' },
-        { label: 'Forum', href: 'https://forum.rokonetwork.com', external: true, description: 'Community discussions' },
-        { label: 'Blog', href: '/blog', description: 'Latest news and updates' }
+        { label: 'Documentation', href: 'https://docs.roko.network/', external: true, description: 'Technical documentation and guides' },
+        { label: 'DAO Governance', href: 'https://snapshot.org/#/rokonetwork.eth', external: true, description: 'Participate in ROKO Network governance' },
+        { label: 'Get ROKO Tokens', href: 'https://app.uniswap.org/explore/tokens/ethereum/0x6f222e04f6c53cc688ffb0abe7206aac66a8ff98', external: true, description: 'Buy ROKO tokens on Uniswap' }
       ]
     },
     {
@@ -107,6 +85,12 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
       href: 'https://github.com/rokonetwork',
       icon: '🐙',
       label: 'ROKO Network on GitHub'
+    },
+    {
+      platform: 'docs',
+      href: 'https://docs.roko.network/',
+      icon: '📚',
+      label: 'ROKO Network Documentation'
     },
     {
       platform: 'medium',
@@ -193,7 +177,7 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
               The Temporal Layer for Web3
               <br />
               <span className={styles.precisionTagline}>
-                Nanosecond Precision. Infinite Possibilities.
+                Hardware timing measurement. Infinite Possibilities.
               </span>
             </p>
 
@@ -358,7 +342,7 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
 
             <div className={styles.buildInfo}>
               <p className={styles.buildText}>
-                Built with nanosecond precision for the temporal Web3 era
+                Built with hardware-grade timing infrastructure for the temporal Web3 era
               </p>
             </div>
           </div>

@@ -16,33 +16,25 @@ import styles from './Ecosystem.module.css';
 interface Partner {
   id: string;
   name: string;
-  category: 'enterprise' | 'defi' | 'infrastructure' | 'dapp';
+  category: 'partners' | 'service-providers' | 'built-on';
   description: string;
   logo: string;
   website?: string;
   featured?: boolean;
 }
 
-interface DApp {
+interface Solution {
   id: string;
   name: string;
   description: string;
-  category: 'defi' | 'gaming' | 'nft' | 'infrastructure' | 'social';
-  users: string;
-  tvl?: string;
+  category: 'dapps' | 'infrastructure-tooling';
+  type?: string;
   image: string;
-  status: 'live' | 'beta' | 'coming-soon';
+  status: 'live' | 'beta' | 'coming-soon' | 'development';
+  website?: string;
 }
 
-interface Testimonial {
-  id: string;
-  author: string;
-  role: string;
-  company: string;
-  content: string;
-  avatar: string;
-  rating: number;
-}
+// Testimonial interface removed - Issue #7
 
 interface Integration {
   name: string;
@@ -52,152 +44,159 @@ interface Integration {
 }
 
 const partners: Partner[] = [
+  // Partners
   {
-    id: 'temporal-tech',
-    name: 'Temporal Technologies',
-    category: 'enterprise',
-    description: 'Enterprise blockchain solutions with nanosecond precision',
-    logo: '/logos/temporal-tech.svg',
-    website: 'https://temporal.tech',
+    id: 'fractional-robots',
+    name: 'Fractional Robots',
+    category: 'partners',
+    description: 'Specialized solutions for distributed systems and agent coordination',
+    logo: '/logos/fractional-robots.svg',
+    website: 'https://fractionalrobots.com',
     featured: true
   },
   {
-    id: 'chainlink',
-    name: 'Chainlink',
-    category: 'infrastructure',
-    description: 'Oracle network providing external data to ROKO smart contracts',
-    logo: '/logos/chainlink.svg',
-    website: 'https://chainlink.network',
+    id: 'exa-group',
+    name: 'Exa Group',
+    category: 'partners',
+    description: 'Token engineering and DAO strategy specialists improving capital efficiency',
+    logo: '/logos/exa-group.svg',
+    website: 'https://www.exagroup.xyz',
     featured: true
   },
   {
-    id: 'finance-corp',
-    name: 'Global Finance Corp',
-    category: 'enterprise',
-    description: 'Traditional finance embracing temporal blockchain technology',
-    logo: '/logos/finance-corp.svg',
-    featured: false
-  },
-  {
-    id: 'defi-protocol',
-    name: 'TemporalDeFi',
-    category: 'defi',
-    description: 'Precision lending and borrowing with time-based liquidations',
-    logo: '/logos/temporal-defi.svg',
+    id: 'selfient',
+    name: 'Selfient',
+    category: 'partners',
+    description: 'EVM blockchain technology company providing no-code smart contract creation tools',
+    logo: '/logos/selfient.svg',
+    website: 'https://www.selfient.xyz',
     featured: true
   },
   {
-    id: 'iot-systems',
-    name: 'IoT Systems Inc',
-    category: 'infrastructure',
-    description: 'Industrial IoT systems requiring nanosecond synchronization',
-    logo: '/logos/iot-systems.svg',
+    id: 'unforkable',
+    name: 'Unforkable',
+    category: 'partners',
+    description: 'DeFi engineering specialists building secure smart contracts and full-stack solutions',
+    logo: '/logos/unforkable.svg',
+    website: 'https://unforkable.co',
     featured: false
   },
   {
-    id: 'gaming-studio',
-    name: 'Temporal Gaming',
-    category: 'dapp',
-    description: 'Real-time multiplayer games with precise timing mechanics',
-    logo: '/logos/temporal-gaming.svg',
+    id: 'trustid',
+    name: 'TrustID',
+    category: 'partners',
+    description: 'Identity verification platform providing portable, privacy-safe digital identity',
+    logo: '/logos/trustid.svg',
+    website: 'https://www.trustid.life/business',
     featured: false
+  },
+  // Service Providers
+  {
+    id: 'time-beat',
+    name: 'Time Beat',
+    category: 'service-providers',
+    description: 'IEEE-1588 PTP & NTP precision time synchronization solutions for critical systems',
+    logo: '/logos/time-beat.svg',
+    website: 'https://www.timebeat.app',
+    featured: true
+  },
+  {
+    id: 'iskout',
+    name: 'Iskout',
+    category: 'service-providers',
+    description: 'Rapid precision hiring and talent acquisition specialists for tech companies',
+    logo: '/logos/iskout.svg',
+    website: 'https://www.iskout.com',
+    featured: false
+  },
+  // Built on
+  {
+    id: 'ocp-tap',
+    name: 'OCP TAP',
+    category: 'built-on',
+    description: 'Open Compute Project Time Appliances providing IEEE 1588 PTP timing infrastructure',
+    logo: '/logos/ocp-tap.svg',
+    website: 'https://www.opencompute.org/projects/time-appliances-project-tap',
+    featured: true
+  },
+  {
+    id: 'polkadot',
+    name: 'Polkadot',
+    category: 'built-on',
+    description: 'Multichain platform enabling blockchain interoperability and scalable applications',
+    logo: '/logos/polkadot.svg',
+    website: 'https://polkadot.com/platform/sdk',
+    featured: true
   }
 ];
 
-const featuredDApps: DApp[] = [
+const featuredSolutions: Solution[] = [
+  // dApps
   {
-    id: 'temporal-dex',
-    name: 'TemporalDEX',
-    description: 'High-frequency trading with nanosecond execution guarantees',
-    category: 'defi',
-    users: '12.5K',
-    tvl: '$45.2M',
-    image: '/images/temporal-dex.webp',
-    status: 'live'
+    id: 'matric-studio',
+    name: 'Matric Studio',
+    description: 'Application framework for developing orchestration pipelines to coordinate systems and agentic models',
+    category: 'dapps',
+    type: 'Application Framework',
+    image: '/images/matric-studio.webp',
+    status: 'development'
   },
   {
-    id: 'sync-nft',
-    name: 'SyncNFT',
-    description: 'Time-synchronized NFT marketplace for temporal collectibles',
-    category: 'nft',
-    users: '8.9K',
-    image: '/images/sync-nft.webp',
-    status: 'live'
+    id: 'agentic-chat',
+    name: 'Agentic Chat',
+    description: 'Interactive AI chat platform designed for Jessie/Robit collaborative work environments',
+    category: 'dapps',
+    type: 'AI Platform',
+    image: '/images/agentic-chat.webp',
+    status: 'development'
   },
+  // Infrastructure Tooling
   {
-    id: 'precision-oracle',
-    name: 'PrecisionOracle',
-    description: 'Real-time data feeds with temporal accuracy validation',
-    category: 'infrastructure',
-    users: '156',
-    image: '/images/precision-oracle.webp',
+    id: 'time-at-the-edge',
+    name: 'Time at the Edge Node Platform',
+    description: 'Distributed timing infrastructure providing nanosecond precision at network edge nodes',
+    category: 'infrastructure-tooling',
+    type: 'Timing Infrastructure',
+    image: '/images/time-at-the-edge.webp',
     status: 'beta'
   },
   {
-    id: 'temporal-quest',
-    name: 'TemporalQuest',
-    description: 'MMO RPG with real-time synchronized gameplay',
-    category: 'gaming',
-    users: '25.1K',
-    image: '/images/temporal-quest.webp',
-    status: 'coming-soon'
+    id: 'the-egg',
+    name: 'The Egg',
+    description: 'Advanced robotic coordination system enabling seamless multi-agent orchestration and task execution',
+    category: 'infrastructure-tooling',
+    type: 'Robit Project',
+    image: '/images/the-egg.webp',
+    status: 'development'
   }
 ];
 
-const testimonials: Testimonial[] = [
-  {
-    id: 'sarah-chen',
-    author: 'Sarah Chen',
-    role: 'CTO',
-    company: 'Temporal Technologies',
-    content: 'ROKO\'s nanosecond precision has revolutionized our real-time trading infrastructure. The reliability and accuracy are unmatched in the blockchain space.',
-    avatar: '/avatars/sarah-chen.jpg',
-    rating: 5
-  },
-  {
-    id: 'marcus-rodriguez',
-    author: 'Marcus Rodriguez',
-    role: 'Lead Developer',
-    company: 'TemporalDeFi',
-    content: 'Building on ROKO has been incredible. The temporal guarantees allow us to create DeFi products that were previously impossible on other chains.',
-    avatar: '/avatars/marcus-rodriguez.jpg',
-    rating: 5
-  },
-  {
-    id: 'alexandra-kim',
-    author: 'Alexandra Kim',
-    role: 'Head of Infrastructure',
-    company: 'IoT Systems Inc',
-    content: 'Our industrial IoT systems require precise timing. ROKO delivers the nanosecond accuracy we need for critical operations.',
-    avatar: '/avatars/alexandra-kim.jpg',
-    rating: 5
-  }
-];
+// Testimonials removed - Issue #7
 
 const integrations: Integration[] = [
   {
     name: 'Enterprise APIs',
     description: 'RESTful APIs for enterprise integration',
     icon: BuildingOfficeIcon,
-    status: 'live'
+    status: 'coming-soon'
   },
   {
     name: 'Smart Contracts',
     description: 'Temporal-aware contract development',
     icon: CubeIcon,
-    status: 'live'
+    status: 'coming-soon'
   },
   {
     name: 'Real-time Oracles',
     description: 'Sub-millisecond data feeds',
     icon: ClockIcon,
-    status: 'beta'
+    status: 'coming-soon'
   },
   {
     name: 'Payment Rails',
     description: 'Instant settlement infrastructure',
     icon: BanknotesIcon,
-    status: 'live'
+    status: 'coming-soon'
   }
 ];
 
@@ -207,8 +206,8 @@ export const Ecosystem: FC = () => {
     triggerOnce: true
   });
 
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'enterprise' | 'defi' | 'infrastructure' | 'dapp'>('all');
-  const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'partners' | 'service-providers' | 'built-on'>('all');
+  // Testimonial state removed - Issue #7
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -248,6 +247,7 @@ export const Ecosystem: FC = () => {
       case 'live': return '#00d4aa';
       case 'beta': return '#f59e0b';
       case 'coming-soon': return '#BAC0CC';
+      case 'development': return '#9333ea';
       default: return '#BAC0CC';
     }
   };
@@ -257,6 +257,7 @@ export const Ecosystem: FC = () => {
       case 'live': return 'Live';
       case 'beta': return 'Beta';
       case 'coming-soon': return 'Coming Soon';
+      case 'development': return 'In Development';
       default: return 'Unknown';
     }
   };
@@ -295,19 +296,26 @@ export const Ecosystem: FC = () => {
           animate={inView ? 'visible' : 'hidden'}
         >
           <motion.div className={styles.sectionHeader} variants={itemVariants}>
-            <h3>Trusted Partners</h3>
-            <p>Leading organizations building on ROKO Network</p>
+            <h3>Ecosystem Partners</h3>
+            <p>Organizations collaborating to build the future of precision timing technology</p>
           </motion.div>
 
           {/* Category Filters */}
           <motion.div className={styles.categoryFilters} variants={itemVariants}>
-            {(['all', 'enterprise', 'defi', 'infrastructure', 'dapp'] as const).map((category) => (
+            {(['all', 'partners', 'service-providers', 'built-on'] as const).map((category) => (
               <button
                 key={category}
                 className={`${styles.filterButton} ${selectedCategory === category ? styles.active : ''}`}
                 onClick={() => setSelectedCategory(category)}
               >
-                {category === 'all' ? 'All' : category.charAt(0).toUpperCase() + category.slice(1)}
+                {category === 'all'
+                  ? 'All'
+                  : category === 'service-providers'
+                  ? 'Service Providers'
+                  : category === 'built-on'
+                  ? 'Built On'
+                  : 'Partners'
+                }
               </button>
             ))}
           </motion.div>
@@ -324,7 +332,9 @@ export const Ecosystem: FC = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className={styles.partnerLogo}>
-                  <img src={partner.logo} alt={`${partner.name} logo`} />
+                  <div className={styles.logoPlaceholder}>
+                    {partner.name.charAt(0)}
+                  </div>
                 </div>
                 <div className={styles.partnerContent}>
                   <h4 className={styles.partnerName}>{partner.name}</h4>
@@ -353,111 +363,68 @@ export const Ecosystem: FC = () => {
           </motion.div>
         </motion.div>
 
-        {/* Featured dApps */}
+        {/* Featured Solutions */}
         <motion.div
-          className={styles.dappsSection}
+          className={styles.solutionsSection}
           variants={containerVariants}
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
         >
           <motion.div className={styles.sectionHeader} variants={itemVariants}>
-            <h3>Featured dApps</h3>
-            <p>Innovative applications leveraging temporal precision</p>
+            <h3>Featured Solutions</h3>
+            <p>Innovative applications and infrastructure being developed on ROKO Network</p>
           </motion.div>
 
-          <motion.div className={styles.dappsGrid} variants={itemVariants}>
-            {featuredDApps.map((dapp, index) => (
+          <motion.div className={styles.solutionsGrid} variants={itemVariants}>
+            {featuredSolutions.map((solution, index) => (
               <motion.div
-                key={dapp.id}
-                className={styles.dappCard}
+                key={solution.id}
+                className={styles.solutionCard}
                 whileHover={{ scale: 1.02, y: -2 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
               >
-                <div className={styles.dappImage}>
-                  <img src={dapp.image} alt={`${dapp.name} interface`} />
-                  <div className={styles.dappStatus} style={{ color: getStatusColor(dapp.status) }}>
-                    {getStatusLabel(dapp.status)}
+                <div className={styles.solutionImage}>
+                  <div className={styles.imagePlaceholder}>
+                    {solution.name.split(' ').map(word => word.charAt(0)).join('')}
+                  </div>
+                  <div className={styles.solutionStatus} style={{ color: getStatusColor(solution.status) }}>
+                    {getStatusLabel(solution.status)}
                   </div>
                 </div>
-                <div className={styles.dappContent}>
-                  <div className={styles.dappHeader}>
-                    <h4 className={styles.dappName}>{dapp.name}</h4>
-                    <span className={styles.dappCategory}>{dapp.category}</span>
+                <div className={styles.solutionContent}>
+                  <div className={styles.solutionHeader}>
+                    <h4 className={styles.solutionName}>{solution.name}</h4>
+                    <span className={styles.solutionCategory}>
+                      {solution.category === 'dapps' ? 'dApp' : 'Infrastructure'}
+                    </span>
                   </div>
-                  <p className={styles.dappDescription}>{dapp.description}</p>
-                  <div className={styles.dappStats}>
-                    <div className={styles.dappStat}>
-                      <UserGroupIcon className={styles.statIcon} />
-                      <span>{dapp.users} users</span>
+                  <p className={styles.solutionDescription}>{solution.description}</p>
+                  {solution.type && (
+                    <div className={styles.solutionType}>
+                      <CubeIcon className={styles.typeIcon} />
+                      <span>{solution.type}</span>
                     </div>
-                    {dapp.tvl && (
-                      <div className={styles.dappStat}>
-                        <BanknotesIcon className={styles.statIcon} />
-                        <span>{dapp.tvl} TVL</span>
-                      </div>
-                    )}
-                  </div>
+                  )}
+                  {solution.website && (
+                    <a
+                      href={solution.website}
+                      className={styles.solutionLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Learn More
+                      <ArrowTopRightOnSquareIcon className={styles.linkIcon} />
+                    </a>
+                  )}
                 </div>
               </motion.div>
             ))}
           </motion.div>
         </motion.div>
 
-        {/* Success Stories / Testimonials */}
-        <motion.div
-          className={styles.testimonialsSection}
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-        >
-          <motion.div className={styles.sectionHeader} variants={itemVariants}>
-            <h3>Success Stories</h3>
-            <p>What builders are saying about ROKO Network</p>
-          </motion.div>
-
-          <motion.div className={styles.testimonialsContainer} variants={itemVariants}>
-            <div className={styles.testimonialCard}>
-              <div className={styles.testimonialContent}>
-                <div className={styles.rating}>
-                  {Array.from({ length: testimonials[activeTestimonial].rating }).map((_, i) => (
-                    <StarIcon key={i} className={styles.starIcon} />
-                  ))}
-                </div>
-                <blockquote className={styles.testimonialText}>
-                  "{testimonials[activeTestimonial].content}"
-                </blockquote>
-                <div className={styles.testimonialAuthor}>
-                  <img
-                    src={testimonials[activeTestimonial].avatar}
-                    alt={testimonials[activeTestimonial].author}
-                    className={styles.authorAvatar}
-                  />
-                  <div className={styles.authorInfo}>
-                    <div className={styles.authorName}>
-                      {testimonials[activeTestimonial].author}
-                    </div>
-                    <div className={styles.authorRole}>
-                      {testimonials[activeTestimonial].role} at {testimonials[activeTestimonial].company}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className={styles.testimonialNav}>
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  className={`${styles.navDot} ${activeTestimonial === index ? styles.active : ''}`}
-                  onClick={() => setActiveTestimonial(index)}
-                  aria-label={`View testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
+        {/* Success Stories section removed - Issue #7 */}
 
         {/* Integration Examples */}
         <motion.div
@@ -468,7 +435,7 @@ export const Ecosystem: FC = () => {
         >
           <motion.div className={styles.sectionHeader} variants={itemVariants}>
             <h3>Integration Options</h3>
-            <p>Multiple ways to connect with ROKO Network</p>
+            <p>BETA</p>
           </motion.div>
 
           <motion.div className={styles.integrationsGrid} variants={itemVariants}>

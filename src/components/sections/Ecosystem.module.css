@@ -192,6 +192,27 @@
   filter: brightness(1);
 }
 
+.logoPlaceholder {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #00a085 0%, #0066cc 100%);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.partnerCard:hover .logoPlaceholder {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(0, 160, 133, 0.3);
+}
+
 .partnerContent {
   flex: 1;
 }
@@ -245,7 +266,149 @@
   height: 1rem;
 }
 
-/* dApps Section */
+/* Solutions Section */
+.solutionsSection {
+  margin-bottom: 6rem;
+}
+
+.solutionsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.solutionCard {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 160, 133, 0.15);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 24px rgba(0, 160, 133, 0.08);
+}
+
+.solutionCard:hover {
+  border-color: rgba(0, 160, 133, 0.25);
+  box-shadow: 0 8px 40px rgba(0, 160, 133, 0.12);
+  transform: translateY(-2px);
+}
+
+.solutionImage {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(0, 160, 133, 0.05) 0%, rgba(0, 160, 133, 0.1) 100%);
+}
+
+.imagePlaceholder {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #00a085 0%, #0066cc 100%);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  letter-spacing: 0.1em;
+}
+
+.solutionCard:hover .imagePlaceholder {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 8px 30px rgba(0, 160, 133, 0.3);
+}
+
+.solutionStatus {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.solutionContent {
+  padding: 2rem;
+}
+
+.solutionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.solutionName {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.solutionCategory {
+  background: rgba(0, 160, 133, 0.1);
+  color: #00a085;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.solutionDescription {
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  color: #4a5568;
+  line-height: 1.5;
+  margin: 0 0 1.5rem 0;
+}
+
+.solutionType {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: 0.875rem;
+  color: #4a5568;
+  margin-bottom: 1rem;
+}
+
+.typeIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #00a085;
+}
+
+.solutionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #00a085;
+  font-family: var(--font-body, 'HK Guise', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.solutionLink:hover {
+  color: #0066cc;
+}
+
+/* Legacy dApps styles for backwards compatibility */
 .dappsSection {
   margin-bottom: 6rem;
 }
@@ -710,7 +873,8 @@
     grid-template-columns: 1fr;
   }
 
-  .dappsGrid {
+  .dappsGrid,
+  .solutionsGrid {
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   }
 
@@ -740,6 +904,7 @@
 
   .partnersSection,
   .dappsSection,
+  .solutionsSection,
   .testimonialsSection,
   .integrationsSection {
     margin-bottom: 4rem;
@@ -787,7 +952,8 @@
     text-align: center;
   }
 
-  .dappsGrid {
+  .dappsGrid,
+  .solutionsGrid {
     grid-template-columns: 1fr;
   }
 }
@@ -799,6 +965,7 @@
 
   .partnerCard,
   .dappCard,
+  .solutionCard,
   .integrationCard {
     padding: 1.25rem;
   }
@@ -819,7 +986,8 @@
     gap: 1.5rem;
   }
 
-  .dappsGrid {
+  .dappsGrid,
+  .solutionsGrid {
     gap: 1.5rem;
   }
 }
@@ -828,6 +996,7 @@
 @media (prefers-contrast: high) {
   .partnerCard,
   .dappCard,
+  .solutionCard,
   .testimonialCard,
   .integrationCard,
   .partnershipCta {
@@ -856,12 +1025,14 @@
 @media (prefers-reduced-motion: reduce) {
   .partnerCard,
   .dappCard,
+  .solutionCard,
   .integrationCard {
     transition: none;
   }
 
   .partnerCard:hover,
   .dappCard:hover,
+  .solutionCard:hover,
   .integrationCard:hover {
     transform: none;
   }
@@ -870,7 +1041,8 @@
     transition: none;
   }
 
-  .dappCard:hover .dappImage img {
+  .dappCard:hover .dappImage img,
+  .solutionCard:hover .imagePlaceholder {
     transform: none;
   }
 
@@ -886,11 +1058,13 @@
 /* Performance optimizations */
 .partnerCard,
 .dappCard,
+.solutionCard,
 .integrationCard {
   will-change: transform;
 }
 
-.dappImage img {
+.dappImage img,
+.imagePlaceholder {
   will-change: transform;
 }
 
@@ -901,6 +1075,7 @@
 /* Focus management */
 .partnerCard:focus-within,
 .dappCard:focus-within,
+.solutionCard:focus-within,
 .integrationCard:focus-within {
   outline: 2px solid #00d4aa;
   outline-offset: 2px;
@@ -910,6 +1085,7 @@
 @supports (backdrop-filter: blur(20px)) {
   .partnerCard,
   .dappCard,
+  .solutionCard,
   .testimonialCard,
   .integrationCard,
   .partnershipCta {
@@ -921,6 +1097,7 @@
 @supports not (backdrop-filter: blur(20px)) {
   .partnerCard,
   .dappCard,
+  .solutionCard,
   .testimonialCard,
   .integrationCard,
   .partnershipCta {

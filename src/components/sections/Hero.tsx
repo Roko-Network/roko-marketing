@@ -5,6 +5,7 @@ import { useInView } from 'react-intersection-observer';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { TemporalOrb } from '../3d/TemporalOrb';
 import { AccessibilityFallback } from '../3d/AccessibilityFallback';
+import { TokenStats } from '../TokenStats';
 import styles from './Hero.module.css';
 
 interface HeroProps {
@@ -12,15 +13,23 @@ interface HeroProps {
   onReadDocs?: () => void;
 }
 
+// Constants for external links
+const UNISWAP_ROKO_URL = 'https://app.uniswap.org/explore/tokens/ethereum/0x6f222e04f6c53cc688ffb0abe7206aac66a8ff98';
+const ROKO_DOCS_URL = 'https://docs.roko.network/';
+
 export const Hero: FC<HeroProps> = ({ onStartBuilding, onReadDocs }) => {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
   const [orbHovered, setOrbHovered] = useState(false);
 
   const handleStartBuilding = useCallback(() => {
+    // Open Uniswap to get ROKO tokens
+    window.open(UNISWAP_ROKO_URL, '_blank', 'noopener,noreferrer');
     onStartBuilding?.();
   }, [onStartBuilding]);
 
   const handleReadDocs = useCallback(() => {
+    // Open ROKO documentation
+    window.open(ROKO_DOCS_URL, '_blank', 'noopener,noreferrer');
     onReadDocs?.();
   }, [onReadDocs]);
 
@@ -128,8 +137,8 @@ export const Hero: FC<HeroProps> = ({ onStartBuilding, onReadDocs }) => {
 
         {/* Subheadline */}
         <motion.p className={styles.subheadline} variants={itemVariants}>
-          Nanosecond precision blockchain infrastructure powered by{' '}
-          <span className={styles.highlight}>IEEE 1588 PTP</span> synchronization.
+          Time measuring precision blockchain infrastructure powered by{' '}
+          <span className={styles.highlight}>IEEE 1588 PTP</span> hardware synchronization.
           <br />
           Build the next generation of time-critical Web3 applications.
         </motion.p>
@@ -146,7 +155,7 @@ export const Hero: FC<HeroProps> = ({ onStartBuilding, onReadDocs }) => {
             onHoverStart={() => setOrbHovered(true)}
             onHoverEnd={() => setOrbHovered(false)}
           >
-            <span>Start Building</span>
+            <span>Get ROKO Tokens</span>
             <span className={styles.ctaIcon}>→</span>
           </motion.button>
 
@@ -176,6 +185,15 @@ export const Hero: FC<HeroProps> = ({ onStartBuilding, onReadDocs }) => {
             <span className={styles.statNumber}>Global</span>
             <span className={styles.statLabel}>Network</span>
           </div>
+        </motion.div>
+
+        {/* Dynamic Token Stats */}
+        <motion.div className={styles.tokenStatsContainer} variants={itemVariants}>
+          <TokenStats
+            variant="hero"
+            showHeader={false}
+            className={styles.heroTokenStats}
+          />
         </motion.div>
       </motion.div>
 

@@ -86,7 +86,7 @@ export const NetworkStats: React.FC<NetworkStatsProps> = memo(({ stats, loading,
     <div className={styles.container} role="region" aria-label="Network statistics">
       <div className={styles.statsGrid}>
         <StatItem
-          label="Total Transactions"
+          label="Target Transactions"
           value={formatNumber(stats.totalTransactions)}
           delay={0.1}
         />
@@ -101,12 +101,12 @@ export const NetworkStats: React.FC<NetworkStatsProps> = memo(({ stats, loading,
           delay={0.3}
         />
         <StatItem
-          label="Active Nodes"
+          label="Target Nodes"
           value={formatNumber(stats.activeNodes)}
           delay={0.4}
         />
         <StatItem
-          label="Network Uptime"
+          label="Target Uptime"
           value={formatUptime(stats.networkUptime)}
           delay={0.5}
         />

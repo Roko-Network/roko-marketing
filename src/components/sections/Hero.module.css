@@ -263,6 +263,20 @@
   opacity: 0.5;
 }
 
+/* Token Stats Container */
+.tokenStatsContainer {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 2rem;
+}
+
+.heroTokenStats {
+  background: rgba(0, 120, 212, 0.03);
+  border: 1px solid rgba(0, 120, 212, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
 /* Scroll Indicator */
 .scrollIndicator {
   position: absolute;
@@ -319,6 +333,10 @@
 
   .scrollIndicator {
     bottom: 1rem;
+  }
+
+  .tokenStatsContainer {
+    margin-top: 1.5rem;
   }
 }
 

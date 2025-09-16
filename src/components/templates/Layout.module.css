@@ -12,9 +12,41 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--bg-primary);
-  color: var(--text-primary);
+  position: relative;
   overflow-x: hidden;
+}
+
+/* Static Background */
+.layout::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #FFFFFF;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Background overlay for improved text readability during scroll */
+.layout::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Show overlay when content is scrolled */
+.layout.scrolled::after {
+  opacity: 1;
 }
 
 /* =============================================================================
@@ -27,16 +59,16 @@
   top: -40px;
   left: 6px;
   z-index: var(--z-skip-link);
-  background: var(--text-accent);
+  background: #000000;
   color: #ffffff;
   padding: 8px 16px;
-  border-radius: 0 0 4px 4px;
+  border-radius: 4px;
   text-decoration: none;
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 600;
   transition: top 0.2s ease;
-  box-shadow: var(--shadow-lg);
+  border: 1px solid #000000;
 }
 
 .skipLink:focus {
@@ -44,7 +76,7 @@
 }
 
 .skipLink:hover {
-  background: #106EBE;
+  background: #333333;
 }
 
 /* Screen reader only content */
@@ -69,7 +101,8 @@
   padding-top: 80px; /* Account for fixed header */
   min-height: calc(100vh - 80px);
   position: relative;
-  isolation: isolate;
+  z-index: 2;
+  background: #FFFFFF;
 }
 
 /* Responsive header spacing */
@@ -96,33 +129,33 @@
   justify-content: center;
   padding: 2rem;
   text-align: center;
-  background: rgba(239, 68, 68, 0.05);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: #FFFFFF;
+  border: 2px solid #000000;
   border-radius: 8px;
   margin: 1rem;
-  color: var(--text-primary);
+  color: #000000;
 }
 
 .errorFallback h1 {
   font-family: var(--font-display);
   font-size: 1.5rem;
   font-weight: 600;
-  color: #D32F2F;
+  color: #000000;
   margin: 0 0 1rem 0;
 }
 
 .errorFallback p {
   font-family: var(--font-body);
   font-size: 1rem;
-  color: var(--text-secondary);
+  color: #000000;
   margin: 0 0 1.5rem 0;
   line-height: 1.5;
 }
 
 .retryButton {
-  background: linear-gradient(135deg, var(--text-accent) 0%, #106EBE 100%);
+  background: #000000;
   color: #ffffff;
-  border: none;
+  border: 2px solid #000000;
   padding: 12px 24px;
   border-radius: 6px;
   font-family: var(--font-display);
@@ -137,12 +170,11 @@
 }
 
 .retryButton:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 120, 212, 0.3);
+  background: #333333;
 }
 
 .retryButton:focus {
-  outline: 2px solid var(--text-accent);
+  outline: 2px solid #000000;
   outline-offset: 2px;
 }
 
@@ -184,8 +216,8 @@
 .loadingSpinner {
   width: 32px;
   height: 32px;
-  border: 3px solid rgba(160, 174, 192, 0.3);
-  border-top: 3px solid var(--text-accent);
+  border: 3px solid #cccccc;
+  border-top: 3px solid #000000;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 2rem auto;

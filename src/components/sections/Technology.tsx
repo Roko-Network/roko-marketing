@@ -125,27 +125,71 @@ const comparisonData: ComparisonRow[] = [
   }
 ];
 
-const codeExample = `// ROKO Temporal SDK Example
-import { TemporalClient } from '@roko/sdk';
+const codeExample = `// ROKO Temporal Transaction Signing Example
+import { TemporalClient, CheckTemporal } from '@roko/sdk';
+import { blake2AsU8a } from '@polkadot/util-crypto';
 
+// 1. Initialize temporal client with TimeRPC service
 const client = new TemporalClient({
-  network: 'mainnet',
-  precision: 'nanosecond'
+  timeRpcEndpoint: 'wss://timerpc.roko.network',
+  network: 'mainnet'
 });
 
-// Schedule transaction with nanosecond precision
-const scheduledTx = await client.scheduleTransaction({
-  to: '0x...',
-  value: '1000000000000000000',
-  executeAt: Date.now() + 1000, // +1 second
-  precision: 'nanosecond'
-});
+// 2. Get temporal attestation for transaction
+const getTemporalAttestation = async (who, call) => {
+  // Fetch current timestamp and active keys
+  const { timestamp, activeKeys } = await client.getTemporalInfo();
+  const keyId = activeKeys[0]; // Use first active TimeRPC key
 
-// Listen for temporal events
-client.on('temporalSync', (event) => {
-  console.log('Network time:', event.networkTime);
-  console.log('Local drift:', event.drift);
-});`;
+  // Build domain-separated message for signing
+  const domainTag = 'TEMPORAL_ATTESTATION_V1';
+  const callHash = blake2AsU8a(call.toU8a());
+  const message = concat([
+    stringToU8a(domainTag),
+    who.toU8a(),
+    callHash,
+    u64ToU8a(timestamp),
+    // Optional: blake2AsU8a(temporalProof)
+  ]);
+
+  // Get TimeRPC signature
+  const signature = await client.signTemporal({
+    keyId,
+    message: blake2AsU8a(message),
+    timestamp
+  });
+
+  return {
+    nanoTimestamp: timestamp,
+    timerpcSignature: signature,
+    timerpcKeyId: keyId,
+    temporalProof: new Uint8Array(0) // Optional proof bytes
+  };
+};
+
+// 3. Build extrinsic with temporal SignedExtra
+const submitTemporalTransaction = async (call, sender) => {
+  const attestation = await getTemporalAttestation(sender, call);
+
+  const extrinsic = api.tx[call.section][call.method](...call.args)
+    .signAndSend(sender, {
+      signedExtensions: {
+        CheckTemporal: attestation
+      }
+    });
+
+  return extrinsic;
+};
+
+// 4. Validate before submission (preflight check)
+const validateTemporal = async (attestation) => {
+  return await client.rpc.temporal.validateTransaction(
+    attestation.nanoTimestamp,
+    attestation.timerpcKeyId,
+    attestation.timerpcSignature,
+    attestation.message
+  );
+};`;
 
 export const Technology: FC = () => {
   const [ref, inView] = useInView({
@@ -186,12 +230,14 @@ export const Technology: FC = () => {
 
   const tabVariants = {
     inactive: {
-      backgroundColor: 'transparent',
-      color: '#4a5568'
+      backgroundColor: '#FFFFFF',
+      color: '#000000',
+      borderBottom: '3px solid transparent'
     },
     active: {
-      backgroundColor: 'rgba(0, 160, 133, 0.1)',
-      color: '#00a085'
+      backgroundColor: '#f0f0f0',
+      color: '#000000',
+      borderBottom: '3px solid #000000'
     }
   };
 
@@ -213,10 +259,10 @@ export const Technology: FC = () => {
           <h2 className={styles.title}>
             <span className={styles.gradientText}>Temporal Architecture</span>
             <br />
-            <span style={{ color: '#1a1a1a' }}>Reimagined</span>
+            <span style={{ color: '#000000' }}>Reimagined</span>
           </h2>
           <p className={styles.subtitle}>
-            Revolutionary blockchain infrastructure combining nanosecond-precision timing
+            Revolutionary blockchain infrastructure combining hardware-grade timing measurement
             with enterprise-grade performance and developer-friendly tools.
           </p>
         </motion.div>
@@ -327,13 +373,13 @@ export const Technology: FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h4 style={{ color: '#1a1a1a' }}>Temporal Blockchain Architecture</h4>
+                <h4 style={{ color: '#000000' }}>Temporal Blockchain Architecture</h4>
                 <div className={styles.timeline}>
                   <div className={styles.timelineItem}>
                     <div className={styles.timelineIcon}>1</div>
                     <div className={styles.timelineContent}>
                       <h5>Precision Time Protocol (PTP)</h5>
-                      <p>IEEE 1588 synchronization provides nanosecond accuracy across global validators.</p>
+                      <p>IEEE 1588 hardware synchronization provides measurement accuracy across global validators.</p>
                     </div>
                   </div>
                   <div className={styles.timelineItem}>
@@ -361,7 +407,7 @@ export const Technology: FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h4 style={{ color: '#1a1a1a' }}>ROKO vs Traditional Blockchains</h4>
+                <h4 style={{ color: '#000000' }}>ROKO vs Traditional Blockchains</h4>
                 <div className={styles.comparisonTable}>
                   <div className={styles.tableHeader}>
                     <div>Feature</div>
@@ -389,22 +435,26 @@ export const Technology: FC = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <h4 style={{ color: '#1a1a1a' }}>Developer API Example</h4>
+                <h4 style={{ color: '#000000' }}>Developer API Example</h4>
                 <div className={styles.codeBlock}>
                   <pre><code>{codeExample}</code></pre>
                 </div>
                 <div className={styles.apiFeatures}>
                   <div className={styles.apiFeature}>
-                    <h5>TypeScript SDK</h5>
-                    <p>Fully typed interfaces for temporal blockchain development</p>
+                    <h5>Temporal SignedExtension</h5>
+                    <p>CheckTemporal carries TimeRPC attestations in extrinsic SignedExtra for nanosecond ordering</p>
                   </div>
                   <div className={styles.apiFeature}>
-                    <h5>WebSocket Events</h5>
-                    <p>Real-time synchronization and temporal event streaming</p>
+                    <h5>Domain-Separated Signing</h5>
+                    <p>TEMPORAL_ATTESTATION_V1 domain tag ensures secure message signing over call+timestamp</p>
                   </div>
                   <div className={styles.apiFeature}>
-                    <h5>Precision Scheduling</h5>
-                    <p>Schedule transactions with nanosecond precision</p>
+                    <h5>Watermark Validation</h5>
+                    <p>Global and in-block watermarks enforce strict temporal ordering and prevent reordering</p>
+                  </div>
+                  <div className={styles.apiFeature}>
+                    <h5>Clock Deviation Bounds</h5>
+                    <p>TimeRPC key policies validate clock synchronization within configured deviation limits</p>
                   </div>
                 </div>
               </motion.div>
@@ -426,6 +476,7 @@ export const Technology: FC = () => {
               className={styles.primaryButton}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => window.open('https://docs.roko.network/', '_blank', 'noopener,noreferrer')}
             >
               View Technical Docs
             </motion.button>
@@ -433,8 +484,9 @@ export const Technology: FC = () => {
               className={styles.secondaryButton}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
+              onClick={() => window.open('https://snapshot.org/#/rokonetwork.eth', '_blank', 'noopener,noreferrer')}
             >
-              Try Live Demo
+              Join DAO Governance
             </motion.button>
           </div>
         </motion.div>

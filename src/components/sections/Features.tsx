@@ -23,8 +23,8 @@ interface Feature {
 const features: Feature[] = [
   {
     id: 'nanosecond-precision',
-    title: 'Nanosecond Precision',
-    description: 'IEEE 1588 PTP-grade timing accuracy for critical blockchain operations.',
+    title: 'Time measuring precision',
+    description: 'IEEE 1588 PTP-grade hardware timing infrastructure for critical blockchain operations.',
     icon: ClockIcon,
     metric: '~1ns',
     detail: 'Precision Time Protocol synchronization across global validator network'

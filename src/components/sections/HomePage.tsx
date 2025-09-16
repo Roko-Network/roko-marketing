@@ -133,21 +133,21 @@ export const HomePage: FC<HomePageProps> = ({ className }) => {
     <div className={`${styles.homePage} ${className || ''}`}>
       {/* SEO Meta Tags */}
       <Helmet>
-        <title>ROKO Network - Temporal Blockchain Infrastructure with Nanosecond Precision</title>
+        <title>ROKO Network - Temporal Blockchain Infrastructure with Time measuring precision</title>
         <meta
           name="description"
-          content="Revolutionary blockchain infrastructure combining nanosecond-precision timing with enterprise-grade performance. Build time-critical Web3 applications with IEEE 1588 PTP synchronization."
+          content="Revolutionary blockchain infrastructure combining hardware-grade timing measurement with enterprise-grade performance. Build time-critical Web3 applications with IEEE 1588 PTP synchronization."
         />
         <meta
           name="keywords"
-          content="temporal blockchain, nanosecond precision, Web3 infrastructure, IEEE 1588 PTP, smart contracts, DeFi, DAO governance, blockchain timing"
+          content="temporal blockchain, hardware timing infrastructure, Web3 infrastructure, IEEE 1588 PTP, smart contracts, DeFi, DAO governance, blockchain timing"
         />
 
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://roko.network/" />
         <meta property="og:title" content="ROKO Network - Temporal Blockchain Infrastructure" />
-        <meta property="og:description" content="Revolutionary blockchain infrastructure with nanosecond-precision timing for next-generation Web3 applications." />
+        <meta property="og:description" content="Revolutionary blockchain infrastructure with hardware-grade timing measurement for next-generation Web3 applications." />
         <meta property="og:image" content="https://roko.network/images/og-image.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -156,7 +156,7 @@ export const HomePage: FC<HomePageProps> = ({ className }) => {
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://roko.network/" />
         <meta property="twitter:title" content="ROKO Network - Temporal Blockchain Infrastructure" />
-        <meta property="twitter:description" content="Revolutionary blockchain infrastructure with nanosecond-precision timing for next-generation Web3 applications." />
+        <meta property="twitter:description" content="Revolutionary blockchain infrastructure with hardware-grade timing measurement for next-generation Web3 applications." />
         <meta property="twitter:image" content="https://roko.network/images/twitter-image.png" />
 
         {/* Additional SEO */}
@@ -176,7 +176,7 @@ export const HomePage: FC<HomePageProps> = ({ className }) => {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "ROKO Network",
-            "description": "Temporal blockchain infrastructure with nanosecond precision",
+            "description": "Temporal blockchain infrastructure with hardware timing measurement",
             "url": "https://roko.network",
             "logo": "https://roko.network/images/logo.png",
             "sameAs": [

@@ -58,31 +58,31 @@
   --roko-error: #ef4444;        /* Red - Errors */
   --roko-info: #3b82f6;         /* Blue - Information */
 
-  /* Light Theme Backgrounds */
-  --bg-primary: #FFFFFF;        /* Main background */
-  --bg-secondary: #F8F9FA;      /* Panels */
-  --bg-tertiary: #F1F3F4;       /* Cards */
-  --bg-elevated: #FFFFFF;       /* Elevated surfaces */
+  /* Black and White Theme Backgrounds */
+  --bg-primary: #FFFFFF;        /* Main background - PURE WHITE */
+  --bg-secondary: #FFFFFF;      /* Panels - PURE WHITE */
+  --bg-tertiary: #FFFFFF;       /* Cards - PURE WHITE */
+  --bg-elevated: #FFFFFF;       /* Elevated surfaces - PURE WHITE */
 
-  /* Text Hierarchy - Light Theme */
-  --text-primary: #1A202C;      /* Primary text - Hero headings */
-  --text-secondary: #2D3748;    /* Card titles, feature headings */
-  --text-body: #4A5568;         /* Body text, paragraphs */
-  --text-tertiary: #718096;     /* Muted text, descriptions */
-  --text-quaternary: #A0AEC0;   /* Subtle text, placeholders */
-  --text-dark: #1A202C;         /* Dark text on light backgrounds */
-  --text-accent: #0078D4;       /* Blue accent for better visibility */
+  /* Text Hierarchy - Black and White Theme */
+  --text-primary: #000000;      /* Primary text - BLACK */
+  --text-secondary: #000000;    /* Card titles, feature headings - BLACK */
+  --text-body: #000000;         /* Body text, paragraphs - BLACK */
+  --text-tertiary: #000000;     /* Muted text, descriptions - BLACK */
+  --text-quaternary: #666666;   /* Subtle text, placeholders - DARK GRAY */
+  --text-dark: #000000;         /* Dark text on light backgrounds - BLACK */
+  --text-accent: #000000;       /* Accent text - BLACK */
 
-  /* Border Colors for Light Theme */
-  --border-light: #E2E8F0;
-  --border-medium: #CBD5E0;
-  --border-dark: #A0AEC0;
+  /* Border Colors for Black and White Theme */
+  --border-light: #000000;
+  --border-medium: #000000;
+  --border-dark: #000000;
 
-  /* Brand Gradients - Light Theme */
-  --gradient-brand: linear-gradient(135deg, #0078D4 0%, #40A9FF 100%);
-  --gradient-teal: linear-gradient(135deg, #0078D4 0%, #1890FF 100%);
-  --gradient-light: linear-gradient(180deg, #FFFFFF 0%, #F8F9FA 100%);
-  --gradient-subtle: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+  /* Brand Gradients - Black and White Theme */
+  --gradient-brand: none;
+  --gradient-teal: none;
+  --gradient-light: none;
+  --gradient-subtle: none;
 
   /* Official ROKO Typography */
   --font-display: 'Rajdhani', sans-serif;      /* Headlines, Hero text */
@@ -124,14 +124,14 @@
   --radius-2xl: 1rem;
   --radius-full: 9999px;
 
-  /* Shadows - Light Theme */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
-  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
-  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
-  --shadow-glow: 0 0 20px rgba(0, 120, 212, 0.15);
+  /* Shadows - Removed for Flat Design */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-2xl: none;
+  --shadow-inner: none;
+  --shadow-glow: none;
 
   /* Transitions */
   --transition-fast: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -204,8 +204,8 @@ html {
 }
 
 body {
-  background: var(--gradient-light);
-  color: var(--text-primary);
+  background: #FFFFFF;
+  color: #000000;
   font-family: var(--font-body), system-ui, sans-serif;
   font-weight: 400;
   line-height: 1.6;
@@ -227,7 +227,7 @@ h6 {
   font-family: var(--font-display);
   font-weight: 600;
   line-height: 1.25;
-  color: var(--text-primary); /* Dark text for all headings */
+  color: #000000; /* Black text for all headings */
   margin-bottom: var(--spacing-md);
 }
 
@@ -246,32 +246,32 @@ h2 {
 h3 {
   font-size: var(--text-4xl);
   font-weight: 600;
-  color: var(--text-primary);
+  color: #000000;
 }
 
 h4 {
   font-size: var(--text-3xl);
   font-weight: 600;
-  color: var(--text-primary);
+  color: #000000;
 }
 
 h5 {
   font-size: var(--text-2xl);
   font-weight: 600;
-  color: var(--text-primary);
+  color: #000000;
 }
 
 h6 {
   font-size: var(--text-xl);
   font-weight: 600;
-  color: var(--text-primary);
+  color: #000000;
 }
 
 p {
   font-size: var(--text-base);
   line-height: 1.6;
   margin-bottom: var(--spacing-md);
-  color: var(--text-body);
+  color: #000000;
 }
 
 .text-large {

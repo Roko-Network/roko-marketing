@@ -1,4 +1,4 @@
-import { FC, memo, ReactNode, useEffect } from 'react';
+import { FC, memo, ReactNode, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import ErrorBoundary from '../organisms/ErrorBoundary';
@@ -165,12 +165,24 @@ export const Layout: FC<LayoutProps> = memo(({
   className
 }) => {
   const location = useLocation();
+  const [isScrolled, setIsScrolled] = useState(false);
 
   // Initialize Web Vitals monitoring
   useWebVitals();
 
   // Initialize accessibility announcements
   useA11yAnnouncements();
+
+  // Handle scroll detection for background opacity
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      setIsScrolled(scrollTop > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Scroll to top on route change
   useEffect(() => {
@@ -207,7 +219,7 @@ export const Layout: FC<LayoutProps> = memo(({
   };
 
   return (
-    <div className={styles.layout}>
+    <div className={`${styles.layout} ${isScrolled ? styles.scrolled : ''}`}>
       {/* SEO and Meta Tags */}
       <SEO
         title={title}
@@ -268,7 +280,7 @@ export const Layout: FC<LayoutProps> = memo(({
           tabIndex={-1}
           aria-label="Main content"
           style={{
-            background: 'linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 25%, #F1F3F4 50%, #F8F9FA 75%, #FFFFFF 100%)'
+            background: '#FFFFFF'
           }}
         >
           <AnimatePresence mode="wait">
@@ -280,46 +292,12 @@ export const Layout: FC<LayoutProps> = memo(({
               animate="animate"
               exit="exit"
               style={{
-                background: `
-                  linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 25%, #F1F3F4 50%, #F8F9FA 75%, #FFFFFF 100%),
-                  radial-gradient(ellipse at 50% 50%, rgba(0, 120, 212, 0.02) 0%, transparent 50%),
-                  radial-gradient(ellipse at 20% 80%, rgba(74, 85, 104, 0.01) 0%, transparent 40%)
-                `,
-                backgroundBlendMode: 'normal, multiply, multiply',
+                background: '#FFFFFF',
                 position: 'relative',
                 minHeight: '100vh',
               }}
             >
-              {/* Mystical grid overlay */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundImage: `
-                  linear-gradient(rgba(160, 174, 192, 0.08) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(160, 174, 192, 0.08) 1px, transparent 1px)
-                `,
-                backgroundSize: '60px 60px',
-                pointerEvents: 'none',
-                opacity: 0.3,
-                zIndex: 1,
-              }} />
-
-              {/* Subtle animated glow */}
-              <div style={{
-                position: 'absolute',
-                top: '30%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: '600px',
-                height: '600px',
-                background: 'radial-gradient(circle, rgba(0, 120, 212, 0.015) 0%, transparent 70%)',
-                filter: 'blur(80px)',
-                pointerEvents: 'none',
-                zIndex: 1,
-              }} />
+              {/* Removed decorative elements for flat design */}
 
               {/* Content wrapper */}
               <div style={{ position: 'relative', zIndex: 2 }}>

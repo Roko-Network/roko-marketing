@@ -2,8 +2,8 @@
 .technology {
   position: relative;
   padding: 8rem 0;
-  background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 50%, #ffffff 100%);
-  color: #1a1a1a;
+  background: #FFFFFF;
+  color: #000000;
   overflow: hidden;
 }
 
@@ -34,18 +34,14 @@
 }
 
 .gradientText {
-  background: linear-gradient(135deg, #00a085 0%, #0066cc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
+  color: #000000;
 }
 
 .subtitle {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: clamp(1.125rem, 2.5vw, 1.375rem);
   line-height: 1.6;
-  color: #4a5568;
+  color: #000000;
   margin: 0;
 }
 
@@ -59,15 +55,13 @@
 
 /* Visualization Card */
 .visualizationCard {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 160, 133, 0.15);
-  border-radius: 1.5rem;
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  border-radius: 8px;
   padding: 2rem;
   height: 500px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 24px rgba(0, 160, 133, 0.08);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -79,23 +73,24 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.75rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #000000;
   margin: 0 0 0.5rem 0;
 }
 
 .cardHeader p {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1rem;
-  color: #4a5568;
+  color: #000000;
   margin: 0;
 }
 
 .sceneContainer {
   flex: 1;
   position: relative;
-  border-radius: 1rem;
+  border-radius: 8px;
   overflow: hidden;
-  background: radial-gradient(circle at center, rgba(0, 160, 133, 0.03) 0%, transparent 70%);
+  background: #FFFFFF;
+  border: 1px solid #000000;
 }
 
 .canvas {
@@ -105,14 +100,12 @@
 
 /* Metrics Card */
 .metricsCard {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 160, 133, 0.15);
-  border-radius: 1.5rem;
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  border-radius: 8px;
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 24px rgba(0, 160, 133, 0.08);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -125,18 +118,16 @@
 
 .metric {
   padding: 1.5rem;
-  border: 1px solid rgba(0, 160, 133, 0.08);
-  border-radius: 1rem;
-  background: rgba(248, 249, 250, 0.7);
+  border: 1px solid #000000;
+  border-radius: 8px;
+  background: #FFFFFF;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
 
 .metric:hover {
-  border-color: rgba(0, 160, 133, 0.2);
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 20px rgba(0, 160, 133, 0.06);
-  transform: translateY(-2px);
+  border-color: #000000;
+  background: #f9f9f9;
 }
 
 .metricIcon {
@@ -149,7 +140,7 @@
 .icon {
   width: 1.5rem;
   height: 1.5rem;
-  color: #00a085;
+  color: #000000;
 }
 
 .trend {
@@ -158,15 +149,15 @@
 }
 
 .trend[data-trend="up"] {
-  color: #10b981;
+  color: #000000;
 }
 
 .trend[data-trend="down"] {
-  color: #ef4444;
+  color: #000000;
 }
 
 .trend[data-trend="stable"] {
-  color: #6b7280;
+  color: #000000;
 }
 
 .metricContent {
@@ -184,38 +175,36 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.875rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #000000;
   margin-bottom: 0.25rem;
 }
 
 .metricDescription {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.75rem;
-  color: #4a5568;
+  color: #000000;
   line-height: 1.4;
 }
 
 /* Deep Dive Section */
 .deepDive {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 160, 133, 0.15);
-  border-radius: 1.5rem;
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  border-radius: 8px;
   overflow: hidden;
   margin-bottom: 4rem;
-  box-shadow: 0 4px 24px rgba(0, 160, 133, 0.08);
 }
 
 /* Tab Navigation */
 .tabNav {
   display: flex;
-  border-bottom: 1px solid rgba(0, 160, 133, 0.1);
+  border-bottom: 2px solid #000000;
 }
 
 .tab {
   flex: 1;
   padding: 1.5rem 2rem;
-  background: transparent;
+  background: #FFFFFF;
   border: none;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1rem;
@@ -223,16 +212,16 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border-bottom: 3px solid transparent;
-  color: #4a5568;
+  color: #000000;
 }
 
 .tab:hover {
-  background: rgba(0, 160, 133, 0.03);
-  color: #00a085;
+  background: #f5f5f5;
+  color: #000000;
 }
 
 .tab:focus {
-  outline: 2px solid #00a085;
+  outline: 2px solid #000000;
   outline-offset: -2px;
 }
 
@@ -247,7 +236,7 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.75rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #000000;
   margin: 0 0 2rem 0;
 }
 
@@ -267,8 +256,8 @@
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  background: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
-  color: #181818;
+  background: #000000;
+  color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -281,13 +270,13 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.25rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #000000;
   margin: 0 0 0.5rem 0;
 }
 
 .timelineContent p {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: #CDD1DB;
+  color: #000000;
   line-height: 1.6;
   margin: 0;
 }
@@ -297,16 +286,16 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.75rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #000000;
   margin: 0 0 2rem 0;
 }
 
 .comparisonTable {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 1px;
-  background: rgba(186, 192, 204, 0.1);
-  border-radius: 0.5rem;
+  gap: 2px;
+  background: #000000;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -315,11 +304,11 @@
 }
 
 .tableHeader > div {
-  background: rgba(42, 42, 42, 0.8);
+  background: #000000;
   padding: 1rem;
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-weight: 600;
-  color: #ffffff;
+  color: #FFFFFF;
   text-align: center;
 }
 
@@ -328,27 +317,27 @@
 }
 
 .tableRow.highlighted {
-  background: rgba(0, 212, 170, 0.05);
+  background: #f0f0f0;
 }
 
 .tableRow > div {
-  background: rgba(24, 24, 24, 0.8);
+  background: #FFFFFF;
   padding: 1rem;
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: #CDD1DB;
+  color: #000000;
 }
 
 .tableRow.highlighted > div {
-  background: rgba(0, 212, 170, 0.1);
+  background: #f0f0f0;
 }
 
 .feature {
   font-weight: 600;
-  color: #ffffff !important;
+  color: #000000 !important;
 }
 
 .roko {
-  color: #00d4aa !important;
+  color: #000000 !important;
   font-weight: 600;
 }
 
@@ -357,14 +346,14 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.75rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #000000;
   margin: 0 0 2rem 0;
 }
 
 .codeBlock {
-  background: #0a0a0a;
-  border: 1px solid rgba(186, 192, 204, 0.2);
-  border-radius: 0.5rem;
+  background: #f5f5f5;
+  border: 2px solid #000000;
+  border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
   overflow-x: auto;
@@ -375,7 +364,7 @@
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-size: 0.875rem;
   line-height: 1.5;
-  color: #E8EAEF;
+  color: #000000;
 }
 
 .apiFeatures {
@@ -386,22 +375,22 @@
 
 .apiFeature {
   padding: 1.5rem;
-  border: 1px solid rgba(186, 192, 204, 0.1);
-  border-radius: 0.5rem;
-  background: rgba(42, 42, 42, 0.3);
+  border: 2px solid #000000;
+  border-radius: 8px;
+  background: #FFFFFF;
 }
 
 .apiFeature h5 {
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.125rem;
   font-weight: 600;
-  color: #00d4aa;
+  color: #000000;
   margin: 0 0 0.5rem 0;
 }
 
 .apiFeature p {
   font-family: var(--font-body, 'HK Guise', sans-serif);
-  color: #CDD1DB;
+  color: #000000;
   margin: 0;
   font-size: 0.875rem;
   line-height: 1.5;
@@ -411,21 +400,21 @@
 .cta {
   text-align: center;
   padding: 3rem 0;
-  border-top: 1px solid rgba(186, 192, 204, 0.1);
+  border-top: 2px solid #000000;
 }
 
 .cta h3 {
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 2rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #000000;
   margin: 0 0 1rem 0;
 }
 
 .cta p {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1.125rem;
-  color: #CDD1DB;
+  color: #000000;
   margin: 0 0 2rem 0;
   max-width: 600px;
   margin-left: auto;
@@ -441,11 +430,11 @@
 
 /* CTA Buttons */
 .primaryButton {
-  background: linear-gradient(135deg, #00d4aa 0%, #00ffcc 100%);
-  color: #181818;
-  border: none;
+  background: #000000;
+  color: #FFFFFF;
+  border: 2px solid #000000;
   padding: 1rem 2rem;
-  border-radius: 0.5rem;
+  border-radius: 8px;
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1rem;
   font-weight: 600;
@@ -458,20 +447,20 @@
 }
 
 .primaryButton:hover {
-  box-shadow: 0 6px 30px rgba(0, 212, 170, 0.4);
+  background: #333333;
 }
 
 .primaryButton:focus {
-  outline: 3px solid #00d4aa;
+  outline: 3px solid #000000;
   outline-offset: 2px;
 }
 
 .secondaryButton {
   background: transparent;
-  color: #D9DBE3;
-  border: 2px solid var(--roko-primary, #BAC0CC);
+  color: #000000;
+  border: 2px solid #000000;
   padding: 0.875rem 1.875rem;
-  border-radius: 0.5rem;
+  border-radius: 8px;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1rem;
   font-weight: 500;
@@ -482,56 +471,27 @@
 }
 
 .secondaryButton:hover {
-  background: rgba(186, 192, 204, 0.1);
-  border-color: #00d4aa;
-  color: #00d4aa;
-  box-shadow: 0 0 20px rgba(0, 212, 170, 0.2);
+  background: #f0f0f0;
+  border-color: #000000;
+  color: #000000;
 }
 
 .secondaryButton:focus {
-  outline: 3px solid #00d4aa;
+  outline: 3px solid #000000;
   outline-offset: 2px;
 }
 
-/* Background Elements */
+/* Background Elements - Removed for Flat Design */
 .backgroundElements {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  pointer-events: none;
+  display: none;
 }
 
 .gridOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image:
-    linear-gradient(rgba(0, 160, 133, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 160, 133, 0.03) 1px, transparent 1px);
-  background-size: 100px 100px;
-  opacity: 0.5;
+  display: none;
 }
 
 .glowEffect {
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 1000px;
-  height: 1000px;
-  background: radial-gradient(
-    circle,
-    rgba(0, 160, 133, 0.04) 0%,
-    rgba(0, 160, 133, 0.02) 30%,
-    transparent 70%
-  );
-  border-radius: 50%;
-  animation: float 8s ease-in-out infinite;
+  display: none;
 }
 
 /* Responsive Design */
