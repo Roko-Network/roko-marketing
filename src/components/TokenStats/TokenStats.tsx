@@ -1,12 +1,12 @@
 /**
  * Dynamic Token Statistics Component
  *
- * Displays real-time ROKO token statistics fetched from Etherscan API
+ * Displays real-time ROKO token statistics fetched from CoinGecko data
  */
 
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
-import { useTokenStats, useTokenInfo } from '../../hooks/useTokenStats';
+import { useCoinGeckoStats, useCoinGeckoTokenInfo } from '../../hooks/useCoinGeckoStats';
 import { formatTokenAmount, formatNumber } from '../../services/web3';
 import styles from './TokenStats.module.css';
 
@@ -64,10 +64,10 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
   className = '',
   variant = 'default'
 }) => {
-  const { data: stats, isLoading, error, refetch, isConfigured } = useTokenStats({
+  const { data: stats, isLoading, error, refetch, isConfigured } = useCoinGeckoStats({
     refetchInterval: 60000 // Refresh every minute
   });
-  const { data: tokenInfo } = useTokenInfo();
+  const { data: tokenInfo } = useCoinGeckoTokenInfo();
 
   // Don't render if not configured and no fallback data
   if (!isConfigured && !stats) {
@@ -75,7 +75,7 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
       <div className={`${styles.container} ${styles[variant]} ${className}`}>
         <div className={styles.notConfigured}>
           <p>Token statistics unavailable</p>
-          <small>Etherscan API key required</small>
+          <small>CoinGecko data not available</small>
         </div>
       </div>
     );
@@ -175,11 +175,11 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
       <div className={styles.statusBar}>
         <div className={`${styles.statusDot} ${isLoading ? styles.loading : styles.connected}`} />
         <span className={styles.statusText}>
-          {isLoading ? 'Updating...' : 'Live data'}
+          {isLoading ? 'Updating...' : 'CoinGecko data'}
         </span>
-        {stats && (
+        {stats && stats.lastUpdated && (
           <span className={styles.lastUpdate}>
-            Last updated: {new Date().toLocaleTimeString()}
+            Last updated: {new Date(stats.lastUpdated).toLocaleTimeString()}
           </span>
         )}
       </div>

@@ -34,7 +34,7 @@ interface Proposal {
 // TreasuryAllocation interface removed - Issue #14
 
 const daoStats: DAOStats = {
-  totalSupply: '1,000,000,000',
+  totalSupply: '369,369,369,369',
   totalHolders: '89,432',
   avgVotingPower: '2.8%'
   // Staking, validator, and treasury data removed
