@@ -1,15 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRightIcon, EnvelopeIcon, ChatBubbleLeftRightIcon, MapPinIcon } from '@heroicons/react/24/outline';
-import styles from './Company.module.css';
+import styles from './Contact.module.css';
 
 const ContactPage: React.FC = () => {
   return (
-    <div className={styles.companyPage}>
-      <div className={styles.backgroundGradient} />
-      <div className={styles.gridOverlay} />
-      <div className={`${styles.accentGlow} ${styles.top}`} />
-
+    <div className={styles.contactPage}>
       <div className={styles.container}>
         <header className={styles.header}>
           <nav className={styles.breadcrumb}>
@@ -23,7 +19,7 @@ const ContactPage: React.FC = () => {
           <p className={styles.subtitle}>Get in touch with the ROKO Network team</p>
         </header>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', marginBottom: '3rem' }}>
+        <div className={styles.contentGrid}>
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Send a Message</h2>
             <form className={styles.contactForm}>
@@ -49,7 +45,7 @@ const ContactPage: React.FC = () => {
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Get in Touch</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div className={styles.contactMethods}>
               <div className={styles.card}>
                 <EnvelopeIcon className={styles.cardIcon} />
                 <h3 className={styles.cardTitle}>General Inquiries</h3>
@@ -58,7 +54,7 @@ const ContactPage: React.FC = () => {
               <div className={styles.card}>
                 <ChatBubbleLeftRightIcon className={styles.cardIcon} />
                 <h3 className={styles.cardTitle}>Community</h3>
-                <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+                <div className={styles.socialLinks}>
                   <a href="#" className={styles.link}>Discord</a>
                   <a href="#" className={styles.link}>Telegram</a>
                   <a href="#" className={styles.link}>Twitter</a>

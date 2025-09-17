@@ -3,64 +3,37 @@
 .companyPage {
   position: relative;
   min-height: 100vh;
-  background: #000000;
-  color: #ffffff;
-  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
-/* Professional Background - More subtle and refined */
+/* Clean white background */
 .backgroundGradient {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    180deg,
-    #000000 0%,
-    #050505 20%,
-    #0a0a0a 50%,
-    #050505 80%,
-    #000000 100%
-  );
+  background: var(--bg-primary);
   z-index: 1;
 }
 
-/* Subtle professional grid */
+/* Remove grid overlay for clean background */
 .gridOverlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image:
-    linear-gradient(rgba(186, 192, 204, 0.01) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(186, 192, 204, 0.01) 1px, transparent 1px);
-  background-size: 100px 100px;
-  z-index: 2;
-  opacity: 0.5;
+  display: none;
 }
 
-/* Professional accent glow */
+/* Remove accent glows for clean design */
 .accentGlow {
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 212, 170, 0.02) 0%, transparent 60%);
-  filter: blur(100px);
-  z-index: 2;
-  pointer-events: none;
+  display: none;
 }
 
 .accentGlow.top {
-  top: -200px;
-  right: -100px;
+  display: none;
 }
 
 .accentGlow.bottom {
-  bottom: -200px;
-  left: -100px;
+  display: none;
 }
 
 /* Content Container */
@@ -76,7 +49,7 @@
 .header {
   margin-bottom: 4rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(186, 192, 204, 0.1);
+  border-bottom: 1px solid rgba(26, 32, 44, 0.1);
 }
 
 .breadcrumb {
@@ -86,21 +59,23 @@
   margin-bottom: 2rem;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.9rem;
-  color: #CDD1DB;
+  color: var(--text-primary);
 }
 
 .breadcrumb a {
-  color: #CDD1DB;
+  color: var(--text-primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .breadcrumb a:hover {
-  color: #00d4aa;
+  color: var(--text-primary);
+  opacity: 0.7;
 }
 
 .breadcrumb span {
-  color: rgba(186, 192, 204, 0.5);
+  color: var(--text-primary);
+  opacity: 0.5;
 }
 
 .title {
@@ -110,17 +85,14 @@
   line-height: 1.1;
   margin: 0 0 1rem 0;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #ffffff 0%, #D9DBE3 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
 }
 
 .subtitle {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: clamp(1.1rem, 2vw, 1.4rem);
   line-height: 1.6;
-  color: #CDD1DB;
+  color: var(--text-primary);
   max-width: 700px;
 }
 
@@ -141,7 +113,7 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 2rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -149,7 +121,7 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1.1rem;
   line-height: 1.8;
-  color: #CDD1DB;
+  color: var(--text-primary);
 }
 
 /* Professional Cards - More refined */
@@ -169,21 +141,18 @@
 
 .card {
   position: relative;
-  background: rgba(18, 18, 18, 0.6);
-  border: 1px solid rgba(186, 192, 204, 0.08);
+  background: var(--bg-primary);
+  border: 1px solid rgba(26, 32, 44, 0.1);
   border-radius: 0.5rem;
   padding: 2rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(20px);
 }
 
 .card:hover {
-  background: rgba(18, 18, 18, 0.8);
-  border-color: rgba(0, 212, 170, 0.2);
+  background: var(--bg-primary);
+  border-color: rgba(26, 32, 44, 0.2);
   transform: translateY(-2px);
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.5),
-    0 0 40px rgba(0, 212, 170, 0.05);
+  box-shadow: 0 4px 12px rgba(26, 32, 44, 0.1);
 }
 
 .cardIcon {
@@ -191,16 +160,16 @@
   height: 3rem;
   margin-bottom: 1.5rem;
   padding: 0.75rem;
-  background: rgba(0, 212, 170, 0.1);
+  background: rgba(26, 32, 44, 0.05);
   border-radius: 0.5rem;
-  color: #00d4aa;
+  color: var(--text-primary);
 }
 
 .cardTitle {
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.5rem;
   font-weight: 600;
-  color: #E8EAEF;
+  color: var(--text-primary);
   margin: 0 0 0.75rem 0;
 }
 
@@ -208,33 +177,33 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1rem;
   line-height: 1.6;
-  color: #CDD1DB;
+  color: var(--text-primary);
 }
 
-/* Info Boxes - Professional style */
+/* Info Boxes - Clean style */
 .infoBox {
-  background: rgba(0, 212, 170, 0.05);
-  border: 1px solid rgba(0, 212, 170, 0.1);
+  background: var(--bg-primary);
+  border: 1px solid rgba(26, 32, 44, 0.1);
   border-radius: 0.5rem;
   padding: 1.5rem;
   margin: 2rem 0;
 }
 
 .infoBox.warning {
-  background: rgba(251, 191, 36, 0.05);
-  border-color: rgba(251, 191, 36, 0.1);
+  background: var(--bg-primary);
+  border-color: rgba(26, 32, 44, 0.2);
 }
 
 .infoBox.error {
-  background: rgba(239, 68, 68, 0.05);
-  border-color: rgba(239, 68, 68, 0.1);
+  background: var(--bg-primary);
+  border-color: rgba(26, 32, 44, 0.2);
 }
 
 .infoTitle {
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.1rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0 0 0.5rem 0;
 }
 
@@ -242,18 +211,18 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.95rem;
   line-height: 1.6;
-  color: #CDD1DB;
+  color: var(--text-primary);
 }
 
-/* Stats Grid - Professional metrics */
+/* Stats Grid - Clean metrics */
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
   margin: 3rem 0;
   padding: 2rem;
-  background: rgba(18, 18, 18, 0.4);
-  border: 1px solid rgba(186, 192, 204, 0.08);
+  background: var(--bg-primary);
+  border: 1px solid rgba(26, 32, 44, 0.1);
   border-radius: 0.75rem;
 }
 
@@ -265,17 +234,14 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 2.5rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .statLabel {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.9rem;
-  color: #CDD1DB;
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-top: 0.5rem;
@@ -295,7 +261,7 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(180deg, #00d4aa 0%, rgba(0, 212, 170, 0.1) 100%);
+  background: rgba(26, 32, 44, 0.2);
 }
 
 .timelineItem {
@@ -310,8 +276,8 @@
   top: 0.5rem;
   width: 12px;
   height: 12px;
-  background: #00d4aa;
-  border: 3px solid #000000;
+  background: var(--text-primary);
+  border: 3px solid var(--bg-primary);
   border-radius: 50%;
   z-index: 1;
 }
@@ -320,7 +286,7 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 0.9rem;
   font-weight: 600;
-  color: #00d4aa;
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom: 0.5rem;
@@ -330,7 +296,7 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.3rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0 0 0.5rem 0;
 }
 
@@ -338,7 +304,7 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1rem;
   line-height: 1.6;
-  color: #CDD1DB;
+  color: var(--text-primary);
 }
 
 /* Team Grid - For team members */
@@ -352,15 +318,15 @@
 .teamMember {
   text-align: center;
   padding: 1.5rem;
-  background: rgba(18, 18, 18, 0.4);
-  border: 1px solid rgba(186, 192, 204, 0.08);
+  background: var(--bg-primary);
+  border: 1px solid rgba(26, 32, 44, 0.1);
   border-radius: 0.75rem;
   transition: all 0.3s ease;
 }
 
 .teamMember:hover {
-  background: rgba(18, 18, 18, 0.6);
-  border-color: rgba(0, 212, 170, 0.2);
+  background: var(--bg-primary);
+  border-color: rgba(26, 32, 44, 0.2);
   transform: translateY(-4px);
 }
 
@@ -368,28 +334,28 @@
   width: 100px;
   height: 100px;
   margin: 0 auto 1rem;
-  background: linear-gradient(135deg, rgba(0, 212, 170, 0.2) 0%, rgba(0, 184, 148, 0.2) 100%);
-  border: 2px solid rgba(0, 212, 170, 0.3);
+  background: rgba(26, 32, 44, 0.05);
+  border: 2px solid rgba(26, 32, 44, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  color: #00d4aa;
+  color: var(--text-primary);
 }
 
 .teamName {
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.2rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
   margin: 0 0 0.25rem 0;
 }
 
 .teamRole {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.9rem;
-  color: #00d4aa;
+  color: var(--text-primary);
   margin: 0 0 0.75rem 0;
 }
 
@@ -397,7 +363,7 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.85rem;
   line-height: 1.5;
-  color: #CDD1DB;
+  color: var(--text-primary);
 }
 
 /* Contact Form - Professional style */
@@ -415,7 +381,7 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 0.95rem;
   font-weight: 500;
-  color: #ffffff;
+  color: var(--text-primary);
   margin-bottom: 0.5rem;
 }
 
@@ -423,10 +389,10 @@
 .formTextarea {
   width: 100%;
   padding: 0.75rem 1rem;
-  background: rgba(18, 18, 18, 0.6);
-  border: 1px solid rgba(186, 192, 204, 0.15);
+  background: var(--bg-primary);
+  border: 1px solid rgba(26, 32, 44, 0.2);
   border-radius: 0.375rem;
-  color: #ffffff;
+  color: var(--text-primary);
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1rem;
   transition: all 0.2s ease;
@@ -435,9 +401,9 @@
 .formInput:focus,
 .formTextarea:focus {
   outline: none;
-  border-color: rgba(0, 212, 170, 0.5);
-  background: rgba(18, 18, 18, 0.8);
-  box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.1);
+  border-color: rgba(26, 32, 44, 0.5);
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 3px rgba(26, 32, 44, 0.1);
 }
 
 .formTextarea {
@@ -447,10 +413,10 @@
 
 .formButton {
   padding: 0.875rem 2rem;
-  background: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
+  background: var(--text-primary);
   border: none;
   border-radius: 0.375rem;
-  color: #000000;
+  color: var(--bg-primary);
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1rem;
   font-weight: 600;
@@ -462,7 +428,7 @@
 
 .formButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0, 212, 170, 0.3);
+  box-shadow: 0 4px 12px rgba(26, 32, 44, 0.3);
 }
 
 .formButton:active {
@@ -483,27 +449,28 @@
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: 1rem;
   line-height: 1.6;
-  color: #CDD1DB;
+  color: var(--text-primary);
 }
 
 .listItem::before {
   content: '▸';
   position: absolute;
   left: 0;
-  color: #00d4aa;
+  color: var(--text-primary);
   font-size: 1.2rem;
 }
 
 /* Links */
 .link {
-  color: #00d4aa;
+  color: var(--text-primary);
   text-decoration: none;
   transition: all 0.2s ease;
   border-bottom: 1px solid transparent;
 }
 
 .link:hover {
-  border-bottom-color: #00d4aa;
+  border-bottom-color: var(--text-primary);
+  opacity: 0.7;
 }
 
 /* Responsive Design */
@@ -587,6 +554,6 @@
 /* Divider */
 .divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(186, 192, 204, 0.2), transparent);
+  background: rgba(26, 32, 44, 0.1);
   margin: 3rem 0;
 }
