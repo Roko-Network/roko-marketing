@@ -22,7 +22,7 @@
 
 .title {
   font-family: var(--font-display, 'Rajdhani', sans-serif);
-  font-size: clamp(3rem, 8vw, 6rem);
+    font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
   line-height: 0.9;
   margin-bottom: 24px;
@@ -55,9 +55,9 @@
   width: 100%;
   max-width: 1200px;
   background: #ffffff;
-  border: 1px solid #e5e5e5;
-  border-radius: 24px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid #000000;
+  border-radius: 1rem;
+
   transition: all 0.3s ease;
 }
 

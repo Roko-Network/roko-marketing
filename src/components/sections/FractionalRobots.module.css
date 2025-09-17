@@ -258,14 +258,13 @@
 .step {
   text-align: center;
   padding: 30px 20px;
-  background: #F7F7F7;
-  border-radius: 16px;
+  background: #f5f5f5;
+  border-radius: 0.5rem;
   transition: all 0.3s ease;
+  border: 1px solid #e5e5e5;
 }
 
 .step:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(147, 51, 234, 0.15);
 }
 
 .stepNumber {
@@ -298,17 +297,15 @@
 .stepConnector {
   width: 40px;
   height: 2px;
-  background: linear-gradient(90deg, #9333ea 0%, #00d4aa 100%);
+  background:#f5f5f5;
   position: relative;
 }
 
 .stepConnector::after {
-  content: '→';
+  content: '';
   position: absolute;
   right: -10px;
   top: 50%;
-  transform: translateY(-50%);
-  color: #00d4aa;
   font-size: 1.2rem;
 }
 
@@ -337,14 +334,13 @@
 .fact {
   text-align: center;
   padding: 30px 20px;
-  background: linear-gradient(135deg, #F7F7F7 0%, rgba(147, 51, 234, 0.05) 100%);
-  border-radius: 16px;
+  background:#f5f5f5;
+  border-radius: 0.5rem;
   transition: all 0.3s ease;
+  border: 1px solid #e5e5e5;
 }
 
 .fact:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 30px rgba(0, 212, 170, 0.2);
 }
 
 .factEmoji {
