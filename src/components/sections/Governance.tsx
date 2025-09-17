@@ -7,44 +7,76 @@ import {
   ChartBarIcon,
   ClockIcon,
   CurrencyDollarIcon,
-  TrophyIcon,
-  ExclamationTriangleIcon,
-  ArrowPathIcon
+  TrophyIcon
+  // DocumentTextIcon, ShieldCheckIcon removed - Issues #13, #15
 } from '@heroicons/react/24/outline';
-import { useGovernanceData } from '../../hooks/useProposals';
-import { GovernanceProposal } from '../../services/governance/types';
 import styles from './Governance.module.css';
 
-// Fallback data when API is unavailable
-const fallbackStats = {
+interface DAOStats {
+  totalSupply: string;
+  totalHolders: string;
+  avgVotingPower: string;
+  // Staking, validator, and treasury data removed
+}
+
+interface Proposal {
+  id: string;
+  title: string;
+  description: string;
+  status: 'active' | 'passed' | 'failed' | 'pending';
+  votesFor: number;
+  votesAgainst: number;
+  quorum: number;
+  timeRemaining: string;
+  category: 'treasury' | 'governance' | 'technical' | 'community';
+}
+
+// TreasuryAllocation interface removed - Issue #14
+
+const daoStats: DAOStats = {
   totalSupply: '1,000,000,000',
   totalHolders: '89,432',
-  avgVotingPower: '2.8%',
-  activeProposals: 0,
-  totalProposals: 0,
-  participationRate: '0%'
+  avgVotingPower: '2.8%'
+  // Staking, validator, and treasury data removed
 };
 
-const fallbackProposals: GovernanceProposal[] = [
+const mockProposals: Proposal[] = [
   {
-    id: 'fallback-001',
-    title: 'Loading Proposals...',
-    description: 'Fetching latest governance proposals from Snapshot...',
-    status: 'pending',
-    votesFor: 0,
-    votesAgainst: 0,
-    quorum: 0,
-    timeRemaining: 'Loading...',
-    category: 'other',
-    choices: ['For', 'Against'],
-    scores: [0, 0],
-    totalVotes: 0,
-    startTime: new Date(),
-    endTime: new Date(),
-    author: '',
-    snapshotHeight: ''
+    id: 'prop-001',
+    title: 'Increase Validator Node Requirements',
+    description: 'Proposal to increase minimum hardware requirements for validator nodes to improve network performance.',
+    status: 'active',
+    votesFor: 4500000,
+    votesAgainst: 1200000,
+    quorum: 5000000,
+    timeRemaining: '5 days',
+    category: 'technical'
+  },
+  {
+    id: 'prop-002',
+    title: 'Community Grant Program Funding',
+    description: 'Allocate 5M ROKO tokens for developer grants and ecosystem development initiatives.',
+    status: 'active',
+    votesFor: 8900000,
+    votesAgainst: 2100000,
+    quorum: 10000000,
+    timeRemaining: '2 days',
+    category: 'treasury'
+  },
+  {
+    id: 'prop-003',
+    title: 'Governance Token Burn Mechanism',
+    description: 'Implement quarterly token burn based on network revenue to reduce total supply.',
+    status: 'passed',
+    votesFor: 15600000,
+    votesAgainst: 3400000,
+    quorum: 15000000,
+    timeRemaining: 'Ended',
+    category: 'governance'
   }
 ];
+
+// Treasury allocations data removed - Issue #14
 
 export const Governance: FC = () => {
   const [ref, inView] = useInView({
@@ -53,24 +85,7 @@ export const Governance: FC = () => {
   });
 
   const [selectedProposal, setSelectedProposal] = useState<string | null>(null);
-
-  // Fetch real governance data from Snapshot
-  const { proposals, stats, loading, error, refetch } = useGovernanceData();
-
-  // Use fallback data when loading or on error
-  const displayProposals = useMemo(() => {
-    if (loading) return fallbackProposals;
-    if (error || !proposals || proposals.length === 0) {
-      return fallbackProposals.map(p => ({
-        ...p,
-        title: error ? 'Error Loading Proposals' : 'No Proposals Available',
-        description: error ? 'Failed to load proposals from Snapshot API' : 'No governance proposals found for this space'
-      }));
-    }
-    return proposals.slice(0, 10); // Show first 10 proposals
-  }, [loading, error, proposals]);
-
-  const displayStats = stats || fallbackStats;
+  // Staking modal state removed - Issue #8
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -113,10 +128,10 @@ export const Governance: FC = () => {
     })
   };
 
-  const getProposalProgress = (proposal: GovernanceProposal) => {
-    const totalVotes = proposal.votesFor + proposal.votesAgainst + (proposal.abstain || 0);
+  const getProposalProgress = (proposal: Proposal) => {
+    const totalVotes = proposal.votesFor + proposal.votesAgainst;
     const forPercentage = totalVotes > 0 ? (proposal.votesFor / totalVotes) * 100 : 0;
-    const quorumProgress = proposal.quorum > 0 ? (totalVotes / proposal.quorum) * 100 : 0;
+    const quorumProgress = totalVotes > 0 ? (totalVotes / proposal.quorum) * 100 : 0;
     return { forPercentage, quorumProgress: Math.min(quorumProgress, 100) };
   };
 
@@ -162,7 +177,7 @@ export const Governance: FC = () => {
               <BanknotesIcon className={styles.icon} />
             </div>
             <div className={styles.statContent}>
-              <div className={styles.statValue}>{displayStats.totalSupply}</div>
+              <div className={styles.statValue}>{daoStats.totalSupply}</div>
               <div className={styles.statLabel}>Total ROKO Supply</div>
             </div>
           </motion.div>
@@ -172,8 +187,8 @@ export const Governance: FC = () => {
               <ChartBarIcon className={styles.icon} />
             </div>
             <div className={styles.statContent}>
-              <div className={styles.statValue}>{displayStats.activeProposals}</div>
-              <div className={styles.statLabel}>Active Proposals</div>
+              <div className={styles.statValue}>{daoStats.avgVotingPower}</div>
+              <div className={styles.statLabel}>Avg Voting Power</div>
             </div>
           </motion.div>
 
@@ -182,7 +197,7 @@ export const Governance: FC = () => {
               <UsersIcon className={styles.icon} />
             </div>
             <div className={styles.statContent}>
-              <div className={styles.statValue}>{displayStats.totalHolders}</div>
+              <div className={styles.statValue}>{daoStats.totalHolders}</div>
               <div className={styles.statLabel}>Token Holders</div>
             </div>
           </motion.div>
@@ -198,46 +213,12 @@ export const Governance: FC = () => {
           {/* Proposals Section */}
           <motion.div className={styles.proposalsSection} variants={itemVariants}>
             <div className={styles.sectionHeader}>
-              <div className={styles.headerContent}>
-                <h3>Governance Proposals</h3>
-                <p>Community proposals from Snapshot</p>
-              </div>
-              <div className={styles.headerActions}>
-                {error && (
-                  <motion.button
-                    className={styles.retryButton}
-                    onClick={refetch}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    title="Retry loading proposals"
-                  >
-                    <ArrowPathIcon className={styles.retryIcon} />
-                    Retry
-                  </motion.button>
-                )}
-                {loading && (
-                  <div className={styles.loadingIndicator}>
-                    <ArrowPathIcon className={`${styles.loadingIcon} ${styles.spinning}`} />
-                    Loading...
-                  </div>
-                )}
-              </div>
+              <h3>Active Proposals</h3>
+              <p>Community proposals requiring your vote</p>
             </div>
 
-            {error && (
-              <div className={styles.errorBanner}>
-                <ExclamationTriangleIcon className={styles.errorIcon} />
-                <div className={styles.errorContent}>
-                  <p className={styles.errorTitle}>Failed to load proposals</p>
-                  <p className={styles.errorMessage}>
-                    Unable to connect to Snapshot API. Showing fallback content.
-                  </p>
-                </div>
-              </div>
-            )}
-
             <div className={styles.proposalsList}>
-              {displayProposals.map((proposal) => {
+              {mockProposals.map((proposal) => {
                 const { forPercentage, quorumProgress } = getProposalProgress(proposal);
 
                 return (
@@ -312,37 +293,10 @@ export const Governance: FC = () => {
                       </div>
                     </div>
 
-                    {proposal.status === 'active' && !loading && !error && (
+                    {proposal.status === 'active' && (
                       <div className={styles.voteButtons}>
-                        <motion.button
-                          className={styles.voteFor}
-                          onClick={() => window.open(`https://snapshot.org/#/rokonetwork.eth/proposal/${proposal.id}`, '_blank', 'noopener,noreferrer')}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          Vote For
-                        </motion.button>
-                        <motion.button
-                          className={styles.voteAgainst}
-                          onClick={() => window.open(`https://snapshot.org/#/rokonetwork.eth/proposal/${proposal.id}`, '_blank', 'noopener,noreferrer')}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          Vote Against
-                        </motion.button>
-                      </div>
-                    )}
-
-                    {!loading && !error && proposal.status !== 'active' && (
-                      <div className={styles.viewProposalButton}>
-                        <motion.button
-                          className={styles.secondaryButton}
-                          onClick={() => window.open(`https://snapshot.org/#/rokonetwork.eth/proposal/${proposal.id}`, '_blank', 'noopener,noreferrer')}
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          View Details
-                        </motion.button>
+                        <button className={styles.voteFor}>Vote For</button>
+                        <button className={styles.voteAgainst}>Vote Against</button>
                       </div>
                     )}
                   </motion.div>
