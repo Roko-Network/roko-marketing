@@ -10,14 +10,16 @@ const ContactPage: React.FC = () => {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    const name = formData.get('name') as string || '';
     const subject = formData.get('subject') as string || 'Contact Form Submission';
     const message = formData.get('message') as string || '';
 
-    // Create mailto link with form data - using %0D%0A for line breaks
-    const body = `From: ${name}%0D%0A%0D%0AMessage:%0D%0A${message}%0D%0A%0D%0A---%0D%0ASent via ROKO Network Contact Form`;
+    // Create mailto link with properly formatted body
+    const body = `${message}
 
-    const mailtoLink = `mailto:hello@roko.network?subject=${encodeURIComponent(subject)}&body=${body.replace(/ /g, '%20')}`;
+---
+Sent via ROKO Network Contact Form`;
+
+    const mailtoLink = `mailto:hello@roko.network?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
     // Open email client
     window.location.href = mailtoLink;
@@ -43,16 +45,12 @@ const ContactPage: React.FC = () => {
             <h2 className={styles.sectionTitle}>Send a Message</h2>
             <form className={styles.contactForm} onSubmit={handleSendMessage}>
               <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Name</label>
-                <input type="text" name="name" className={styles.formInput} placeholder="Your name" required />
-              </div>
-              <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Subject</label>
                 <input type="text" name="subject" className={styles.formInput} placeholder="How can we help?" required />
               </div>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Message</label>
-                <textarea name="message" className={styles.formTextarea} placeholder="Your message..." required />
+                <textarea name="message" className={styles.formTextarea} placeholder="Your message..." rows={6} required />
               </div>
               <button type="submit" className={styles.formButton}>Send Message</button>
             </form>
