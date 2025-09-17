@@ -25,7 +25,7 @@
 }
 
 .gradientText {
-  background: linear-gradient(135deg, #9333ea 0%, #00d4aa 100%);
+  background: #000000;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -51,9 +51,9 @@
   gap: 60px;
   align-items: center;
   background: #FFFFFF;
-  border-radius: 24px;
+  border-radius: 16px;
   padding: 60px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--border-primary);
 }
 
 .eggVisual {
@@ -75,7 +75,7 @@
   transform: translate(-50%, -50%);
   width: 200px;
   height: 240px;
-  background: linear-gradient(135deg, #9333ea 0%, #a855f7 50%, #00d4aa 100%);
+  background: linear-gradient(135deg, #F7F7F7 0%, rgba(147, 51, 234, 0.05) 100%);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   display: flex;
   justify-content: center;
@@ -156,7 +156,7 @@
 
 .eggBadge {
   display: inline-block;
-  background: linear-gradient(135deg, #00d4aa 0%, #0078D4 100%);
+  background: #000000;
   color: white;
   padding: 8px 20px;
   border-radius: 20px;
@@ -194,7 +194,7 @@
 .featureIcon {
   width: 24px;
   height: 24px;
-  color: #9333ea;
+  color: #000000;
 }
 
 .learnMoreLink {
@@ -221,9 +221,9 @@
 /* Robit Process */
 .robitProcess {
   background: #FFFFFF;
-  border-radius: 24px;
+  border-radius: 16px;
   padding: 60px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--border-primary);
 }
 
 .robitProcess h3 {
@@ -266,7 +266,7 @@
   align-items: center;
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+  background: #000000;
   color: white;
   border-radius: 50%;
   font-weight: bold;
@@ -307,9 +307,9 @@
 /* Fun Facts */
 .funFacts {
   background: #FFFFFF;
-  border-radius: 24px;
+  border-radius: 16px;
   padding: 60px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  border: 2px solid var(--border-primary);
 }
 
 .funFacts h3 {
@@ -352,10 +352,11 @@
 
 /* Interactive Section */
 .interactiveSection {
-  background: linear-gradient(135deg, #9333ea 0%, #a855f7 50%, #00d4aa 100%);
-  border-radius: 24px;
+  background: #ffffff;
+  border-radius: 16px;
   padding: 60px;
   text-align: center;
+  border:2px solid var(--border-primary);
   color: white;
 }
 
@@ -394,24 +395,25 @@
 
 .primaryButton {
   background: white;
-  color: #9333ea;
+  border:2px solid var(--border-primary);
+  color: #000000;
 }
 
 .primaryButton:hover {
-  background: #F7F7F7;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  background: #000000;
+  color:#ffffff;
 }
 
 .secondaryButton {
   background: transparent;
   color: white;
-  border: 2px solid white;
+  background:#000000;
 }
 
 .secondaryButton:hover {
   background: rgba(255, 255, 255, 0.1);
-  border-color: #00d4aa;
-  color: #00d4aa;
+  border-color: #000000;
+  color: #000000;
 }
 
 /* Background Elements */

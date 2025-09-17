@@ -25,7 +25,7 @@
 }
 
 .gradientText {
-  background: linear-gradient(135deg, #00d4aa 0%, #0078D4 100%);
+  background: #000000;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -48,7 +48,7 @@
   background: #FFFFFF;
   border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 2px solid var(--border-primary);
 }
 
 .overview h3 {
@@ -89,7 +89,7 @@
   background: #FFFFFF;
   border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 2px solid var(--border-primary);
 }
 
 .features h3 {
@@ -120,7 +120,7 @@
 .featureIcon {
   width: 40px;
   height: 40px;
-  color: #00d4aa;
+  color: #000000;
   margin-bottom: 16px;
 }
 
@@ -141,7 +141,7 @@
   background: #FFFFFF;
   border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 2px solid var(--border-primary);
 }
 
 .benefits h3 {
@@ -180,16 +180,16 @@
   background: #FFFFFF;
   border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 2px solid var(--border-primary);
   text-align: center;
 }
 
 .statusBadge {
   display: inline-block;
-  background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+  background: #000000;
   color: white;
   padding: 8px 24px;
-  border-radius: 24px;
+  border-radius: 16px;
   font-weight: 600;
   margin-bottom: 20px;
 }
