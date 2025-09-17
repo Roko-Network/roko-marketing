@@ -87,12 +87,6 @@ const CareersPage: React.FC = () => {
 
   return (
     <div className={styles.companyPage}>
-      {/* Background Elements */}
-      <div className={styles.backgroundGradient} />
-      <div className={styles.gridOverlay} />
-      <div className={`${styles.accentGlow} ${styles.top}`} />
-      <div className={`${styles.accentGlow} ${styles.bottom}`} />
-
       {/* Content */}
       <div className={styles.container}>
         {/* Header */}
@@ -146,15 +140,15 @@ const CareersPage: React.FC = () => {
                   <div style={{ flex: 1 }}>
                     <h3 className={styles.cardTitle}>{position.title}</h3>
                     <div style={{ display: 'flex', gap: '1rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-                      <span style={{ color: '#00d4aa', fontSize: '0.9rem' }}>{position.department}</span>
-                      <span style={{ color: '#D9DBE3', fontSize: '0.9rem' }}>•</span>
-                      <span style={{ color: '#D9DBE3', fontSize: '0.9rem' }}>{position.location}</span>
-                      <span style={{ color: '#D9DBE3', fontSize: '0.9rem' }}>•</span>
-                      <span style={{ color: '#D9DBE3', fontSize: '0.9rem' }}>{position.type}</span>
+                      <span style={{ fontSize: '0.9rem' }}>{position.department}</span>
+                      <span style={{ fontSize: '0.9rem' }}>•</span>
+                      <span style={{ fontSize: '0.9rem' }}>{position.location}</span>
+                      <span style={{ fontSize: '0.9rem' }}>•</span>
+                      <span style={{ fontSize: '0.9rem' }}>{position.type}</span>
                     </div>
                     <p className={styles.cardDescription}>{position.description}</p>
                   </div>
-                  <ChevronRightIcon style={{ width: '1.5rem', height: '1.5rem', color: '#00d4aa', flexShrink: 0 }} />
+                  <ChevronRightIcon style={{ width: '1.5rem', height: '1.5rem', flexShrink: 0 }} />
                 </div>
               </div>
             ))}

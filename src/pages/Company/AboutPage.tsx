@@ -12,11 +12,6 @@ import styles from './Company.module.css';
 const AboutPage: React.FC = () => {
   return (
     <div className={styles.companyPage}>
-      {/* Background Elements */}
-      <div className={styles.backgroundGradient} />
-      <div className={styles.gridOverlay} />
-      <div className={`${styles.accentGlow} ${styles.top}`} />
-      <div className={`${styles.accentGlow} ${styles.bottom}`} />
 
       {/* Content */}
       <div className={styles.container}>

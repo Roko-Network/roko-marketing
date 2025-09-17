@@ -41,6 +41,13 @@
 
 /* CSS Custom Properties - Official ROKO Brand Guidelines */
 :root {
+  /* ROKO Network Brand Colors */
+  --roko-primary: #BAC0CC;
+  --roko-secondary: #BCC1D1;
+  --roko-tertiary: #D9DBE3;
+  --roko-dark: #181818;
+  --roko-teal: #00d4aa;
+  --roko-teal-hover: #00ffcc;
   /* BLACK AND WHITE THEME - Core Colors */
   --color-black: #000000;
   /* Pure black */

@@ -139,10 +139,10 @@ const PressPage: React.FC = () => {
                       <p className={styles.cardDescription} style={{ margin: '0.25rem 0 0 0', fontSize: '0.9rem' }}>
                         {asset.description}
                       </p>
-                      <span style={{ color: '#00d4aa', fontSize: '0.8rem' }}>{asset.size}</span>
+                      <span style={{ color: 'var(--text-primary)', fontSize: '0.8rem', opacity: '0.7' }}>{asset.size}</span>
                     </div>
                   </div>
-                  <ArrowDownTrayIcon style={{ width: '1.5rem', height: '1.5rem', color: '#00d4aa', flexShrink: 0 }} />
+                  <ArrowDownTrayIcon style={{ width: '1.5rem', height: '1.5rem', color: 'var(--text-primary)', flexShrink: 0 }} />
                 </div>
               </div>
             ))}
@@ -157,10 +157,10 @@ const PressPage: React.FC = () => {
               <div key={index} className={styles.listItem} style={{ paddingLeft: 0, marginBottom: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', flexWrap: 'wrap', gap: '1rem' }}>
                   <div>
-                    <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#ffffff', fontWeight: 600 }}>
+                    <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-primary)', fontWeight: 600 }}>
                       {article.title}
                     </h3>
-                    <p style={{ margin: '0.25rem 0 0 0', color: '#D9DBE3', fontSize: '0.9rem' }}>
+                    <p style={{ margin: '0.25rem 0 0 0', color: 'var(--text-primary)', opacity: '0.7', fontSize: '0.9rem' }}>
                       {article.outlet} • {article.date}
                     </p>
                   </div>

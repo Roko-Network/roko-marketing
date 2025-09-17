@@ -1,15 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRightIcon, EnvelopeIcon, ChatBubbleLeftRightIcon, MapPinIcon } from '@heroicons/react/24/outline';
-import styles from './Company.module.css';
+import styles from './Contact.module.css';
 
 const ContactPage: React.FC = () => {
-  return (
-    <div className={styles.companyPage}>
-      <div className={styles.backgroundGradient} />
-      <div className={styles.gridOverlay} />
-      <div className={`${styles.accentGlow} ${styles.top}`} />
+  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const subject = formData.get('subject') as string || 'Contact Form Submission';
+    const message = formData.get('message') as string || '';
+
+    // Create mailto link with properly formatted body
+    const body = `${message}
+
+---
+Sent via ROKO Network Contact Form`;
+
+    const mailtoLink = `mailto:hello@roko.network?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Open email client
+    window.location.href = mailtoLink;
+  };
+
+  return (
+    <div className={styles.contactPage}>
       <div className={styles.container}>
         <header className={styles.header}>
           <nav className={styles.breadcrumb}>
@@ -23,25 +40,17 @@ const ContactPage: React.FC = () => {
           <p className={styles.subtitle}>Get in touch with the ROKO Network team</p>
         </header>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', marginBottom: '3rem' }}>
+        <div className={styles.contentGrid}>
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Send a Message</h2>
-            <form className={styles.contactForm}>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Name</label>
-                <input type="text" className={styles.formInput} placeholder="Your name" />
-              </div>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Email</label>
-                <input type="email" className={styles.formInput} placeholder="your@email.com" />
-              </div>
+            <form className={styles.contactForm} onSubmit={handleSendMessage}>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Subject</label>
-                <input type="text" className={styles.formInput} placeholder="How can we help?" />
+                <input type="text" name="subject" className={styles.formInput} placeholder="How can we help?" required />
               </div>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Message</label>
-                <textarea className={styles.formTextarea} placeholder="Your message..." />
+                <textarea name="message" className={styles.formTextarea} placeholder="Your message..." rows={6} required />
               </div>
               <button type="submit" className={styles.formButton}>Send Message</button>
             </form>
@@ -49,16 +58,41 @@ const ContactPage: React.FC = () => {
 
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Get in Touch</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div className={styles.contactMethods}>
               <div className={styles.card}>
                 <EnvelopeIcon className={styles.cardIcon} />
                 <h3 className={styles.cardTitle}>General Inquiries</h3>
-                <a href="mailto:hello@roko.network" className={styles.link}>hello@roko.network</a>
+                <a
+                  href="mailto:hello@roko.network?subject=General%20Inquiry%20-%20ROKO%20Network&body=Hello%20ROKO%20Team%2C%0A%0AI'm%20interested%20in%20learning%20more%20about%20ROKO%20Network.%0A%0A%5BYour%20message%20here%5D%0A%0ABest%20regards%2C%0A%5BYour%20name%5D"
+                  className={styles.link}
+                >
+                  hello@roko.network
+                </a>
+              </div>
+              <div className={styles.card}>
+                <EnvelopeIcon className={styles.cardIcon} />
+                <h3 className={styles.cardTitle}>Partnership Inquiries</h3>
+                <a
+                  href="mailto:partnerships@roko.network?subject=Partnership%20Opportunity%20with%20ROKO%20Network&body=Hello%20ROKO%20Partnerships%20Team%2C%0A%0AI'm%20interested%20in%20exploring%20a%20partnership%20opportunity%20with%20ROKO%20Network.%0A%0ACompany%3A%20%5BYour%20company%5D%0ARole%3A%20%5BYour%20role%5D%0A%0APartnership%20Details%3A%0A%5BDescribe%20your%20partnership%20proposal%5D%0A%0ABest%20regards%2C%0A%5BYour%20name%5D"
+                  className={styles.link}
+                >
+                  partnerships@roko.network
+                </a>
+              </div>
+              <div className={styles.card}>
+                <EnvelopeIcon className={styles.cardIcon} />
+                <h3 className={styles.cardTitle}>Technical Support</h3>
+                <a
+                  href="mailto:support@roko.network?subject=Technical%20Support%20Request&body=Hello%20ROKO%20Support%20Team%2C%0A%0AI%20need%20assistance%20with%3A%0A%0AIssue%20Description%3A%0A%5BDescribe%20your%20issue%5D%0A%0AWallet%20Address%20(if%20applicable)%3A%0A%5BYour%20wallet%20address%5D%0A%0ABest%20regards%2C%0A%5BYour%20name%5D"
+                  className={styles.link}
+                >
+                  support@roko.network
+                </a>
               </div>
               <div className={styles.card}>
                 <ChatBubbleLeftRightIcon className={styles.cardIcon} />
                 <h3 className={styles.cardTitle}>Community</h3>
-                <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+                <div className={styles.socialLinks}>
                   <a href="#" className={styles.link}>Discord</a>
                   <a href="#" className={styles.link}>Telegram</a>
                   <a href="#" className={styles.link}>Twitter</a>

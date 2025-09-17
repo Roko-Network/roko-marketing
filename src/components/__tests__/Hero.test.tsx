@@ -58,9 +58,6 @@ vi.mock('framer-motion', () => ({
 }));
 
 describe('Hero Component', () => {
-  const mockOnStartBuilding = vi.fn();
-  const mockOnReadDocs = vi.fn();
-
   beforeEach(() => {
     vi.clearAllMocks();
     mockIntersectionObserver();
@@ -73,16 +70,6 @@ describe('Hero Component', () => {
       expect(screen.getByRole('region', { name: /hero section/i })).toBeInTheDocument();
     });
 
-    it('should render with required props', () => {
-      render(
-        <Hero 
-          onStartBuilding={mockOnStartBuilding}
-          onReadDocs={mockOnReadDocs}
-        />
-      );
-      
-      expect(screen.getByRole('region', { name: /hero section/i })).toBeInTheDocument();
-    });
 
     it('should display main headline text', () => {
       render(<Hero />);
@@ -93,8 +80,8 @@ describe('Hero Component', () => {
 
     it('should display subheadline with key information', () => {
       render(<Hero />);
-      
-      expect(screen.getByText(/nanosecond precision blockchain infrastructure/i)).toBeInTheDocument();
+
+      expect(screen.getByText(/time measuring precision blockchain infrastructure/i)).toBeInTheDocument();
       expect(screen.getByText(/ieee 1588 ptp/i)).toBeInTheDocument();
     });
 
@@ -109,12 +96,6 @@ describe('Hero Component', () => {
       expect(screen.getByText('Network')).toBeInTheDocument();
     });
 
-    it('should render CTA buttons', () => {
-      render(<Hero />);
-      
-      expect(screen.getByRole('button', { name: /start building/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /read documentation/i })).toBeInTheDocument();
-    });
 
     it('should render scroll indicator', () => {
       render(<Hero />);
@@ -131,67 +112,6 @@ describe('Hero Component', () => {
     });
   });
 
-  describe('Interactions', () => {
-    it('should call onStartBuilding when start building button is clicked', async () => {
-      const user = userEvent.setup();
-      render(<Hero onStartBuilding={mockOnStartBuilding} />);
-      
-      const startButton = screen.getByRole('button', { name: /start building/i });
-      await user.click(startButton);
-      
-      expect(mockOnStartBuilding).toHaveBeenCalledOnce();
-    });
-
-    it('should call onReadDocs when read documentation button is clicked', async () => {
-      const user = userEvent.setup();
-      render(<Hero onReadDocs={mockOnReadDocs} />);
-      
-      const docsButton = screen.getByRole('button', { name: /read documentation/i });
-      await user.click(docsButton);
-      
-      expect(mockOnReadDocs).toHaveBeenCalledOnce();
-    });
-
-    it('should handle button interactions even without prop handlers', async () => {
-      const user = userEvent.setup();
-      render(<Hero />);
-      
-      const startButton = screen.getByRole('button', { name: /start building/i });
-      const docsButton = screen.getByRole('button', { name: /read documentation/i });
-      
-      // Should not throw errors
-      await user.click(startButton);
-      await user.click(docsButton);
-      
-      expect(startButton).toBeInTheDocument();
-      expect(docsButton).toBeInTheDocument();
-    });
-
-    it('should be keyboard navigable', async () => {
-      const user = userEvent.setup();
-      render(<Hero onStartBuilding={mockOnStartBuilding} />);
-      
-      const startButton = screen.getByRole('button', { name: /start building/i });
-      
-      // Tab to the button and press Enter
-      await user.tab();
-      expect(startButton).toHaveFocus();
-      
-      await user.keyboard('[Enter]');
-      expect(mockOnStartBuilding).toHaveBeenCalledOnce();
-    });
-
-    it('should handle Space key press on buttons', async () => {
-      const user = userEvent.setup();
-      render(<Hero onReadDocs={mockOnReadDocs} />);
-      
-      const docsButton = screen.getByRole('button', { name: /read documentation/i });
-      docsButton.focus();
-      
-      await user.keyboard('[Space]');
-      expect(mockOnReadDocs).toHaveBeenCalledOnce();
-    });
-  });
 
   describe('Accessibility', () => {
     it('should be accessible according to WCAG guidelines', async () => {
@@ -208,12 +128,12 @@ describe('Hero Component', () => {
       expect(heroSection).toHaveAttribute('aria-label', 'Hero section introducing ROKO Network');
     });
 
-    it('should have screen reader announcements', () => {
+    it('should have screen reader accessible structure', () => {
       render(<Hero />);
-      
-      const announcement = screen.getByText(/hero section loaded with roko network/i);
-      expect(announcement).toHaveClass('sr-only');
-      expect(announcement).toHaveAttribute('aria-live', 'polite');
+
+      const srOnlyElement = document.querySelector('.sr-only');
+      expect(srOnlyElement).toBeInTheDocument();
+      expect(srOnlyElement).toHaveAttribute('aria-live', 'polite');
     });
 
     it('should hide decorative 3D canvas from screen readers', () => {
@@ -223,15 +143,6 @@ describe('Hero Component', () => {
       expect(canvas).toHaveAttribute('aria-hidden', 'true');
     });
 
-    it('should provide proper button labels', () => {
-      render(<Hero />);
-      
-      const startButton = screen.getByRole('button', { name: /start building/i });
-      const docsButton = screen.getByRole('button', { name: /read documentation/i });
-      
-      expect(startButton).toBeInTheDocument();
-      expect(docsButton).toBeInTheDocument();
-    });
 
     it('should support high contrast mode', () => {
       // Test that text remains readable in high contrast mode
@@ -311,11 +222,11 @@ describe('Hero Component', () => {
         configurable: true,
         value: 375,
       });
-      
+
       render(<Hero />);
-      
+
       expect(screen.getByRole('region', { name: /hero section/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /start building/i })).toBeInTheDocument();
+      expect(screen.getByText('The Temporal Layer')).toBeInTheDocument();
     });
 
     it('should handle tablet viewport', () => {
@@ -355,14 +266,6 @@ describe('Hero Component', () => {
       expect(screen.getByRole('region', { name: /hero section/i })).toBeInTheDocument();
     });
 
-    it('should handle prop changes gracefully', () => {
-      const { rerender } = render(<Hero onStartBuilding={mockOnStartBuilding} />);
-      
-      const newMockHandler = vi.fn();
-      rerender(<Hero onStartBuilding={newMockHandler} />);
-      
-      expect(screen.getByRole('button', { name: /start building/i })).toBeInTheDocument();
-    });
 
     it('should optimize 3D rendering based on performance level', () => {
       render(<Hero />);
@@ -432,7 +335,7 @@ describe('Hero Component', () => {
     it('should include key technical terms for SEO', () => {
       render(<Hero />);
       
-      expect(screen.getByText(/nanosecond precision/i)).toBeInTheDocument();
+      expect(screen.getByText(/time measuring precision/i)).toBeInTheDocument();
       expect(screen.getByText(/blockchain infrastructure/i)).toBeInTheDocument();
       expect(screen.getByText(/IEEE 1588 PTP/i)).toBeInTheDocument();
       expect(screen.getByText(/Web3/i)).toBeInTheDocument();

@@ -63,7 +63,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
 /* Headline Styles */
@@ -119,69 +119,6 @@
   font-weight: 600;
 }
 
-/* CTA Container */
-.ctaContainer {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Primary CTA Button - using utility classes */
-.primaryCta {
-  /* Extending btn-primary with custom styles */
-  position: relative;
-  overflow: hidden;
-  color:#ffffff;
-  background:#000000;
-}
-
-.primaryCta::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: transparent;
-  transform: rotate(45deg) translateX(-100%) translateY(-100%);
-  transition: transform 0.5s;
-}
-
-.primaryCta:hover::before {
-  transform: rotate(45deg) translateX(100%) translateY(100%);
-}
-
-.primaryCta:focus {
-  outline: 3px solid var(--color-black);
-  outline-offset: 2px;
-}
-
-.ctaIcon {
-  font-size: 1.25rem;
-  transition: transform 0.3s ease;
-}
-
-.primaryCta:hover .ctaIcon {
-  transform: translateX(0.25rem);
-}
-
-/* Secondary CTA Button - using utility classes */
-.secondaryCta {
-  /* Extending btn-secondary with custom styles */
-}
-
-.secondaryCta:hover {
-  background: var(--bg-primary);
-  border-color: var(--border-primary);
-  color: var(--text-primary);
-}
-
-.secondaryCta:focus {
-  outline: 3px solid var(--color-black);
-  outline-offset: 2px;
-}
 
 /* Stats Container */
 .statsContainer {
@@ -189,7 +126,7 @@
   gap: 2rem;
   align-items: center;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   flex-wrap: wrap;
 }
 
@@ -220,18 +157,6 @@
   height: 2rem;
   background: var(--color-black);
   opacity: 0.5;
-}
-
-/* Token Stats Container */
-.tokenStatsContainer {
-  width: 100%;
-  max-width: 800px;
-  margin-top: 2rem;
-}
-
-.heroTokenStats {
-  background: var(--bg-primary);
-  border: 2px solid var(--border-primary);
 }
 
 /* Scroll Indicator */
@@ -267,18 +192,6 @@
     gap: 1.5rem;
   }
 
-  .ctaContainer {
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-  }
-
-  .primaryCta,
-  .secondaryCta {
-    width: 100%;
-    max-width: 280px;
-    justify-content: center;
-  }
 
   .statsContainer {
     gap: 1rem;
@@ -292,9 +205,6 @@
     bottom: 1rem;
   }
 
-  .tokenStatsContainer {
-    margin-top: 1.5rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -341,9 +251,6 @@
     animation: none;
   }
 
-  .primaryCta::before {
-    display: none;
-  }
 }
 
 /* Focus management for keyboard navigation */
@@ -356,10 +263,6 @@
   will-change: transform;
 }
 
-.primaryCta,
-.secondaryCta {
-  will-change: transform, box-shadow;
-}
 
 /* Dark theme specific adjustments */
 @media (prefers-color-scheme: light) {

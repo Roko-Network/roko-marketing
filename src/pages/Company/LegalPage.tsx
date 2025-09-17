@@ -1,14 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRightIcon, ShieldCheckIcon, DocumentTextIcon, ScaleIcon } from '@heroicons/react/24/outline';
-import styles from './Company.module.css';
+import styles from './Legal.module.css';
 
 const LegalPage: React.FC = () => {
   return (
-    <div className={styles.companyPage}>
-      <div className={styles.backgroundGradient} />
-      <div className={styles.gridOverlay} />
-      <div className={`${styles.accentGlow} ${styles.top}`} />
+    <div className={styles.legalPage}>
 
       <div className={styles.container}>
         <header className={styles.header}>
@@ -24,7 +21,7 @@ const LegalPage: React.FC = () => {
         </header>
 
         <section className={styles.section}>
-          <div className={`${styles.cardGrid} ${styles.cols2}`}>
+          <div className={styles.cardGrid}>
             <div className={styles.card}>
               <DocumentTextIcon className={styles.cardIcon} />
               <h3 className={styles.cardTitle}>Terms of Service</h3>

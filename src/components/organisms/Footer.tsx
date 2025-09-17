@@ -47,16 +47,6 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
         { label: 'DAO Governance', href: 'https://snapshot.org/#/rokonetwork.eth', external: true, description: 'Participate in ROKO Network governance' },
         { label: 'Get ROKO Tokens', href: 'https://app.uniswap.org/explore/tokens/ethereum/0x6f222e04f6c53cc688ffb0abe7206aac66a8ff98', external: true, description: 'Buy ROKO tokens on Uniswap' }
       ]
-    },
-    {
-      title: 'Company',
-      links: [
-        { label: 'About', href: '/company/about', description: 'Learn about ROKO Network' },
-        { label: 'Careers', href: '/company/careers', description: 'Join our team' },
-        { label: 'Press', href: '/company/press', description: 'Media resources' },
-        { label: 'Legal', href: '/company/legal', description: 'Terms and privacy' },
-        { label: 'Contact', href: '/company/contact', description: 'Get in touch' }
-      ]
     }
   ];
 
