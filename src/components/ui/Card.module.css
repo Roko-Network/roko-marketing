@@ -35,14 +35,14 @@
 /* Default Card - Flat Black and White */
 .card--default {
   background: #FFFFFF;
-  border: 2px solid #000000;
+  border: 2px solid var(--border-primary);
   border-radius: 8px;
 }
 
 /* Elevated Card - Flat Black and White */
 .card--elevated {
   background: #FFFFFF;
-  border: 2px solid #000000;
+  border: 2px solid var(--border-primary);
   border-radius: 8px;
 }
 
@@ -56,14 +56,14 @@
 /* Temporal Card - Flat Black and White */
 .card--temporal {
   background: #FFFFFF;
-  border: 2px solid #000000;
+  border: 2px solid var(--border-primary);
   border-radius: 8px;
 }
 
 /* Holographic Card - Flat Black and White */
 .card--holographic {
   background: #FFFFFF;
-  border: 2px solid #000000;
+  border: 2px solid var(--border-primary);
   border-radius: 8px;
   position: relative;
 }

@@ -133,6 +133,8 @@
   /* Extending btn-primary with custom styles */
   position: relative;
   overflow: hidden;
+  color:#ffffff;
+  background:#000000;
 }
 
 .primaryCta::before {
@@ -229,7 +231,7 @@
 
 .heroTokenStats {
   background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
+  border: 2px solid var(--border-primary);
 }
 
 /* Scroll Indicator */

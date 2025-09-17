@@ -83,7 +83,7 @@
 .filterButton {
   padding: 0.75rem 1.5rem;
   background: #FFFFFF;
-  border: 2px solid #000000;
+  border: 2px solid var(--border-primary);
   border-radius: 2rem;
   color: #000000;
   font-family: var(--font-body, 'HK Guise', sans-serif);
@@ -108,7 +108,7 @@
 }
 
 .filterButton:focus {
-  outline: 2px solid #000000;
+  outline: 2px solid var(--border-primary);
   outline-offset: 2px;
 }
 
@@ -122,8 +122,8 @@
 .partnerCard {
   position: relative;
   background: #FFFFFF;
-  border: 1px solid #000000;
-  border-radius: 1.5rem;
+  border: 2px solid var(--border-primary);
+  border-radius: 1rem;
   padding: 2rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
@@ -274,8 +274,8 @@
 
 .solutionCard {
   background: #FFFFFF;
-  border: 1px solid #000000;
-  border-radius: 1.5rem;
+  border: 2px solid var(--border-primary);
+  border-radius: 1rem;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -415,7 +415,7 @@
 .dappCard {
   background: #FFFFFF;
   border: 1px solid #000000;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -527,7 +527,7 @@
 .testimonialCard {
   background: #FFFFFF;
   border: 1px solid #000000;
-  border-radius: 1.5rem;
+  border-radius: 1rem;
   padding: 3rem;
   margin-bottom: 2rem;
 }
@@ -573,7 +573,7 @@
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #000000;
+  border: 2px solid var(--border-primary);
 }
 
 .authorInfo {
@@ -633,7 +633,7 @@
 }
 
 .navDot:focus {
-  outline: 2px solid #000000;
+  outline: 2px solid var(--border-primary);
   outline-offset: 2px;
 }
 
@@ -650,7 +650,7 @@
 
 .integrationCard {
   background: #FFFFFF;
-  border: 1px solid #000000;
+  border: 2px solid var(--border-primary);
   border-radius: 1rem;
   padding: 2rem;
   text-align: center;

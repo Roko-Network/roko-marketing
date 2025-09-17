@@ -25,7 +25,7 @@
 }
 
 .gradientText {
-  background: linear-gradient(135deg, #00d4aa 0%, #0078D4 100%);
+  background: #000000;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -70,7 +70,7 @@
   padding: 60px 20px;
   background: #FFFFFF;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 2px solid var(--border-primary);
 }
 
 .error p {
@@ -106,7 +106,7 @@
   background: #FFFFFF;
   border-radius: 16px;
   padding: 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 2px solid var(--border-primary);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -228,7 +228,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 16px;
-  background: linear-gradient(135deg, #00d4aa 0%, #0078D4 100%);
+  background: #000000;
   color: white;
   border-radius: 8px;
   text-decoration: none;
@@ -258,7 +258,7 @@
   padding: 60px 20px;
   background: #FFFFFF;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 2px solid var(--border-primary);
 }
 
 .noProposals p {
