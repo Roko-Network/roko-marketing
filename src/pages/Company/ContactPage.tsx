@@ -4,6 +4,33 @@ import { ChevronRightIcon, EnvelopeIcon, ChatBubbleLeftRightIcon, MapPinIcon } f
 import styles from './Contact.module.css';
 
 const ContactPage: React.FC = () => {
+  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const name = formData.get('name') as string || '';
+    const email = formData.get('email') as string || '';
+    const subject = formData.get('subject') as string || 'Contact Form Submission';
+    const message = formData.get('message') as string || '';
+
+    // Create mailto link with form data
+    const body = `From: ${name}
+Reply Email: ${email}
+
+Message:
+${message}
+
+---
+Sent via ROKO Network Contact Form`;
+
+    const mailtoLink = `mailto:hello@roko.network?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Open email client
+    window.location.href = mailtoLink;
+  };
+
   return (
     <div className={styles.contactPage}>
       <div className={styles.container}>
@@ -22,22 +49,22 @@ const ContactPage: React.FC = () => {
         <div className={styles.contentGrid}>
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>Send a Message</h2>
-            <form className={styles.contactForm}>
+            <form className={styles.contactForm} onSubmit={handleSendMessage}>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Name</label>
-                <input type="text" className={styles.formInput} placeholder="Your name" />
+                <input type="text" name="name" className={styles.formInput} placeholder="Your name" required />
               </div>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Email</label>
-                <input type="email" className={styles.formInput} placeholder="your@email.com" />
+                <input type="email" name="email" className={styles.formInput} placeholder="your@email.com" required />
               </div>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Subject</label>
-                <input type="text" className={styles.formInput} placeholder="How can we help?" />
+                <input type="text" name="subject" className={styles.formInput} placeholder="How can we help?" required />
               </div>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Message</label>
-                <textarea className={styles.formTextarea} placeholder="Your message..." />
+                <textarea name="message" className={styles.formTextarea} placeholder="Your message..." required />
               </div>
               <button type="submit" className={styles.formButton}>Send Message</button>
             </form>
