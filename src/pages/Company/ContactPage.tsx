@@ -11,21 +11,13 @@ const ContactPage: React.FC = () => {
     const formData = new FormData(form);
 
     const name = formData.get('name') as string || '';
-    const email = formData.get('email') as string || '';
     const subject = formData.get('subject') as string || 'Contact Form Submission';
     const message = formData.get('message') as string || '';
 
-    // Create mailto link with form data
-    const body = `From: ${name}
-Reply Email: ${email}
+    // Create mailto link with form data - using %0D%0A for line breaks
+    const body = `From: ${name}%0D%0A%0D%0AMessage:%0D%0A${message}%0D%0A%0D%0A---%0D%0ASent via ROKO Network Contact Form`;
 
-Message:
-${message}
-
----
-Sent via ROKO Network Contact Form`;
-
-    const mailtoLink = `mailto:hello@roko.network?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const mailtoLink = `mailto:hello@roko.network?subject=${encodeURIComponent(subject)}&body=${body.replace(/ /g, '%20')}`;
 
     // Open email client
     window.location.href = mailtoLink;
@@ -53,10 +45,6 @@ Sent via ROKO Network Contact Form`;
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Name</label>
                 <input type="text" name="name" className={styles.formInput} placeholder="Your name" required />
-              </div>
-              <div className={styles.formGroup}>
-                <label className={styles.formLabel}>Email</label>
-                <input type="email" name="email" className={styles.formInput} placeholder="your@email.com" required />
               </div>
               <div className={styles.formGroup}>
                 <label className={styles.formLabel}>Subject</label>
