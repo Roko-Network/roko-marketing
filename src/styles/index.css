@@ -37,9 +37,9 @@
   --text-link-hover: #106EBE;
 
   /* Typography */
-  --font-display: 'Rajdhani', 'HK Guise', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-body: 'HK Guise', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-accent: 'Aeonik TRIAL', 'HK Guise', sans-serif;
+  --font-display: 'Rajdhani', sans-serif;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-accent: 'Rajdhani', sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
 
   /* Spacing */

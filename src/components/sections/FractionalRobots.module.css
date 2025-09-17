@@ -69,6 +69,7 @@
 }
 
 .egg {
+  /*
   position: absolute;
   top: 50%;
   left: 50%;
@@ -81,13 +82,16 @@
   justify-content: center;
   align-items: center;
   box-shadow: 0 20px 60px rgba(147, 51, 234, 0.3);
+  */
 }
 
 .eggIcon {
+  /*
   width: 80px;
   height: 80px;
   color: white;
   animation: sparkle 2s ease-in-out infinite;
+  */
 }
 
 @keyframes sparkle {
@@ -96,6 +100,7 @@
 }
 
 .eggGlow {
+  /*
   position: absolute;
   top: 50%;
   left: 50%;
@@ -105,6 +110,7 @@
   background: radial-gradient(circle, rgba(147, 51, 234, 0.2) 0%, transparent 70%);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   animation: pulse 3s ease-in-out infinite;
+  */
 }
 
 @keyframes pulse {
@@ -119,12 +125,14 @@
 }
 
 .particle {
+  /*
   position: absolute;
   width: 4px;
   height: 4px;
   background: #00d4aa;
   border-radius: 50%;
   animation: float 4s ease-in-out infinite;
+  */
 }
 
 .particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
@@ -443,6 +451,7 @@
 }
 
 .floatingOrbs {
+  /*
   position: absolute;
   top: 10%;
   right: 5%;
@@ -451,6 +460,7 @@
   background: radial-gradient(circle, rgba(0, 212, 170, 0.1) 0%, transparent 70%);
   border-radius: 50%;
   animation: float-orb 10s ease-in-out infinite;
+  */
 }
 
 @keyframes float-orb {
