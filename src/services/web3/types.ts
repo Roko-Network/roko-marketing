@@ -9,6 +9,10 @@ export interface TokenHolderStats {
   marketCap?: string;
   volume24h?: string;
   priceChange24h?: string;
+  change24h?: string;
+  priceInETH?: number;
+  priceInBTC?: number;
+  lastUpdated?: string;
 }
 
 export interface EtherscanTokenResponse {
@@ -29,4 +33,5 @@ export interface TokenInfo {
   symbol: string;
   decimals: number;
   totalSupply: string;
+  blockchain?: string;
 }
