@@ -5,7 +5,7 @@ import {
   ShoppingBagIcon,
   ClockIcon,
   CurrencyDollarIcon,
-  DatabaseIcon,
+  CircleStackIcon,
   CubeIcon,
   ArrowTopRightOnSquareIcon
 } from '@heroicons/react/24/outline';
@@ -122,7 +122,7 @@ export const SelfientPartnership: FC = () => {
           <motion.div className={styles.descriptions} variants={itemVariants}>
             <div className={styles.descriptionGrid}>
               <div className={styles.descriptionItem}>
-                <DatabaseIcon className={styles.descriptionIcon} />
+                <CircleStackIcon className={styles.descriptionIcon} />
                 <h4>Required</h4>
                 <p>
                   Data gateway connects ANY existing database - enterprises keep their data where it is.
