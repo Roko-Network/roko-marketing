@@ -17,8 +17,8 @@ import styles from './FractionalRobots.module.css';
 type EggModelProps = { hovered: boolean };
 
 const EggModel: FC<EggModelProps> = ({ hovered }) => {
-  // Load GLB from /public/egg.glb
-  const { scene } = useGLTF('/assets/egg.glb') as unknown as { scene: THREE.Group };
+  // Load GLB from public/models/egg.glb
+  const { scene } = useGLTF('/models/egg.glb') as unknown as { scene: THREE.Group };
   const group = useRef<THREE.Group>(null);
 
   // Clone so we can safely mutate materials/transforms
@@ -372,3 +372,6 @@ export const FractionalRobots: FC = () => {
 };
 
 export default FractionalRobots;
+
+// Preload the GLB model for production builds
+useGLTF.preload('/models/egg.glb');
