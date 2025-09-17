@@ -1,18 +1,16 @@
 /* Token Statistics Component Styles */
 
 .container {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-primary);
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
   border-radius: 16px;
   padding: 1.5rem;
-  backdrop-filter: var(--backdrop-blur);
-  -webkit-backdrop-filter: var(--backdrop-blur);
-  transition: var(--transition-default);
+  transition: all 0.3s ease;
 }
 
 .container:hover {
-  border-color: var(--border-primary);
-  background: var(--bg-muted);
+  border-color: #d0d0d0;
+  background: #ffffff;
 }
 
 /* Variants */
@@ -24,7 +22,7 @@
 .hero {
   padding: 2rem;
   border-radius: 20px;
-  background: var(--bg-primary);
+  background: #ffffff;
 }
 
 /* Header */
@@ -40,7 +38,7 @@
 .title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #000000;
   margin: 0;
 }
 
@@ -52,8 +50,8 @@
 }
 
 .tokenSymbol {
-  background: var(--color-black);
-  color: var(--color-white);
+  background: #000000;
+  color: #ffffff;
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   font-weight: 600;
@@ -61,7 +59,7 @@
 }
 
 .tokenAddress {
-  color: var(--text-muted);
+  color: #666666;
   font-family: var(--font-mono);
   font-size: 0.75rem;
 }
@@ -69,7 +67,7 @@
 /* Stats Grid */
 .statsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
   margin-bottom: 1rem;
 }
@@ -80,7 +78,7 @@
 }
 
 .hero .statsGrid {
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1.5rem;
   margin-bottom: 1.5rem;
 }
@@ -90,14 +88,14 @@
   text-align: center;
   padding: 1rem 0.5rem;
   border-radius: 12px;
-  background: var(--bg-muted);
-  border: 1px solid var(--border-primary);
-  transition: var(--transition-default);
+  background: #f8f8f8;
+  border: 1px solid #e5e5e5;
+  transition: all 0.3s ease;
 }
 
 .statItem:hover {
-  background: var(--bg-muted);
-  border-color: var(--border-primary);
+  background: #f0f0f0;
+  border-color: #d0d0d0;
   transform: translateY(-2px);
 }
 
@@ -106,14 +104,14 @@
 }
 
 .hero .statItem {
-  background-color: #000000;
+  background: #f8f8f8;
   padding: 1.25rem 0.75rem;
 }
 
 .statValue {
   font-size: 1.5rem;
   font-weight: 700;
-  color:#ffffff;
+  color: #000000;
   margin-bottom: 0.25rem;
   line-height: 1.2;
   display: flex;
@@ -127,19 +125,19 @@
 }
 
 .hero .statValue {
-  font-size: 1rem;
+  font-size: 1.75rem;
 }
 
 .statUnit {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #ffffffaa;
+  color: #666666;
   margin-left: 0.25rem;
 }
 
 .statLabel {
   font-size: 0.875rem;
-  color: #ffffffaa;
+  color: #666666;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -180,7 +178,7 @@
   align-items: center;
   gap: 0.5rem;
   padding-top: 1rem;
-  border-top: 1px solid var(--border-primary);
+  border-top: 1px solid #e5e5e5;
   font-size: 0.75rem;
 }
 
@@ -192,7 +190,7 @@
 }
 
 .statusDot.connected {
-  background: var(--color-black);
+  background: #000000;
 }
 
 .statusDot.loading {
@@ -210,12 +208,12 @@
 }
 
 .statusText {
-  color: var(--text-muted);
+  color: #666666;
   font-weight: 500;
 }
 
 .lastUpdate {
-  color: var(--text-muted);
+  color: #666666;
   margin-left: auto;
 }
 
@@ -225,10 +223,10 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: var(--bg-muted);
-  border: 1px solid var(--border-primary);
+  background: #f8f8f8;
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
-  color: var(--text-primary);
+  color: #000000;
 }
 
 .errorIcon {
@@ -246,26 +244,26 @@
 }
 
 .retryButton {
-  background: var(--color-black);
-  color: var(--color-white);
+  background: #000000;
+  color: #ffffff;
   border: none;
   padding: 0.25rem 0.75rem;
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 500;
   cursor: pointer;
-  transition: var(--transition-fast);
+  transition: all 0.2s ease;
 }
 
 .retryButton:hover {
-  background: var(--color-gray-dark);
+  background: #333333;
   transform: translateY(-1px);
 }
 
 .notConfigured {
   text-align: center;
   padding: 2rem 1rem;
-  color: var(--text-muted);
+  color: #666666;
 }
 
 .notConfigured p {
@@ -274,11 +272,28 @@
 }
 
 .notConfigured small {
-  color: var(--text-muted);
+  color: #666666;
   font-size: 0.75rem;
 }
 
 /* Responsive Design */
+@media (min-width: 1200px) {
+  .hero .statsGrid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1199px) {
+  .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero .statsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 1rem;

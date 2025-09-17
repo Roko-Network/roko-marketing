@@ -2,25 +2,9 @@
 .tokenomics {
   position: relative;
   padding: 120px 0;
-  background: var(--roko-dark, #181818);
+  background: #ffffff;
   min-height: 60vh;
   overflow: hidden;
-}
-
-.tokenomics::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(186, 192, 204, 0.02) 0%,
-    rgba(0, 212, 170, 0.01) 50%,
-    rgba(186, 192, 204, 0.02) 100%
-  );
-  pointer-events: none;
 }
 
 .container {
@@ -43,61 +27,21 @@
   line-height: 0.9;
   margin-bottom: 24px;
   letter-spacing: -0.02em;
-  color: var(--roko-primary, #BAC0CC);
+  color: #000000;
 }
 
 .gradientText {
-  background: linear-gradient(
-    135deg,
-    var(--roko-teal, #00d4aa) 0%,
-    var(--roko-teal-hover, #00ffcc) 50%,
-    var(--roko-secondary, #BCC1D1) 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-size: 200% 200%;
-  animation: gradientShift 3s ease-in-out infinite;
-  /* Fallback for browsers that don't support background-clip: text */
-  color: var(--roko-teal, #00d4aa);
-}
-
-/* Support for older browsers and accessibility */
-@supports not (background-clip: text) {
-  .gradientText {
-    color: var(--roko-teal, #00d4aa) !important;
-    background: none;
-    -webkit-text-fill-color: unset;
-  }
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  .gradientText {
-    color: var(--roko-teal, #00d4aa) !important;
-    background: none;
-    -webkit-text-fill-color: unset;
-    animation: none;
-  }
-}
-
-@keyframes gradientShift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+  color: #000000;
 }
 
 .subtitle {
   font-family: var(--font-body, 'HK Guise', sans-serif);
   font-size: clamp(1.125rem, 2.5vw, 1.5rem);
   line-height: 1.6;
-  color: var(--roko-secondary, #BCC1D1);
+  color: #000000;
   max-width: 600px;
   margin: 0 auto;
-  opacity: 0.9;
+  opacity: 0.7;
 }
 
 .statsContainer {
@@ -110,24 +54,16 @@
 .tokenStatsComponent {
   width: 100%;
   max-width: 1200px;
-  background: rgba(186, 192, 204, 0.05);
-  border: 1px solid rgba(186, 192, 204, 0.2);
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
   border-radius: 24px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(0, 212, 170, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
 .tokenStatsComponent:hover {
   transform: translateY(-4px);
-  box-shadow:
-    0 16px 64px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(0, 212, 170, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 /* Responsive Design */
