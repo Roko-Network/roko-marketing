@@ -1,0 +1,311 @@
+.governanceProposals {
+  position: relative;
+  padding: 80px 0;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F7F7F7 100%);
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.gradientText {
+  background: linear-gradient(135deg, #00d4aa 0%, #0078D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  color: var(--text-secondary);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 3px solid #F7F7F7;
+  border-top-color: #00d4aa;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+/* Error State */
+.error {
+  text-align: center;
+  padding: 60px 20px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.error p {
+  color: #ef4444;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.fallbackLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #0078D4;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.fallbackLink:hover {
+  gap: 12px;
+  color: #00d4aa;
+}
+
+/* Proposals Grid */
+.proposalsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.proposalCard {
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.proposalCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 40px rgba(0, 212, 170, 0.2);
+}
+
+.proposalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.timeRemaining {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.timeIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.proposalTitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.proposalDescription {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Vote Results */
+.voteResults {
+  background: #F7F7F7;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.voteBar {
+  height: 8px;
+  background: #E5E5E5;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.voteProgress {
+  height: 100%;
+  background: linear-gradient(90deg, #00d4aa 0%, #0078D4 100%);
+  border-radius: 4px;
+}
+
+.voteStats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.voteStat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.voteIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Proposal Footer */
+.proposalFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid #F7F7F7;
+}
+
+.author {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.voteButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #00d4aa 0%, #0078D4 100%);
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.voteButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 212, 170, 0.3);
+}
+
+.buttonIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.linkIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* No Proposals */
+.noProposals {
+  text-align: center;
+  padding: 60px 20px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.noProposals p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+/* CTA Section */
+.cta {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.viewAllButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: transparent;
+  border: 2px solid #0078D4;
+  color: #0078D4;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.viewAllButton:hover {
+  background: #0078D4;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 120, 212, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .governanceProposals {
+    padding: 60px 0;
+  }
+
+  .proposalsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .proposalCard {
+    padding: 24px;
+  }
+}

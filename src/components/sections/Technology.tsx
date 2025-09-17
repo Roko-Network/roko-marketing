@@ -250,92 +250,6 @@ export const Technology: FC = () => {
       aria-label="ROKO Network technology overview"
     >
       <div className={styles.container}>
-        {/* Section Header */}
-        <motion.div
-          className={styles.header}
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-        >
-          <h2 className={styles.title}>
-            <span className={styles.gradientText}>Temporal Architecture</span>
-            <br />
-            <span style={{ color: '#000000' }}>Reimagined</span>
-          </h2>
-          <p className={styles.subtitle}>
-            Revolutionary blockchain infrastructure combining hardware-grade timing measurement
-            with enterprise-grade performance and developer-friendly tools.
-          </p>
-        </motion.div>
-
-        {/* Main Content Grid */}
-        <motion.div
-          className={styles.contentGrid}
-          variants={containerVariants}
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-        >
-          {/* 3D Network Visualization */}
-          <motion.div className={styles.visualizationCard} variants={itemVariants}>
-            <div className={styles.cardHeader}>
-              <h3>Global Validator Network</h3>
-              <p>Real-time synchronization across continents</p>
-            </div>
-            <div className={styles.sceneContainer}>
-              <Suspense fallback={<AccessibilityFallback />}>
-                <Canvas
-                  camera={{ position: [0, 0, 3], fov: 50 }}
-                  className={styles.canvas}
-                >
-                  <ambientLight intensity={0.4} />
-                  <pointLight position={[10, 10, 10]} intensity={0.8} />
-                  <NetworkGlobe
-                    position={[0, 0, 0]}
-                    scale={0.8}
-                    autoRotate={true}
-                    rotationSpeed={0.3}
-                    showTooltips={true}
-                    performanceLevel="high"
-                  />
-                </Canvas>
-              </Suspense>
-            </div>
-          </motion.div>
-
-          {/* Performance Metrics */}
-          <motion.div className={styles.metricsCard} variants={itemVariants}>
-            <div className={styles.cardHeader}>
-              <h3>Network Performance</h3>
-              <p>Real-time infrastructure metrics</p>
-            </div>
-            <div className={styles.metricsGrid}>
-              {techMetrics.map((metric, index) => (
-                <motion.div
-                  key={metric.id}
-                  className={styles.metric}
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <div className={styles.metricIcon}>
-                    <metric.icon className={styles.icon} />
-                    <div className={styles.trend} data-trend={metric.trend}>
-                      {metric.trend === 'up' ? '↗' : metric.trend === 'down' ? '↘' : '→'}
-                    </div>
-                  </div>
-                  <div className={styles.metricContent}>
-                    <div className={styles.metricValue} style={{ color: metric.color }}>
-                      {metric.value}
-                    </div>
-                    <div className={styles.metricLabel}>{metric.label}</div>
-                    <div className={styles.metricDescription}>{metric.description}</div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </motion.div>
 
         {/* Technology Deep Dive */}
         <motion.div
@@ -463,34 +377,6 @@ export const Technology: FC = () => {
           </div>
         </motion.div>
 
-        {/* CTA Section */}
-        <motion.div
-          className={styles.cta}
-          variants={itemVariants}
-          initial="hidden"
-          animate={inView ? 'visible' : 'hidden'}
-        >
-          <h3>Ready to Experience Temporal Precision?</h3>
-          <p>Explore our technical documentation and start building with ROKO's temporal blockchain.</p>
-          <div className={styles.ctaButtons}>
-            <motion.button
-              className={styles.primaryButton}
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => window.open('https://docs.roko.network/', '_blank', 'noopener,noreferrer')}
-            >
-              View Technical Docs
-            </motion.button>
-            <motion.button
-              className={styles.secondaryButton}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => window.open('https://snapshot.org/#/rokonetwork.eth', '_blank', 'noopener,noreferrer')}
-            >
-              Join DAO Governance
-            </motion.button>
-          </div>
-        </motion.div>
       </div>
 
       {/* Background Elements */}

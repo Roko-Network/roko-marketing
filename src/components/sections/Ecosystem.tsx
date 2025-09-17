@@ -141,15 +141,6 @@ const featuredSolutions: Solution[] = [
     image: '/images/matric-studio.webp',
     status: 'development'
   },
-  {
-    id: 'agentic-chat',
-    name: 'Agentic Chat',
-    description: 'Interactive AI chat platform designed for Jessie/Robit collaborative work environments',
-    category: 'dapps',
-    type: 'AI Platform',
-    image: '/images/agentic-chat.webp',
-    status: 'development'
-  },
   // Infrastructure Tooling
   {
     id: 'time-at-the-edge',
@@ -181,8 +172,8 @@ const integrations: Integration[] = [
     status: 'coming-soon'
   },
   {
-    name: 'Smart Contracts',
-    description: 'Temporal-aware contract development',
+    name: 'No-Code Audited Smart Contracts',
+    description: 'No-Code Audited Smart Contracts via partnership with Selfient',
     icon: CubeIcon,
     status: 'coming-soon'
   },
