@@ -5,7 +5,6 @@ import { useInView } from 'react-intersection-observer';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { TemporalOrb } from '../3d/TemporalOrb';
 import { AccessibilityFallback } from '../3d/AccessibilityFallback';
-import { TokenStats } from '../TokenStats';
 import styles from './Hero.module.css';
 
 interface HeroProps {
@@ -133,14 +132,6 @@ export const Hero: FC<HeroProps> = () => {
           </div>
         </motion.div>
 
-        {/* Dynamic Token Stats */}
-        <motion.div className={styles.tokenStatsContainer} variants={itemVariants}>
-          <TokenStats
-            variant="hero"
-            showHeader={false}
-            className={styles.heroTokenStats}
-          />
-        </motion.div>
       </motion.div>
 
       {/* Scroll Indicator */}

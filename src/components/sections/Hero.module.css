@@ -159,18 +159,6 @@
   opacity: 0.5;
 }
 
-/* Token Stats Container */
-.tokenStatsContainer {
-  width: 100%;
-  max-width: 800px;
-  margin-top: 1.5rem;
-}
-
-.heroTokenStats {
-  background: var(--bg-primary);
-  border: 2px solid var(--border-primary);
-}
-
 /* Scroll Indicator */
 .scrollIndicator {
   position: absolute;
@@ -217,9 +205,6 @@
     bottom: 1rem;
   }
 
-  .tokenStatsContainer {
-    margin-top: 1.5rem;
-  }
 }
 
 @media (max-width: 480px) {
