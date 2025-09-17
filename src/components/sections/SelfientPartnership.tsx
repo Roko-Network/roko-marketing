@@ -2,9 +2,11 @@ import { FC } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
-  CodeBracketIcon,
-  ShieldCheckIcon,
-  CubeTransparentIcon,
+  ShoppingBagIcon,
+  ClockIcon,
+  CurrencyDollarIcon,
+  DatabaseIcon,
+  CubeIcon,
   ArrowTopRightOnSquareIcon
 } from '@heroicons/react/24/outline';
 import styles from './SelfientPartnership.module.css';
@@ -49,7 +51,7 @@ export const SelfientPartnership: FC = () => {
       ref={ref}
       className={styles.selfientPartnership}
       role="region"
-      aria-label="Roko-Selfient Partnership"
+      aria-label="Project Nexus"
     >
       <div className={styles.container}>
         <motion.div
@@ -59,12 +61,12 @@ export const SelfientPartnership: FC = () => {
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         >
           <h2 className={styles.title}>
-            <span className={styles.gradientText}>Roko-Selfient</span>
+            <span className={styles.gradientText}>Project</span>
             <br />
-            Partnership
+            Nexus
           </h2>
           <p className={styles.subtitle}>
-            Revolutionary no-code smart contract development through strategic partnership
+            Our MVP in development with Selfient
           </p>
         </motion.div>
 
@@ -75,12 +77,9 @@ export const SelfientPartnership: FC = () => {
           animate={inView ? 'visible' : 'hidden'}
         >
           <motion.div className={styles.overview} variants={itemVariants}>
-            <h3>Partnership Overview</h3>
+            <h3>Technical Vision</h3>
             <p>
-              ROKO Network has partnered with Selfient to bring no-code audited smart contract
-              creation to our temporal blockchain infrastructure. This collaboration enables
-              developers and enterprises to deploy secure, pre-audited smart contracts without
-              writing a single line of code.
+              Create a decentralized serverless compute marketplace where blockchain handles settlement without slowing execution. Nexus combines Selfient's temporal escrow contracts on ROKO L1 with the MATRIC orchestration platform to enable trustless compute with automatic multi-party payments. Traditional workflows run at full speed while smart contracts guarantee payment distribution to validators, developers, and the ecosystem.
             </p>
             <a
               href="https://nexus.selfient.xyz/#/technical-contracts"
@@ -97,49 +96,46 @@ export const SelfientPartnership: FC = () => {
             <h3>Key Features</h3>
             <div className={styles.featureGrid}>
               <div className={styles.featureItem}>
-                <CodeBracketIcon className={styles.featureIcon} />
-                <h4>No-Code Development</h4>
+                <ShoppingBagIcon className={styles.featureIcon} />
+                <h4>Marketplace</h4>
                 <p>
-                  Create complex smart contracts through intuitive visual interfaces
-                  without programming expertise
+                  Validators and providers compete to execute workloads with market-driven pricing.
                 </p>
               </div>
               <div className={styles.featureItem}>
-                <ShieldCheckIcon className={styles.featureIcon} />
-                <h4>Pre-Audited Templates</h4>
+                <ClockIcon className={styles.featureIcon} />
+                <h4>Temporal Guarantees</h4>
                 <p>
-                  Deploy from a library of professionally audited smart contract
-                  templates ensuring security
+                  ROKO's nanosecond timestamps enable high-frequency trading and time-sensitive operations.
                 </p>
               </div>
               <div className={styles.featureItem}>
-                <CubeTransparentIcon className={styles.featureIcon} />
-                <h4>Temporal Integration</h4>
+                <CurrencyDollarIcon className={styles.featureIcon} />
+                <h4>Multi-Party Payments</h4>
                 <p>
-                  Seamlessly integrated with ROKO's temporal consensus for
-                  nanosecond-precision contract execution
+                  Automatic distribution to validators, developers (royalties), DAO, and platform operators.
                 </p>
               </div>
             </div>
           </motion.div>
 
-          <motion.div className={styles.benefits} variants={itemVariants}>
-            <h3>Benefits</h3>
-            <ul className={styles.benefitsList}>
-              <li>Dramatically reduced development time and costs</li>
-              <li>Enterprise-grade security without audit overhead</li>
-              <li>Accessibility for non-technical stakeholders</li>
-              <li>Seamless integration with ROKO's temporal infrastructure</li>
-              <li>Built-in compliance and regulatory features</li>
-            </ul>
-          </motion.div>
-
-          <motion.div className={styles.status} variants={itemVariants}>
-            <div className={styles.statusBadge}>In Development</div>
-            <p className={styles.statusText}>
-              This partnership is currently in active development. Stay tuned for updates
-              on availability and early access programs.
-            </p>
+          <motion.div className={styles.descriptions} variants={itemVariants}>
+            <div className={styles.descriptionGrid}>
+              <div className={styles.descriptionItem}>
+                <DatabaseIcon className={styles.descriptionIcon} />
+                <h4>Required</h4>
+                <p>
+                  Data gateway connects ANY existing database - enterprises keep their data where it is.
+                </p>
+              </div>
+              <div className={styles.descriptionItem}>
+                <CubeIcon className={styles.descriptionIcon} />
+                <h4>MATRIC as Sole Interface</h4>
+                <p>
+                  All contract interaction through platform - no direct blockchain complexity for users.
+                </p>
+              </div>
+            </div>
           </motion.div>
         </motion.div>
       </div>

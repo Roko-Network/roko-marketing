@@ -1,4 +1,4 @@
-import { FC, Suspense, useCallback, useState } from 'react';
+import { FC, Suspense, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { useInView } from 'react-intersection-observer';
@@ -9,29 +9,14 @@ import { TokenStats } from '../TokenStats';
 import styles from './Hero.module.css';
 
 interface HeroProps {
-  onStartBuilding?: () => void;
-  onReadDocs?: () => void;
+  // Props for Hero component
 }
 
-// Constants for external links
-const UNISWAP_ROKO_URL = 'https://app.uniswap.org/explore/tokens/ethereum/0x6f222e04f6c53cc688ffb0abe7206aac66a8ff98';
-const ROKO_DOCS_URL = 'https://docs.roko.network/';
 
-export const Hero: FC<HeroProps> = ({ onStartBuilding, onReadDocs }) => {
+export const Hero: FC<HeroProps> = () => {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
-  const [orbHovered, setOrbHovered] = useState(false);
+  const [orbHovered] = useState(false);
 
-  const handleStartBuilding = useCallback(() => {
-    // Open Uniswap to get ROKO tokens
-    window.open(UNISWAP_ROKO_URL, '_blank', 'noopener,noreferrer');
-    onStartBuilding?.();
-  }, [onStartBuilding]);
-
-  const handleReadDocs = useCallback(() => {
-    // Open ROKO documentation
-    window.open(ROKO_DOCS_URL, '_blank', 'noopener,noreferrer');
-    onReadDocs?.();
-  }, [onReadDocs]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -58,20 +43,6 @@ export const Hero: FC<HeroProps> = ({ onStartBuilding, onReadDocs }) => {
     }
   };
 
-  const glowVariants = {
-    animate: {
-      boxShadow: [
-        '0 0 20px rgba(0, 120, 212, 0.2)',
-        '0 0 40px rgba(0, 120, 212, 0.4)',
-        '0 0 20px rgba(0, 120, 212, 0.2)'
-      ],
-      transition: {
-        duration: 2,
-        repeat: Infinity,
-        ease: 'easeInOut'
-      }
-    }
-  };
 
   const typewriterVariants = {
     hidden: { width: 0 },
@@ -143,31 +114,6 @@ export const Hero: FC<HeroProps> = ({ onStartBuilding, onReadDocs }) => {
           Build the next generation of time-critical Web3 applications.
         </motion.p>
 
-        {/* CTA Buttons */}
-        <motion.div className={styles.ctaContainer} variants={itemVariants}>
-          <motion.button
-            className={styles.primaryCta}
-            onClick={handleStartBuilding}
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.98 }}
-            variants={glowVariants}
-            animate="animate"
-            onHoverStart={() => setOrbHovered(true)}
-            onHoverEnd={() => setOrbHovered(false)}
-          >
-            <span>Get ROKO Tokens</span>
-            <span className={styles.ctaIcon}>→</span>
-          </motion.button>
-
-          <motion.button
-            className={styles.secondaryCta}
-            onClick={handleReadDocs}
-            whileHover={{ scale: 1.02, borderColor: '#0078D4' }}
-            whileTap={{ scale: 0.98 }}
-          >
-            Read Documentation
-          </motion.button>
-        </motion.div>
 
         {/* Network Stats */}
         <motion.div className={styles.statsContainer} variants={itemVariants}>

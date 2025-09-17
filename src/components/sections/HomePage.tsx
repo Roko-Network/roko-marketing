@@ -25,14 +25,6 @@ export const HomePage: FC<HomePageProps> = ({ className }) => {
     restDelta: 0.001
   });
 
-  // Navigation handlers
-  const handleStartBuilding = useCallback(() => {
-    navigate('/developers');
-  }, [navigate]);
-
-  const handleReadDocs = useCallback(() => {
-    window.open('https://docs.roko.network', '_blank', 'noopener,noreferrer');
-  }, []);
 
   // SEO and performance optimization
   useEffect(() => {
@@ -230,10 +222,7 @@ export const HomePage: FC<HomePageProps> = ({ className }) => {
       <main className={styles.mainContent} role="main">
         {/* Hero Section */}
         <section id="hero" data-section="hero" className={styles.section}>
-          <Hero
-            onStartBuilding={handleStartBuilding}
-            onReadDocs={handleReadDocs}
-          />
+          <Hero />
         </section>
 
         {/* Features Section */}

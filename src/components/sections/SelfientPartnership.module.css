@@ -137,65 +137,47 @@
   color: var(--text-secondary);
 }
 
-.benefits {
+.descriptions {
   background: #FFFFFF;
   border-radius: 16px;
   padding: 40px;
   border: 2px solid var(--border-primary);
 }
 
-.benefits h3 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 24px;
+.descriptionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.descriptionItem {
+  padding: 20px;
+  background: #F7F7F7;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.descriptionItem:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 212, 170, 0.15);
+}
+
+.descriptionIcon {
+  width: 40px;
+  height: 40px;
+  color: #000000;
+  margin-bottom: 16px;
+}
+
+.descriptionItem h4 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 12px;
   color: #000000;
 }
 
-.benefitsList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.benefitsList li {
-  position: relative;
-  padding-left: 32px;
-  margin-bottom: 16px;
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: var(--text-secondary);
-}
-
-.benefitsList li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: #00d4aa;
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-
-.status {
-  background: #FFFFFF;
-  border-radius: 16px;
-  padding: 40px;
-  border: 2px solid var(--border-primary);
-  text-align: center;
-}
-
-.statusBadge {
-  display: inline-block;
-  background: #000000;
-  color: white;
-  padding: 8px 24px;
-  border-radius: 16px;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.statusText {
-  font-size: 1.1rem;
+.descriptionItem p {
+  font-size: 1rem;
   line-height: 1.6;
   color: var(--text-secondary);
 }
@@ -207,12 +189,12 @@
 
   .overview,
   .features,
-  .benefits,
-  .status {
+  .descriptions {
     padding: 30px 20px;
   }
 
-  .featureGrid {
+  .featureGrid,
+  .descriptionGrid {
     grid-template-columns: 1fr;
   }
 }
