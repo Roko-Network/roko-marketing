@@ -95,9 +95,8 @@ export const GovernanceProposals: FC = () => {
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         >
           <h2 className={styles.title}>
-            <span className={styles.gradientText}>Active</span>
-            <br />
-            Governance
+            <span className={styles.gradientText}>Active Governance</span>
+            
           </h2>
           <p className={styles.subtitle}>
             Live proposals from the ROKO DAO. Vote with your pwROKO tokens to shape the network's future.
@@ -138,7 +137,6 @@ export const GovernanceProposals: FC = () => {
                 key={proposal.id}
                 className={styles.proposalCard}
                 variants={itemVariants}
-                whileHover={{ y: -4, boxShadow: '0 8px 40px rgba(0, 212, 170, 0.2)' }}
               >
                 <div className={styles.proposalHeader}>
                   <span

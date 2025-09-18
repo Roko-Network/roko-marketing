@@ -85,7 +85,7 @@
 .card {
   position: relative;
   background: var(--bg-primary);
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   border-radius: 0.5rem;
   padding: 2rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -103,7 +103,7 @@
   margin-bottom: 1.5rem;
   padding: 0.75rem;
   background: var(--bg-primary);
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   border-radius: 0.5rem;
   color: var(--text-primary);
 }
@@ -128,7 +128,7 @@
 /* Info Box */
 .infoBox {
   background: var(--bg-primary);
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   border-radius: 0.5rem;
   padding: 1.5rem;
   margin: 2rem 0;
@@ -181,17 +181,17 @@
 
 /* Focus management for accessibility */
 .card:focus-within {
-  outline: 2px solid var(--color-black);
+  outline: 2px solid #00000022;
   outline-offset: 2px;
 }
 
 .link:focus {
-  outline: 2px solid var(--color-black);
+  outline: 2px solid #00000022;
   outline-offset: 2px;
 }
 
 .breadcrumb a:focus {
-  outline: 2px solid var(--color-black);
+  outline: 2px solid #00000022;
   outline-offset: 2px;
 }
 

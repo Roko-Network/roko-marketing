@@ -110,7 +110,7 @@
 /* Sync Variant - Synchronization Theme */
 .temporalCounter--sync {
   background: rgba(24, 24, 24, 0.9);
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   animation: sync-pulse 2s ease-in-out infinite;
 }
 

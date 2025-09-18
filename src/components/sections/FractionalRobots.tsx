@@ -168,12 +168,10 @@ export const FractionalRobots: FC = () => {
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         >
           <h2 className={styles.title}>
-            <span className={styles.gradientText}>Fractional Robots</span>
-            <br />
-            <span style={{ color: '#000000' }}>Featuring The Egg</span>
+            <span className={styles.gradientText}>Open Source Hardware</span>
           </h2>
           <p className={styles.subtitle}>
-            Meet the revolutionary maker bot creator that's transforming how we build and deploy robotic systems
+            Setting up a network of distributed assembly and QA for accessible low cost robotic systems and multi-modal-ingress smart objects.
           </p>
         </motion.div>
 
@@ -183,6 +181,17 @@ export const FractionalRobots: FC = () => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
         >
+
+
+          {/* Fun Facts */}
+          <motion.div className={styles.funFacts} variants={itemVariants}>
+            <h3></h3>
+            <div className={styles.factsGrid}>
+
+           
+            </div>
+          </motion.div>
+          
           {/* The Egg Showcase */}
           <motion.div className={styles.eggShowcase} variants={itemVariants}>
             <motion.div
@@ -242,15 +251,10 @@ export const FractionalRobots: FC = () => {
             </motion.div>
 
             <div className={styles.eggContent}>
-              <h3 className={styles.eggTitle}>The Egg</h3>
-              <div className={styles.eggBadge}>Experimental Generalized Gateway</div>
+              <h3 className={styles.eggTitle}>Experimental Generalized Gateway</h3>
+              <div className={styles.eggBadge}>Roko EGG Development Platform</div>
               <p className={styles.eggDescription}>
-                The Egg is an experimental open source hardware assembly produced in collaboration with 
-                fractional robots, a global open source robotics organization. This platform features an AGX Orin, 
-                E-Con Systems Imager array, boasting 6 4k CCD's, A re-speaker AEC DOA enabled microphone, and and 
-                stereo vibration speakers, as well as a 360 WattHour onboard UPS. This unique form factor enables portability, 
-                prominence in human spaces, sparking intrique and ensuring awareness of its capabilities for transparency, and allows for 
-                development of an array of interactive applications using the various transducers present.
+                Enabling low cost, portable inference and multi-modal data acquisition at the edge, ready for customization in your field.
               </p>
 
               <div className={styles.eggFeatures}>
@@ -309,36 +313,12 @@ export const FractionalRobots: FC = () => {
             </div>
           </motion.div>
 
-          {/* Fun Facts */}
-          <motion.div className={styles.funFacts} variants={itemVariants}>
-            <h3>Fun Facts About The Egg</h3>
-            <div className={styles.factsGrid}>
-              <div className={styles.fact}>
-                <div className={styles.factEmoji}>🥚</div>
-                <p>The Egg never sleeps - it's creating new Robits 24/7</p>
-              </div>
-              <div className={styles.fact}>
-                <div className={styles.factEmoji}>🤖</div>
-                <p>Each Robit inherits unique traits from The Egg's vast knowledge base</p>
-              </div>
-              <div className={styles.fact}>
-                <div className={styles.factEmoji}>🧬</div>
-                <p>The Egg evolves its creation patterns based on network feedback</p>
-              </div>
-              <div className={styles.fact}>
-                <div className={styles.factEmoji}>🌟</div>
-                <p>Over 1,000 unique Robit configurations have been generated to date</p>
-              </div>
-            </div>
-          </motion.div>
 
           {/* Interactive Demo */}
           <motion.div className={styles.interactiveSection} variants={itemVariants}>
-            <h3>Experience The Magic</h3>
+            <h3>Dive Deeper</h3>
             <p className={styles.interactiveDescription}>
-              The Egg represents the future of autonomous system creation - a self-sustaining
-              ecosystem where intelligent agents are born, learn, and evolve to meet the
-              ever-changing needs of the ROKO Network.
+              Star and Watch our collaborative repositories as they grow. We are just beginning to release and update more production ready repositories. Sstay tuned!
             </p>
             <div className={styles.ctaButtons}>
               <motion.button

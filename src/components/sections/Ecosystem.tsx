@@ -43,6 +43,16 @@ interface Integration {
   status: 'live' | 'beta' | 'coming-soon';
 }
 
+/** Normalize logo paths:
+ * - Strip leading "public/" (Next/Vite serve /public at web root)
+ * - Keep absolute URLs and data URIs
+ */
+const normalizeLogoSrc = (p?: string) => {
+  if (!p) return '';
+  if (/^(https?:)?\/\//i.test(p) || p.startsWith('data:')) return p;
+  return p.replace(/^\/?public\//, '/');
+};
+
 const partners: Partner[] = [
   // Partners
   {
@@ -59,7 +69,7 @@ const partners: Partner[] = [
     name: 'Exa Group',
     category: 'partners',
     description: 'Token engineering and DAO strategy specialists improving capital efficiency',
-    logo: '/logos/exa-group.svg',
+    logo: '/logos/ExaWhite.png',
     website: 'https://www.exagroup.xyz',
     featured: true
   },
@@ -96,7 +106,7 @@ const partners: Partner[] = [
     name: 'Time Beat',
     category: 'service-providers',
     description: 'IEEE-1588 PTP & NTP precision time synchronization solutions for critical systems',
-    logo: '/logos/time-beat.svg',
+    logo: '/logos/timebeat.svg', // fixed: was "/public/img/timebeat.svg"
     website: 'https://www.timebeat.app',
     featured: true
   },
@@ -105,7 +115,7 @@ const partners: Partner[] = [
     name: 'Iskout',
     category: 'service-providers',
     description: 'Rapid precision hiring and talent acquisition specialists for tech companies',
-    logo: '/logos/iskout.svg',
+    logo: '/logos/iskout.png',
     website: 'https://www.iskout.com',
     featured: false
   },
@@ -115,7 +125,7 @@ const partners: Partner[] = [
     name: 'OCP TAP',
     category: 'built-on',
     description: 'Open Compute Project Time Appliances providing IEEE 1588 PTP timing infrastructure',
-    logo: '/logos/ocp-tap.svg',
+    logo: '/logos/ocp.svg',
     website: 'https://www.opencompute.org/projects/time-appliances-project-tap',
     featured: true
   },
@@ -124,7 +134,7 @@ const partners: Partner[] = [
     name: 'Polkadot',
     category: 'built-on',
     description: 'Multichain platform enabling blockchain interoperability and scalable applications',
-    logo: '/logos/polkadot.svg',
+    logo: '/logos/polkadot.png',
     website: 'https://polkadot.com/platform/sdk',
     featured: true
   }
@@ -286,10 +296,6 @@ export const Ecosystem: FC = () => {
           initial="hidden"
           animate={inView ? 'visible' : 'hidden'}
         >
-          <motion.div className={styles.sectionHeader} variants={itemVariants}>
-            <h3>Ecosystem Partners</h3>
-            <p>Organizations collaborating to build the future of precision timing technology</p>
-          </motion.div>
 
           {/* Category Filters */}
           <motion.div className={styles.categoryFilters} variants={itemVariants}>
@@ -302,10 +308,10 @@ export const Ecosystem: FC = () => {
                 {category === 'all'
                   ? 'All'
                   : category === 'service-providers'
-                  ? 'Service Providers'
-                  : category === 'built-on'
-                  ? 'Built On'
-                  : 'Partners'
+                    ? 'Service Providers'
+                    : category === 'built-on'
+                      ? 'Built On'
+                      : 'Partners'
                 }
               </button>
             ))}
@@ -317,19 +323,30 @@ export const Ecosystem: FC = () => {
               <motion.div
                 key={partner.id}
                 className={`${styles.partnerCard} ${partner.featured ? styles.featured : ''}`}
-                whileHover={{ y: -4, boxShadow: '0 8px 40px rgba(0, 212, 170, 0.2)' }}
+                whileHover={{ y: -4 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className={styles.partnerLogo}>
-                  <div className={styles.logoPlaceholder}>
-                    {partner.name.charAt(0)}
-                  </div>
+                  {/* Actual logo */}
+                  <img
+                    src={normalizeLogoSrc(partner.logo)}
+                    alt={`${partner.name} logo`}
+                    loading="lazy"
+                    decoding="async"
+                    className={styles.logoImg}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                    onError={(e) => {
+                      // Hide the broken img; placeholder initial remains visible behind it
+                      (e.currentTarget as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
                 </div>
+
                 <div className={styles.partnerContent}>
-                  <h4 className={styles.partnerName}>{partner.name}</h4>
-                  <span className={styles.partnerCategory}>{partner.category}</span>
+                  <div className={styles.row}> <h4 className={styles.partnerName}>{partner.name}</h4>
+                    <span className={styles.partnerCategory}>{partner.category}</span>
+                  </div>
                   <p className={styles.partnerDescription}>{partner.description}</p>
                   {partner.website && (
                     <a
@@ -343,6 +360,7 @@ export const Ecosystem: FC = () => {
                     </a>
                   )}
                 </div>
+
                 {partner.featured && (
                   <div className={styles.featuredBadge}>
                     <StarIcon className={styles.starIcon} />
@@ -377,6 +395,7 @@ export const Ecosystem: FC = () => {
                 transition={{ duration: 0.5, delay: index * 0.15 }}
               >
                 <div className={styles.solutionImage}>
+                  {/* Keep existing placeholder; swap to <img> later if desired */}
                   <div className={styles.imagePlaceholder}>
                     {solution.name.split(' ').map(word => word.charAt(0)).join('')}
                   </div>
@@ -415,8 +434,6 @@ export const Ecosystem: FC = () => {
           </motion.div>
         </motion.div>
 
-        {/* Success Stories section removed - Issue #7 */}
-
         {/* Integration Examples */}
         <motion.div
           className={styles.integrationsSection}
@@ -434,7 +451,6 @@ export const Ecosystem: FC = () => {
               <motion.div
                 key={integration.name}
                 className={styles.integrationCard}
-                whileHover={{ y: -2, borderColor: '#00d4aa' }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
