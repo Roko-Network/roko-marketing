@@ -1,7 +1,6 @@
 .governanceProposals {
   position: relative;
   padding: 80px 0;
-  background: linear-gradient(180deg, #FFFFFF 0%, #F7F7F7 100%);
   overflow: hidden;
   min-height:100vh;
 }
@@ -104,7 +103,7 @@
 }
 
 .proposalCard {
-  background: #FFFFFF;
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 30px;
   border: 2px solid var(--border-primary);

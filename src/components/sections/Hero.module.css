@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: var(--bg-primary);
+  background:transparent;
   color: var(--text-primary);
 }
 
@@ -17,7 +17,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: var(--bg-primary);
+  background: transparent;
   z-index: 1;
   overflow: hidden;
 }
@@ -267,6 +267,6 @@
 /* Dark theme specific adjustments */
 @media (prefers-color-scheme: light) {
   .hero {
-    background: #FFFFFF;
+  backdrop-filter: blur(10px);
   }
 }
