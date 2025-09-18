@@ -1,7 +1,7 @@
 /* Governance Section Styles */
 .governance {
   position: relative;
-  padding: 8rem 0;
+  padding: 6rem 0;
   background: #FFFFFF;
   color: #000000;
   overflow: hidden;
@@ -654,6 +654,7 @@
 
 /* Background Elements */
 .backgroundElements {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -849,19 +850,19 @@
 }
 
 /* Glass morphism enhancement */
-@supports (backdrop-filter: blur(20px)) {
+@supports (backdrop-filter: blur(10px)) {
   .statCard,
   .proposalsSection,
   .stakingCard,
   .treasuryCard,
   .validatorCard,
   .joinDaoCta {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 }
 
-@supports not (backdrop-filter: blur(20px)) {
+@supports not (backdrop-filter: blur(10px)) {
   .statCard,
   .proposalsSection,
   .stakingCard,

@@ -204,7 +204,7 @@ This document establishes comprehensive brand consistency guidelines for ROKO Ne
 
   /* Glassmorphism Effect */
   background: rgba(24, 24, 24, 0.8);
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(186, 192, 204, 0.1);
 
   /* Subtle Glow */

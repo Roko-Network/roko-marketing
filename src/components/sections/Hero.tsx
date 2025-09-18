@@ -1,9 +1,7 @@
 import { FC, Suspense, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Canvas } from '@react-three/fiber';
 import { useInView } from 'react-intersection-observer';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import { TemporalOrb } from '../3d/TemporalOrb';
 import { AccessibilityFallback } from '../3d/AccessibilityFallback';
 import styles from './Hero.module.css';
 
@@ -11,11 +9,9 @@ interface HeroProps {
   // Props for Hero component
 }
 
-
 export const Hero: FC<HeroProps> = () => {
   const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
-  const [orbHovered] = useState(false);
-
+  const [orbHovered] = useState(false); // kept for potential future use (no local canvas)
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -42,7 +38,6 @@ export const Hero: FC<HeroProps> = () => {
     }
   };
 
-
   const typewriterVariants = {
     hidden: { width: 0 },
     visible: {
@@ -61,30 +56,10 @@ export const Hero: FC<HeroProps> = () => {
       role="region"
       aria-label="Hero section introducing ROKO Network"
     >
-      {/* Background Gradient */}
+      {/* Foreground gradient (optional) */}
       <div className={styles.backgroundGradient} />
 
-      {/* 3D Scene Container */}
-      <div className={styles.sceneContainer}>
-        <Suspense fallback={<AccessibilityFallback />}>
-          <Canvas
-            camera={{ position: [0, 0, 8], fov: 45 }}
-            className={styles.canvas}
-            aria-hidden="true"
-          >
-            <ambientLight intensity={0.5} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
-            <TemporalOrb
-              position={[2, 0, 0]}
-              scale={1.2}
-              isHovered={orbHovered}
-              performanceLevel="high"
-            />
-          </Canvas>
-        </Suspense>
-      </div>
-
-      {/* Content Container */}
+      {/* Content only — global Scene is mounted in HomePage behind all slides */}
       <motion.div
         className={styles.content}
         variants={containerVariants}
@@ -113,7 +88,6 @@ export const Hero: FC<HeroProps> = () => {
           Build the next generation of time-critical Web3 applications.
         </motion.p>
 
-
         {/* Network Stats */}
         <motion.div className={styles.statsContainer} variants={itemVariants}>
           <div className={styles.stat}>
@@ -131,7 +105,6 @@ export const Hero: FC<HeroProps> = () => {
             <span className={styles.statLabel}>Network</span>
           </div>
         </motion.div>
-
       </motion.div>
 
       {/* Scroll Indicator */}
@@ -153,9 +126,9 @@ export const Hero: FC<HeroProps> = () => {
       </motion.div>
 
       {/* Accessibility - Screen reader only */}
-      <div className="sr-only" aria-live="polite">
-        {/* Screen reader announcement removed */}
-      </div>
+      <Suspense fallback={<AccessibilityFallback />}>
+        <div className="sr-only" aria-live="polite" />
+      </Suspense>
     </section>
   );
 };

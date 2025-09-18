@@ -1,7 +1,6 @@
 .fractionalRobots {
   position: relative;
   padding: 100px 0;
-  background: linear-gradient(180deg, #F7F7F7 0%, #FFFFFF 50%, #F7F7F7 100%);
   overflow: hidden;
 }
 
@@ -50,7 +49,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 60px;
   align-items: center;
-  background: #FFFFFF;
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 60px;
   border: 2px solid var(--border-primary);
@@ -228,7 +227,7 @@
 
 /* Robit Process */
 .robitProcess {
-  background: #FFFFFF;
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 60px;
   border: 2px solid var(--border-primary);
@@ -311,7 +310,7 @@
 
 /* Fun Facts */
 .funFacts {
-  background: #FFFFFF;
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 60px;
   border: 2px solid var(--border-primary);
@@ -356,7 +355,7 @@
 
 /* Interactive Section */
 .interactiveSection {
-  background: #ffffff;
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 60px;
   text-align: center;
@@ -422,6 +421,7 @@
 
 /* Background Elements */
 .backgroundElements {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;

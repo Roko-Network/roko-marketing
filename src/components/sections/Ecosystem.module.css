@@ -1,8 +1,7 @@
 /* Ecosystem Section Styles */
 .ecosystem {
   position: relative;
-  padding: 8rem 0;
-  background: #FFFFFF;
+  padding: 6rem 0;
   color: #000000;
   overflow: hidden;
 }
@@ -115,13 +114,13 @@
 /* Partners Grid */
 .partnersGrid {
   display: grid;
+  filter:unset!important;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
 }
 
 .partnerCard {
   position: relative;
-  background: #FFFFFF;
   border: 2px solid var(--border-primary);
   border-radius: 1rem;
   padding: 2rem;
@@ -136,7 +135,6 @@
 
 .partnerCard.featured {
   border-color: #000000;
-  background: #f9f9f9;
 }
 
 .featuredBadge {
@@ -811,6 +809,7 @@
 
 /* Background Elements */
 .backgroundElements {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -1064,19 +1063,19 @@
 }
 
 /* Glass morphism enhancement */
-@supports (backdrop-filter: blur(20px)) {
+@supports (backdrop-filter: blur(10px)) {
   .partnerCard,
   .dappCard,
   .solutionCard,
   .testimonialCard,
   .integrationCard,
   .partnershipCta {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 }
 
-@supports not (backdrop-filter: blur(20px)) {
+@supports not (backdrop-filter: blur(10px)) {
   .partnerCard,
   .dappCard,
   .solutionCard,

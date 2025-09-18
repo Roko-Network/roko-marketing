@@ -2,7 +2,6 @@
 .features {
   position: relative;
   padding: 6rem 0;
-  background: var(--bg-primary);
   color: var(--text-primary);
   overflow: hidden;
 }
@@ -12,6 +11,7 @@
   margin: 0 auto;
   padding: 0 2rem;
   position: relative;
+  height:calc(100vh - 192px);
   z-index: 2;
 }
 
@@ -68,7 +68,6 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 2rem;
-  background: var(--bg-primary);
   border: 2px solid var(--border-primary);
   border-radius: 0.5rem;
   transition: all 0.3s ease;
@@ -176,6 +175,7 @@
 
 /* Background Elements */
 .backgroundElements {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -314,14 +314,14 @@
 }
 
 /* Glass morphism enhancement */
-@supports (backdrop-filter: blur(20px)) {
+@supports (backdrop-filter: blur(10px)) {
   .cardContent {
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 }
 
-@supports not (backdrop-filter: blur(20px)) {
+@supports not (backdrop-filter: blur(10px)) {
   .cardContent {
     background: rgba(24, 24, 24, 0.95);
   }

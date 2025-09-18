@@ -250,7 +250,19 @@ export const Technology: FC = () => {
       aria-label="ROKO Network technology overview"
     >
       <div className={styles.container}>
-
+ <motion.div
+          className={styles.header}
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <h2 className={styles.title}>
+            <span className={styles.gradientText}>Expand your toolkit</span>
+          </h2>
+          <p className={styles.subtitle}>
+            Soon* ready for integration with your mission critical workflows through our API.
+          </p>
+        </motion.div>
         {/* Technology Deep Dive */}
         <motion.div
           className={styles.deepDive}
