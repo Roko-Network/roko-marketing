@@ -1,13 +1,13 @@
 /**
  * Dynamic Token Statistics Component
  *
- * Displays real-time ROKO token statistics fetched from CoinGecko data
+ * Displays real-time ROKO token statistics fetched from the official Roko price API
  */
 
 import React, { memo } from 'react';
 import { motion } from 'framer-motion';
-import { useCoinGeckoStats, useCoinGeckoTokenInfo } from '../../hooks/useCoinGeckoStats';
-import { formatTokenAmount, formatNumber } from '../../services/web3';
+import { useRokoPriceData, useRokoTokenInfo } from '../../hooks/useRokoPriceData';
+import { formatNumber } from '../../utils/formatters';
 import styles from './TokenStats.module.css';
 
 interface TokenStatsProps {
@@ -64,22 +64,10 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
   className = '',
   variant = 'default'
 }) => {
-  const { data: stats, isLoading, error, refetch, isConfigured } = useCoinGeckoStats({
+  const { data: stats, isLoading, error, refetch } = useRokoPriceData({
     refetchInterval: 60000 // Refresh every minute
   });
-  const { data: tokenInfo } = useCoinGeckoTokenInfo();
-
-  // Don't render if not configured and no fallback data
-  if (!isConfigured && !stats) {
-    return (
-      <div className={`${styles.container} ${styles[variant]} ${className}`}>
-        <div className={styles.notConfigured}>
-          <p>Token statistics unavailable</p>
-          <small>CoinGecko data not available</small>
-        </div>
-      </div>
-    );
-  }
+  const { data: tokenInfo } = useRokoTokenInfo();
 
   if (error && !stats) {
     return (
@@ -93,8 +81,10 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
     if (!supply || supply === '0') return '0';
 
     try {
-      const formatted = formatTokenAmount(supply, 18);
-      const num = parseFloat(formatted);
+      const num = parseFloat(supply);
+      if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
+      if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
+      if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
       return formatNumber(num);
     } catch {
       return '0';
@@ -126,60 +116,79 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
 
       <div className={styles.statsGrid}>
         <StatItem
-          label="Total Supply"
-          value={stats ? formatSupply(stats.totalSupply) : '0'}
-          unit="ROKO"
+          label="Price USD"
+          value={stats?.price || '$0'}
           delay={0.1}
           isLoading={isLoading}
         />
 
         <StatItem
-          label="Token Holders"
-          value={stats ? formatNumber(stats.totalHolders) : '0'}
+          label="Market Cap"
+          value={stats?.marketCap || '$0'}
           delay={0.2}
           isLoading={isLoading}
         />
 
-        {stats?.price && (
-          <StatItem
-            label="Price"
-            value={stats.price}
-            unit="USD"
-            delay={0.3}
-            isLoading={isLoading}
-          />
-        )}
+        <StatItem
+          label="Total Supply"
+          value={stats ? formatSupply(stats.totalSupply) : '0'}
+          unit="ROKO"
+          delay={0.3}
+          isLoading={isLoading}
+        />
 
-        {stats?.marketCap && (
-          <StatItem
-            label="Market Cap"
-            value={stats.marketCap}
-            unit="USD"
-            delay={0.4}
-            isLoading={isLoading}
-          />
-        )}
+        <StatItem
+          label="Circulating Supply"
+          value={stats ? formatSupply(stats.circulatingSupply) : '0'}
+          unit="ROKO"
+          delay={0.4}
+          isLoading={isLoading}
+        />
 
-        {stats?.volume24h && (
-          <StatItem
-            label="24h Volume"
-            value={stats.volume24h}
-            unit="USD"
-            delay={0.5}
-            isLoading={isLoading}
-          />
-        )}
+        <StatItem
+          label="24h Volume"
+          value={stats?.volume24h || '$0'}
+          delay={0.5}
+          isLoading={isLoading}
+        />
+
+        <StatItem
+          label="Total TVL"
+          value={stats?.tvl || '$0'}
+          delay={0.6}
+          isLoading={isLoading}
+        />
+
+        <StatItem
+          label="Treasury"
+          value={stats?.treasuryPercentage || '0%'}
+          delay={0.7}
+          isLoading={isLoading}
+        />
+
+        <StatItem
+          label="Price ETH"
+          value={stats ? stats.priceETH.toFixed(10) : '0'}
+          unit="ETH"
+          delay={0.8}
+          isLoading={isLoading}
+        />
       </div>
 
       {/* Status indicator */}
       <div className={styles.statusBar}>
         <div className={`${styles.statusDot} ${isLoading ? styles.loading : styles.connected}`} />
         <span className={styles.statusText}>
-          {isLoading ? 'Updating...' : 'CoinGecko data'}
+          {isLoading ? 'Updating...' : 'Live data from Roko API'}
         </span>
         {stats && stats.lastUpdated && (
           <span className={styles.lastUpdate}>
             Last updated: {new Date(stats.lastUpdated).toLocaleTimeString()}
+          </span>
+        )}
+        {stats && stats.dataQuality && (
+          <span className={styles.dataQuality}>
+            Quality: {stats.dataQuality}
           </span>
         )}
       </div>
