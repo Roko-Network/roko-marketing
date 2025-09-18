@@ -154,7 +154,7 @@ export const Features: FC = () => {
           <h2 className={styles.title}>
             <span className={styles.gradientText}>Temporal Precision</span>
             <br />
-            <span style={{ color: 'var(--text-tertiary)' }}>at Scale</span>
+            <span >at Scale</span>
           </h2>
           <p className={styles.subtitle}>
             Revolutionary blockchain infrastructure combining nanosecond timing accuracy

@@ -144,7 +144,7 @@ const featuredSolutions: Solution[] = [
   // Infrastructure Tooling
   {
     id: 'time-at-the-edge',
-    name: 'Time at the Edge Node Platform',
+    name: 'Timing Edge Node',
     description: 'Distributed timing infrastructure providing nanosecond precision at network edge nodes',
     category: 'infrastructure-tooling',
     type: 'Timing Infrastructure',

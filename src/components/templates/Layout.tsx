@@ -148,10 +148,6 @@ SEO.displayName = 'SEO';
 
 /**
  * Layout Component
- *
- * Main layout wrapper with Header, Footer, SEO, error boundaries,
- * and performance monitoring. Provides consistent page structure
- * and accessibility features.
  */
 export const Layout: FC<LayoutProps> = memo(({
   children,
@@ -166,6 +162,9 @@ export const Layout: FC<LayoutProps> = memo(({
 }) => {
   const location = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const isHome = location.pathname === '/';
+  const showFooter = !isHome; // ← hide footer on Home
 
   // Initialize Web Vitals monitoring
   useWebVitals();
@@ -197,24 +196,15 @@ export const Layout: FC<LayoutProps> = memo(({
     }
   }, [location.pathname]);
 
-  // Simplified page transition for smooth routing without double animations
   const pageVariants = {
-    initial: {
-      opacity: 0,
-    },
+    initial: { opacity: 0 },
     animate: {
       opacity: 1,
-      transition: {
-        duration: 0.2,
-        ease: 'easeOut',
-      },
+      transition: { duration: 0.2, ease: 'easeOut' },
     },
     exit: {
       opacity: 0,
-      transition: {
-        duration: 0.15,
-        ease: 'easeIn',
-      },
+      transition: { duration: 0.15, ease: 'easeIn' },
     },
   };
 
@@ -235,9 +225,11 @@ export const Layout: FC<LayoutProps> = memo(({
       <a href="#main-content" className={styles.skipLink}>
         Skip to main content
       </a>
-      <a href="#footer" className={styles.skipLink}>
-        Skip to footer
-      </a>
+      {showFooter && (
+        <a href="#footer" className={styles.skipLink}>
+          Skip to footer
+        </a>
+      )}
 
       {/* Live Region for Screen Reader Announcements */}
       <div
@@ -280,7 +272,10 @@ export const Layout: FC<LayoutProps> = memo(({
           tabIndex={-1}
           aria-label="Main content"
           style={{
-            background: '#FFFFFF'
+            background: '#FFFFFF',
+            minHeight: '100vh',
+            // Prevent global scroll conflicts on Home (the pager controls scrolling)
+            overflow: isHome ? 'hidden' as const : undefined,
           }}
         >
           <AnimatePresence mode="wait">
@@ -297,9 +292,6 @@ export const Layout: FC<LayoutProps> = memo(({
                 minHeight: '100vh',
               }}
             >
-              {/* Removed decorative elements for flat design */}
-
-              {/* Content wrapper */}
               <div style={{ position: 'relative', zIndex: 2 }}>
                 {children}
               </div>
@@ -308,16 +300,18 @@ export const Layout: FC<LayoutProps> = memo(({
         </main>
       </ErrorBoundary>
 
-      {/* Footer */}
-      <ErrorBoundary
-        fallback={
-          <div className={styles.errorFallback}>
-            <p>Footer temporarily unavailable</p>
-          </div>
-        }
-      >
-        <Footer />
-      </ErrorBoundary>
+      {/* Footer — hidden on Home */}
+      {showFooter && (
+        <ErrorBoundary
+          fallback={
+            <div className={styles.errorFallback}>
+              <p>Footer temporarily unavailable</p>
+            </div>
+          }
+        >
+          <Footer />
+        </ErrorBoundary>
+      )}
     </div>
   );
 });

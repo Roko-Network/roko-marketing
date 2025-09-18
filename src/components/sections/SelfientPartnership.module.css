@@ -66,10 +66,13 @@
 }
 
 .proposalLink {
+  border: 1px solid #000000;
+  padding: 1rem 2rem;
+  border-radius: 0.5rem;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #0078D4;
+  color: #000000;
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -77,7 +80,9 @@
 
 .proposalLink:hover {
   gap: 12px;
-  color: #00d4aa;
+  color: #ffffff;
+  background:#000000;
+
 }
 
 .linkIcon {
@@ -107,14 +112,14 @@
 
 .featureItem {
   padding: 20px;
-  background: #F7F7F7;
-  border-radius: 12px;
+  background: #f5f5f5;
+  border-radius: 0.5rem;
   transition: all 0.3s ease;
+  border: 1px solid #e5e5e5;
+  user-select: none;
 }
 
 .featureItem:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 212, 170, 0.15);
 }
 
 .featureIcon {
@@ -122,6 +127,7 @@
   height: 40px;
   color: #000000;
   margin-bottom: 16px;
+  display: none;
 }
 
 .featureItem h4 {
@@ -152,14 +158,14 @@
 
 .descriptionItem {
   padding: 20px;
-  background: #F7F7F7;
-  border-radius: 12px;
+  background: #f5f5f5;
+  border-radius: 0.5rem;
   transition: all 0.3s ease;
+  border: 1px solid #e5e5e5;
+  user-select: none;
 }
 
 .descriptionItem:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(0, 212, 170, 0.15);
 }
 
 .descriptionIcon {
@@ -167,6 +173,7 @@
   height: 40px;
   color: #000000;
   margin-bottom: 16px;
+  display:none;
 }
 
 .descriptionItem h4 {

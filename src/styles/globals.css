@@ -1,6 +1,8 @@
 /* ROKO Network Global Styles */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Saira:ital,wght@0,100..900;1,100..900&display=swap');
+
 
 /* Custom HK Guise font import - replace with actual font files */
 @font-face {
@@ -112,11 +114,14 @@
   --backdrop-blur: blur(10px);
 
   /* Official ROKO Typography */
-  --font-display: 'Rajdhani', sans-serif;
+  --font-display: "Saira", sans-serif;
+
   /* Headlines, Hero text */
-  --font-body: 'Rajdhani', sans-serif;
+  --font-body: "Saira", sans-serif;
+
   /* Body text, UI elements */
-  --font-accent: 'Rajdhani', sans-serif;
+  --font-accent:  "Saira", sans-serif;
+
   /* Special features */
   --font-mono: 'JetBrains Mono', monospace;
   /* Code blocks */
@@ -247,6 +252,7 @@ html {
 }
 
 body {
+  overflow:clip;
   background: #FFFFFF;
   color: #000000;
   font-family: var(--font-body), system-ui, sans-serif;
