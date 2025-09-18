@@ -146,31 +146,9 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
         />
 
         <StatItem
-          label="24h Volume"
-          value={stats?.volume24h || '$0'}
-          delay={0.5}
-          isLoading={isLoading}
-        />
-
-        <StatItem
           label="Total TVL"
           value={stats?.tvl || '$0'}
-          delay={0.6}
-          isLoading={isLoading}
-        />
-
-        <StatItem
-          label="Treasury"
-          value={stats?.treasuryPercentage || '0%'}
-          delay={0.7}
-          isLoading={isLoading}
-        />
-
-        <StatItem
-          label="Price ETH"
-          value={stats ? `${stats.priceETH.toFixed(12)}` : '0.000000000000'}
-          unit="ETH"
-          delay={0.8}
+          delay={0.5}
           isLoading={isLoading}
         />
       </div>
