@@ -123,10 +123,21 @@ class RokoPriceService {
    */
   getFormattedPrice(data: RokoPriceData): string {
     const price = parseFloat(data.pricing.usd_per_token);
-    if (price < 0.0001) {
-      return price.toExponential(4);
+
+    // For very small prices, show more decimal places
+    if (price < 0.00001) {
+      return `$${price.toFixed(10)}`;
     }
-    return price.toFixed(6);
+    if (price < 0.0001) {
+      return `$${price.toFixed(8)}`;
+    }
+    if (price < 0.01) {
+      return `$${price.toFixed(6)}`;
+    }
+    if (price < 1) {
+      return `$${price.toFixed(4)}`;
+    }
+    return `$${price.toFixed(2)}`;
   }
 
   /**

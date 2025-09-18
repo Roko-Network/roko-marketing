@@ -117,7 +117,7 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
       <div className={styles.statsGrid}>
         <StatItem
           label="Price USD"
-          value={stats?.price || '$0'}
+          value={stats?.price || '$0.00'}
           delay={0.1}
           isLoading={isLoading}
         />
@@ -168,7 +168,7 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
 
         <StatItem
           label="Price ETH"
-          value={stats ? stats.priceETH.toFixed(10) : '0'}
+          value={stats ? `${stats.priceETH.toFixed(12)}` : '0.000000000000'}
           unit="ETH"
           delay={0.8}
           isLoading={isLoading}
@@ -184,11 +184,6 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
         {stats && stats.lastUpdated && (
           <span className={styles.lastUpdate}>
             Last updated: {new Date(stats.lastUpdated).toLocaleTimeString()}
-          </span>
-        )}
-        {stats && stats.dataQuality && (
-          <span className={styles.dataQuality}>
-            Quality: {stats.dataQuality}
           </span>
         )}
       </div>
