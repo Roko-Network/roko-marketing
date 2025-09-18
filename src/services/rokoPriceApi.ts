@@ -85,8 +85,7 @@ class RokoPriceService {
       const response = await fetch(this.apiUrl, {
         method: 'GET',
         headers: {
-          'Accept': 'application/json',
-          'Cache-Control': 'no-cache'
+          'Accept': 'application/json'
         }
       });
 
