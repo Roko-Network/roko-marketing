@@ -19,20 +19,27 @@ type SceneParams = {
 };
 
 const TRANSITION_MS = 600;
-const EDGE_ARM_GAP_MS = 240;   // pause after first edge contact before allowing paginate
-const SCROLLBAR_EPS = 8;       // content must exceed parent by this to be considered scrollable
+
+// Pull-to-paginate tuning
+const PULL_THRESHOLD_FRAC = 0.25;   // 25% of viewport width to snap
+const PULL_MAX_FRAC = 0.35;         // max rubberband pull
+const PULL_RELEASE_MS = 200;        // spring-back delay after last wheel tick
+const WHEEL_PULL_SCALE = 0.85;      // dampen wheel delta applied to pull
+
+const SCROLLBAR_EPS = 8;            // for overflow detection (resize observer)
+const EDGE_EPS = 2;                 // for runtime top/bottom checks (tighter)
 
 // Map each visible section to a particle "mode":
-// 0=header (torus), 1=slider (tunnel/sparks), 2=dao (ring/chords), 3=docs (hex lattice), 4=bottom (cloud)
+// 0=header, 1=slider, 2=dao, 3=docs, 4=bottom
 const particleModeBySection: number[] = [
-  0, // Hero → header
-  1, // Features → slider
-  2, // Technology → dao
-  3, // Selfient → docs
-  1, // Fractional Robots → slider (cool sparks)
-  2, // Tokenomics → dao (chords accent)
-  3, // Governance → docs
-  4, // Ecosystem → bottom ambient
+  0, // Hero
+  1, // Features
+  2, // Technology
+  3, // Selfient
+  1, // Fractional Robots
+  2, // Tokenomics
+  3, // Governance
+  4, // Ecosystem
 ];
 
 const sceneParamsByPage: SceneParams[] = [
@@ -56,8 +63,66 @@ const oneHot = (mode: number): number[] => {
 const lerpWeights = (a: number[], b: number[], t: number): number[] =>
   a.map((av, i) => av * (1 - t) + (b[i] ?? 0) * t);
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Scroll helpers
+// ─────────────────────────────────────────────────────────────────────────────
+const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
+
+const getComputedOverflowY = (el: Element) => {
+  try {
+    return window.getComputedStyle(el).overflowY;
+  } catch {
+    return 'visible';
+  }
+};
+
+const isVertScrollable = (el: HTMLElement) => {
+  if (!el) return false;
+  const overflowY = getComputedOverflowY(el);
+  const tall = (el.scrollHeight - el.clientHeight) > EDGE_EPS;
+  return tall || overflowY === 'auto' || overflowY === 'scroll';
+};
+
+const nearestScrollableAncestor = (start: EventTarget | null, stopEl?: HTMLElement | null) => {
+  let node: any = start as Node | null;
+  while (node && node !== document && node !== document.documentElement) {
+    if (stopEl && node === stopEl) break;
+    if (node instanceof HTMLElement) {
+      if (isVertScrollable(node)) return node;
+    }
+    node = (node as any).parentNode || (node as any).host || null;
+  }
+  return null;
+};
+
+/** Apply some of `deltaY` to the scroll element; return the leftover (unapplied) delta */
+const applyScrollAndReturnLeftover = (el: HTMLElement, deltaY: number): number => {
+  if (!el || deltaY === 0) return deltaY;
+
+  if (deltaY > 0) {
+    // scrolling down → limit by remaining space to bottom
+    const room = Math.max(0, el.scrollHeight - el.clientHeight - el.scrollTop);
+    const applied = Math.min(room, deltaY);
+    if (applied) el.scrollTop += applied;
+    return deltaY - applied;
+  } else {
+    // scrolling up → limit by distance to top
+    const room = Math.max(0, el.scrollTop);
+    const applied = Math.min(room, Math.abs(deltaY));
+    if (applied) el.scrollTop -= applied;
+    return deltaY + applied; // deltaY is negative; add applied (positive) back
+  }
+};
+
+/** Only allow horizontal pull if there is actually a neighbor page in that direction */
+const canPullDeck = (dir: 1 | -1, curIndex: number, maxIndex: number) => {
+  if (dir > 0) return curIndex < maxIndex; // trying to pull left (next)
+  if (dir < 0) return curIndex > 0;        // trying to pull right (prev)
+  return false;
+};
+
 const HomePage: React.FC = memo(() => {
-  // Sections content
+  // Sections
   const sections = useMemo(
     () => [
       { key: 'hero', node: <Hero /> },
@@ -75,11 +140,10 @@ const HomePage: React.FC = memo(() => {
   const [index, setIndex] = useState(0);
   const animatingRef = useRef(false);
 
-  // Scroll containers (slides) we monitor for scrollability/overflow
+  // Refs for deck/slides/content
+  const deckRef = useRef<HTMLDivElement | null>(null);
   const slideRefs = useRef<HTMLDivElement[]>([]);
   slideRefs.current = [];
-
-  // Content elements for measuring overflow
   const contentRefs = useRef<HTMLElement[]>([]);
   contentRefs.current = [];
 
@@ -90,9 +154,15 @@ const HomePage: React.FC = memo(() => {
     if (el) contentRefs.current[i] = el;
   }, []);
 
-  const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
+  // Viewport width
+  const vwRef = useRef<number>(typeof window !== 'undefined' ? window.innerWidth : 1280);
+  useEffect(() => {
+    const onRes = () => { vwRef.current = window.innerWidth || vwRef.current; };
+    window.addEventListener('resize', onRes);
+    return () => window.removeEventListener('resize', onRes);
+  }, []);
 
-  // ── Particle weights blending control for Scene ─────────────────────────────
+  // Particle weights → Scene
   const blendRAF = useRef<number | null>(null);
   const blendStart = useRef<number>(0);
   const prevModeRef = useRef<number>(particleModeBySection[0] ?? 0);
@@ -125,31 +195,25 @@ const HomePage: React.FC = memo(() => {
     };
   }, []);
 
-  const jump = useCallback(
-    (next: number) => {
-      if (animatingRef.current) return;
-      const bounded = clamp(next, 0, sections.length - 1);
-      if (bounded === index) return;
+  const doIndexChange = useCallback((next: number) => {
+    const bounded = clamp(next, 0, sections.length - 1);
+    if (bounded === index) return;
 
-      animatingRef.current = true;
+    animatingRef.current = true;
 
-      // trigger particle form blend based on section→mode mapping
-      const fromMode = particleModeBySection[index] ?? 0;
-      const toMode = particleModeBySection[bounded] ?? 0;
-      prevModeRef.current = fromMode;
-      startBlend(fromMode, toMode);
+    const fromMode = particleModeBySection[index] ?? 0;
+    const toMode = particleModeBySection[bounded] ?? 0;
+    prevModeRef.current = fromMode;
+    startBlend(fromMode, toMode);
 
-      setIndex(bounded);
-      resetEdgeLatch();
+    setIndex(bounded);
 
-      window.setTimeout(() => {
-        animatingRef.current = false;
-      }, TRANSITION_MS);
-    },
-    [index, sections.length, startBlend]
-  );
+    window.setTimeout(() => {
+      animatingRef.current = false;
+    }, TRANSITION_MS);
+  }, [index, sections.length, startBlend]);
 
-  // ── Overflow detection ──────────────────────────────────────────────────────
+  // Overflow detection (slide-level)
   const [isOverflowing, setIsOverflowing] = useState<boolean[]>(() => sections.map(() => false));
 
   useEffect(() => {
@@ -160,8 +224,8 @@ const HomePage: React.FC = memo(() => {
       if (!slide || !content) return;
 
       const ro = new ResizeObserver(() => {
-        const parentH = slide.clientHeight || 0;     // 100vh
-        const contentH = content.scrollHeight || 0;  // actual content height
+        const parentH = slide.clientHeight || 0;
+        const contentH = content.scrollHeight || 0;
         const overflow = contentH - parentH > SCROLLBAR_EPS;
         setIsOverflowing(prev => {
           const next = prev.slice();
@@ -177,166 +241,206 @@ const HomePage: React.FC = memo(() => {
     return () => observers.forEach(o => o.disconnect());
   }, [sections.length]);
 
-  const canScrollFurther = (el: HTMLElement, dy: number) => {
-    if (!el) return false;
-    const atTop = el.scrollTop <= 0;
-    const atBottom = Math.ceil(el.scrollTop + el.clientHeight) >= el.scrollHeight;
-    if (dy > 0) return !atBottom; // scrolling down
-    if (dy < 0) return !atTop;    // scrolling up
-    return false;
+  // Pull-to-paginate state
+  const [deckTransitionMs, setDeckTransitionMs] = useState<number>(0);
+  const [pullPx, _setPullPx] = useState<number>(0);
+  const pullPxRef = useRef(0);
+  const pullTimerRef = useRef<number | null>(null);
+
+  const setPullPx = (v: number) => {
+    pullPxRef.current = v;
+    _setPullPx(v);
   };
 
-  // ── Edge buffer / dual-threshold latch ──────────────────────────────────────
-  const edgeArmedRef = useRef(false);
-  const edgeReadyRef = useRef(false);
-  const edgeDirRef = useRef<1 | -1 | 0>(0);
-  const edgeTimerRef = useRef<number | null>(null);
-
-  const clearTimer = () => {
-    if (edgeTimerRef.current != null) {
-      window.clearTimeout(edgeTimerRef.current);
-      edgeTimerRef.current = null;
+  const clearPullTimer = () => {
+    if (pullTimerRef.current != null) {
+      window.clearTimeout(pullTimerRef.current);
+      pullTimerRef.current = null;
     }
-  };
-  const resetEdgeLatch = () => {
-    edgeArmedRef.current = false;
-    edgeReadyRef.current = false;
-    edgeDirRef.current = 0;
-    clearTimer();
-  };
-  const armOrExtendEdge = (dir: 1 | -1) => {
-    if (!edgeArmedRef.current || edgeDirRef.current !== dir) {
-      edgeArmedRef.current = true;
-      edgeReadyRef.current = false;
-      edgeDirRef.current = dir;
-    }
-    clearTimer();
-    edgeTimerRef.current = window.setTimeout(() => {
-      edgeReadyRef.current = true; // user “let up”
-      edgeTimerRef.current = null;
-    }, EDGE_ARM_GAP_MS);
-  };
-  const tryPaginateWithEdge = (dir: 1 | -1, perform: () => void) => {
-    if (!edgeArmedRef.current) {
-      armOrExtendEdge(dir);           // first edge contact → arm
-      return false;
-    }
-    if (edgeDirRef.current !== dir) {
-      armOrExtendEdge(dir);           // changed direction → re-arm
-      return false;
-    }
-    if (!edgeReadyRef.current) {
-      armOrExtendEdge(dir);           // continuous scroll → wait
-      return false;
-    }
-    perform();                        // armed + ready + same direction → go
-    resetEdgeLatch();
-    return true;
   };
 
-  // ── Wheel (mouse) ───────────────────────────────────────────────────────────
+  const schedulePullRelease = () => {
+    clearPullTimer();
+    pullTimerRef.current = window.setTimeout(() => {
+      setDeckTransitionMs(TRANSITION_MS);
+      setPullPx(0);
+      pullTimerRef.current = null;
+    }, PULL_RELEASE_MS);
+  };
+
+  const trySnapIfThreshold = (dir: 1 | -1) => {
+    const vw = vwRef.current;
+    const thresholdPx = vw * PULL_THRESHOLD_FRAC;
+
+    if (Math.abs(pullPxRef.current) >= thresholdPx) {
+      const target = dir > 0 ? index + 1 : index - 1;
+      if (target < 0 || target > sections.length - 1) {
+        setDeckTransitionMs(TRANSITION_MS);
+        setPullPx(0);
+        return;
+      }
+      setDeckTransitionMs(TRANSITION_MS);
+      setPullPx(0);
+      doIndexChange(target);
+    }
+  };
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // Wheel: delta-splitting (scroll nearest scrollable; leftover → horizontal pull)
+  // ───────────────────────────────────────────────────────────────────────────
   const onWheel = useCallback(
     (e: WheelEvent) => {
-      const el = slideRefs.current[index];
-      if (!el) return;
+      if (animatingRef.current) return;
 
       const dy = e.deltaY;
       if (dy === 0) return;
 
-      if (isOverflowing[index] && canScrollFurther(el, dy)) {
-        resetEdgeLatch(); // still scrolling inside
-        return;
-      }
+      const deckEl = deckRef.current;
 
+      // Pick the scrollable under the pointer; fall back to the active slide
+      const scrollEl =
+        (nearestScrollableAncestor(e.target, deckEl) as HTMLElement | null) ||
+        (slideRefs.current[index] as HTMLElement | null);
+
+      // We handle the scroll ourselves to compute "leftover" precisely
       e.preventDefault();
-      const dir: 1 | -1 = dy > 0 ? 1 : -1;
+      setDeckTransitionMs(0);
 
-      if (!isOverflowing[index]) {
-        dir === 1 ? jump(index + 1) : jump(index - 1); // single threshold
-        return;
+      let leftover = dy;
+      if (scrollEl) {
+        leftover = applyScrollAndReturnLeftover(scrollEl, dy);
       }
 
-      tryPaginateWithEdge(dir, () => {
-        dir === 1 ? jump(index + 1) : jump(index - 1);
-      });
+      if (leftover !== 0) {
+        // Direction based on leftover after vertical consumption
+        const dir: 1 | -1 = leftover > 0 ? 1 : -1;
+        const maxIndex = sections.length - 1;
+
+        // *** Block horizontal pull if no neighbor in that direction ***
+        if (!canPullDeck(dir, index, maxIndex)) {
+          // ensure any partial pull returns to rest
+          setDeckTransitionMs(TRANSITION_MS);
+          setPullPx(0);
+          schedulePullRelease();
+          return;
+        }
+
+        // Convert leftover into horizontal pull
+        const vw = vwRef.current;
+        const maxPx = vw * PULL_MAX_FRAC;
+        const deltaPx = WHEEL_PULL_SCALE * leftover; // +down → left pull (negative px via subtraction below)
+        const nextPx = clamp(pullPxRef.current - deltaPx, -maxPx, maxPx);
+        setPullPx(nextPx);
+        trySnapIfThreshold(dir);
+      }
+
+      schedulePullRelease();
     },
-    [index, jump, isOverflowing]
+    [index, sections.length, doIndexChange]
   );
 
-  // ── Touch (swipe) ───────────────────────────────────────────────────────────
+  // ───────────────────────────────────────────────────────────────────────────
+  // Touch: gesture-scoped delta-splitting (we take control for the gesture)
+  // ───────────────────────────────────────────────────────────────────────────
   const tStartY = useRef<number | null>(null);
-  const tStartT = useRef<number>(0);
+  const tPrevY = useRef<number | null>(null);
+  const activeScrollElRef = useRef<HTMLElement | null>(null);
+  const touchActiveRef = useRef(false);
 
   const onTouchStart = useCallback((e: TouchEvent) => {
-    if (e.touches.length !== 1) return;
+    if (e.touches.length !== 1 || animatingRef.current) return;
+
+    const deckEl = deckRef.current;
+    activeScrollElRef.current = (nearestScrollableAncestor(e.target, deckEl) as HTMLElement | null)
+      || (slideRefs.current[index] as HTMLElement | null);
+
     tStartY.current = e.touches[0].clientY;
-    tStartT.current = Date.now();
+    tPrevY.current = tStartY.current;
+    clearPullTimer();
+    setDeckTransitionMs(0);
+    touchActiveRef.current = true;
+  }, [index]);
+
+  const onTouchMove = useCallback((e: TouchEvent) => {
+    if (animatingRef.current || !touchActiveRef.current) return;
+    if (tStartY.current == null) return;
+
+    const y = e.touches[0].clientY;
+    const prev = tPrevY.current ?? y;
+    const dyMove = prev - y; // >0 finger up → scroll down
+    tPrevY.current = y;
+
+    // We handle the scroll + pull split ourselves
+    e.preventDefault();
+    setDeckTransitionMs(0);
+
+    let leftover = dyMove;
+    const scrollEl = activeScrollElRef.current;
+    if (scrollEl) {
+      leftover = applyScrollAndReturnLeftover(scrollEl, dyMove);
+    }
+
+    if (leftover !== 0) {
+      const dir: 1 | -1 = leftover > 0 ? 1 : -1;
+      const maxIndex = sections.length - 1;
+
+      // *** Block horizontal pull if no neighbor in that direction ***
+      if (!canPullDeck(dir, index, maxIndex)) {
+        setDeckTransitionMs(TRANSITION_MS);
+        setPullPx(0);
+        return;
+      }
+
+      // Map leftover to horizontal pull
+      const vw = vwRef.current;
+      const maxPx = vw * PULL_MAX_FRAC;
+      const nextPx = clamp(pullPxRef.current - leftover, -maxPx, maxPx);
+      setPullPx(nextPx);
+
+      trySnapIfThreshold(dir);
+    }
+  }, [index, sections.length]);
+
+  const onTouchEnd = useCallback(() => {
+    tStartY.current = null;
+    tPrevY.current = null;
+    activeScrollElRef.current = null;
+
+    if (!touchActiveRef.current) return;
+    touchActiveRef.current = false;
+
+    setDeckTransitionMs(TRANSITION_MS);
+    setPullPx(0);
   }, []);
 
-  const onTouchEnd = useCallback(
-    (e: TouchEvent) => {
-      const startY = tStartY.current;
-      tStartY.current = null;
-      if (startY == null) return;
-
-      const endY = (e.changedTouches && e.changedTouches[0]?.clientY) ?? startY;
-      const delta = startY - endY; // >0 = swipe up (scroll down)
-      const elapsed = Date.now() - tStartT.current;
-
-      if (Math.abs(delta) <= 40 || elapsed >= 800) return;
-
-      const el = slideRefs.current[index];
-      if (!el) return;
-
-      const dir: 1 | -1 = delta > 0 ? 1 : -1;
-
-      if (isOverflowing[index] && canScrollFurther(el, dir)) {
-        resetEdgeLatch();
-        return;
-      }
-
-      if (!isOverflowing[index]) {
-        dir === 1 ? jump(index + 1) : jump(index - 1);
-        return;
-      }
-
-      tryPaginateWithEdge(dir, () => {
-        dir === 1 ? jump(index + 1) : jump(index - 1);
-      });
-    },
-    [index, jump, isOverflowing]
-  );
-
-  // ── Keyboard (immediate at edges) ───────────────────────────────────────────
+  // Keyboard (immediate)
   const onKey = useCallback(
     (e: KeyboardEvent) => {
       if (animatingRef.current) return;
-      const el = slideRefs.current[index];
-      if (!el) return;
 
       if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
-        if (isOverflowing[index] && canScrollFurther(el, +1)) {
-          resetEdgeLatch();
-          return;
-        }
         e.preventDefault();
-        jump(index + 1);
+        setDeckTransitionMs(TRANSITION_MS);
+        setPullPx(0);
+        doIndexChange(index + 1);
       } else if (['ArrowUp', 'PageUp'].includes(e.key)) {
-        if (isOverflowing[index] && canScrollFurther(el, -1)) {
-          resetEdgeLatch();
-          return;
-        }
         e.preventDefault();
-        jump(index - 1);
+        setDeckTransitionMs(TRANSITION_MS);
+        setPullPx(0);
+        doIndexChange(index - 1);
       } else if (e.key === 'Home') {
         e.preventDefault();
-        jump(0);
+        setDeckTransitionMs(TRANSITION_MS);
+        setPullPx(0);
+        doIndexChange(0);
       } else if (e.key === 'End') {
         e.preventDefault();
-        jump(sections.length - 1);
+        setDeckTransitionMs(TRANSITION_MS);
+        setPullPx(0);
+        doIndexChange(sections.length - 1);
       }
     },
-    [index, jump, sections.length, isOverflowing]
+    [index, doIndexChange, sections.length]
   );
 
   useEffect(() => {
@@ -344,25 +448,31 @@ const HomePage: React.FC = memo(() => {
     window.addEventListener('wheel', onWheel, passiveFalse);
     window.addEventListener('keydown', onKey);
     window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
     window.addEventListener('touchend', onTouchEnd, { passive: true });
     return () => {
-      window.removeEventListener('wheel', onWheel, false);
+      window.removeEventListener('wheel', onWheel as any, false as any);
       window.removeEventListener('keydown', onKey);
       window.removeEventListener('touchstart', onTouchStart as EventListener);
+      window.removeEventListener('touchmove', onTouchMove as EventListener);
       window.removeEventListener('touchend', onTouchEnd as EventListener);
     };
-  }, [onWheel, onKey, onTouchStart, onTouchEnd]);
+  }, [onWheel, onKey, onTouchStart, onTouchMove, onTouchEnd]);
 
-  // viewport locked to 100vh
+  // Styles
   const containerStyle: React.CSSProperties = {
     position: 'relative',
     width: '100vw',
     height: '100vh',
     overflow: 'hidden',
-    background: 'var(--page-bg, #fff)',
+    background: 'var(--color-calm, #fff)',
+    touchAction: 'pan-y', // allow vertical pans; we intercept during gesture
   };
 
   const sceneParams = sceneParamsByPage[index] ?? sceneParamsByPage[0];
+
+  // Compose transform: base index translate + pull (px)
+  const deckTransform = `translate3d(calc(${-index * 100}vw + ${pullPx}px), 0, 0)`;
 
   return (
     <div style={containerStyle} aria-live="polite">
@@ -374,25 +484,26 @@ const HomePage: React.FC = memo(() => {
           autoRotate={sceneParams.autoRotate ?? true}
           params={{
             ...sceneParams,
-            // drive the particle shapes with our blended weights across all sections
             pageWeights: sceneWeights,
           }}
         />
       </div>
 
-      {/* HORIZONTAL RAIL OF FULL-PAGE SLIDES */}
+      {/* HORIZONTAL RAIL OF FULL-PAGE SLIDES (with delta-splitting pull) */}
       <div
+        ref={deckRef}
         style={{
           position: 'absolute',
           inset: 0,
           zIndex: 1,
-          transform: `translateX(${-index * 100}vw)`,
-          transition: `transform ${TRANSITION_MS}ms cubic-bezier(.2,.8,.2,1)`,
+          transform: deckTransform,
+          transition: `transform ${deckTransitionMs}ms cubic-bezier(.2,.8,.2,1)`,
           display: 'flex',
           flexDirection: 'row',
           width: `${sections.length * 100}vw`,
           height: '100vh',
           willChange: 'transform',
+          overscrollBehavior: 'contain',
         }}
       >
         {sections.map((s, i) => {
@@ -410,10 +521,9 @@ const HomePage: React.FC = memo(() => {
                 boxSizing: 'border-box',
                 transform: `translateX(${offset}px)`,
                 transition: `transform ${TRANSITION_MS}ms cubic-bezier(.2,.8,.2,1)`,
-                background: 'transparent', // let scene show through
+                background: 'transparent',
               }}
             >
-              {/* Parent div to monitor scrollability — NO nested min-height wrapper */}
               <section
                 ref={(el) => setContentRef(el as HTMLElement, i)}
                 aria-label={s.key}

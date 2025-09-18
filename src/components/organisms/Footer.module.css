@@ -76,7 +76,7 @@
 }
 
 .brandLink:focus {
-  outline: 2px solid var(--color-black);
+  outline: 2px solid #00000022;
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -218,7 +218,7 @@
 }
 
 .subscribeButton:focus {
-  outline: 2px solid var(--color-black);
+  outline: 2px solid #00000022;
   outline-offset: 2px;
 }
 
@@ -309,7 +309,7 @@
 }
 
 .socialLink:focus {
-  outline: 2px solid var(--color-black);
+  outline: 2px solid #00000022;
   outline-offset: 2px;
 }
 
@@ -369,7 +369,7 @@
 }
 
 .footerLink:focus {
-  outline: 2px solid var(--color-black);
+  outline: 2px solid #00000022;
   outline-offset: 2px;
   color: var(--text-primary);
 }

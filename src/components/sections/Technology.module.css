@@ -55,7 +55,7 @@
 /* Visualization Card */
 .visualizationCard {
   background: #FFFFFF;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   border-radius: 8px;
   padding: 2rem;
   height: 500px;
@@ -100,7 +100,7 @@
 /* Metrics Card */
 .metricsCard {
   background: #FFFFFF;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   border-radius: 8px;
   padding: 2rem;
   display: flex;
@@ -187,7 +187,7 @@
 
 /* Deep Dive Section */
 .deepDive {
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 4rem;
@@ -196,7 +196,7 @@
 /* Tab Navigation */
 .tabNav {
   display: flex;
-  border-bottom: 2px solid var(--border-primary);
+  border-bottom: 2px solid #00000022;
 }
 
 .tab {
@@ -219,7 +219,7 @@
 }
 
 .tab:focus {
-  outline: 2px solid var(--border-primary);
+  outline: 2px solid #00000022;
   outline-offset: -2px;
 }
 
@@ -400,7 +400,7 @@
 .cta {
   text-align: center;
   padding: 3rem 0;
-  border-top: 2px solid var(--border-primary);
+  border-top: 2px solid #00000022;
 }
 
 .cta h3 {
@@ -432,7 +432,7 @@
 .primaryButton {
   background: #000000;
   color: #FFFFFF;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   padding: 1rem 2rem;
   border-radius: 8px;
   font-family: var(--font-display, 'Rajdhani', sans-serif);
@@ -458,7 +458,7 @@
 .secondaryButton {
   background: transparent;
   color: #000000;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   padding: 0.875rem 1.875rem;
   border-radius: 8px;
   font-family: var(--font-body, 'HK Guise', sans-serif);

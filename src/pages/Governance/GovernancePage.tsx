@@ -106,8 +106,8 @@ const GovernancePage: React.FC<GovernancePageProps> = memo(({ section }) => {
                     marginTop: '0.5rem',
                     fontSize: '0.8rem'
                   }}>
-                    <span style={{ color: '#00d4aa' }}>Status: Active</span>
-                    <span style={{ color: '#BCC1D1' }}>Ends in 5 days</span>
+                    <span style={{ color: '#00ff00' }}>Status: Active</span>
+                    <span style={{ color: '#ff6600ff' }}>Ends in 5 days</span>
                   </div>
                 </div>
               </div>

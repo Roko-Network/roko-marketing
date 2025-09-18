@@ -130,7 +130,7 @@
   padding: 2rem;
   text-align: center;
   background: #FFFFFF;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   border-radius: 8px;
   margin: 1rem;
   color: #000000!important;
@@ -156,7 +156,7 @@
 .retryButton {
   background: #000000;
   color: #ffffff;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   padding: 12px 24px;
   border-radius: 6px;
   font-family: var(--font-display);
@@ -175,7 +175,7 @@
 }
 
 .retryButton:focus {
-  outline: 2px solid var(--border-primary);
+  outline: 2px solid #00000022;
   outline-offset: 2px;
 }
 

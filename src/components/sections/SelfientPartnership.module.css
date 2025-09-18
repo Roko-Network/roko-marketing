@@ -47,7 +47,7 @@
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 40px;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
 }
 
 .overview h3 {
@@ -93,7 +93,7 @@
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 40px;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
 }
 
 .features h3 {
@@ -146,7 +146,7 @@
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 40px;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
 }
 
 .descriptionGrid {

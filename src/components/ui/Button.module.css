@@ -121,7 +121,7 @@
 .button--outline {
   background: transparent;
   color: #ffffff;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
 
   &:hover:not(:disabled) {
     border-color: var(--color-accent);

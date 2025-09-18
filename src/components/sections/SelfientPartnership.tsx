@@ -61,9 +61,8 @@ export const SelfientPartnership: FC = () => {
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         >
           <h2 className={styles.title}>
-            <span className={styles.gradientText}>Project</span>
-            <br />
-            Nexus
+            <span className={styles.gradientText}>Project Nexus</span>
+            
           </h2>
           <p className={styles.subtitle}>
             Our MVP in development with Selfient

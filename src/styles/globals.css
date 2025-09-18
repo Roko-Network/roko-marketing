@@ -54,6 +54,8 @@
   --color-black: #000000;
   /* Pure black */
   --color-white: #FFFFFF;
+  --color-calm: #eaeaea;
+
   /* Pure white */
   --color-gray-light: #f5f5f5;
   /* Light gray for subtle backgrounds */
@@ -239,6 +241,8 @@ footer {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+    scrollbar-width: none;
+
 }
 
 html {
@@ -514,7 +518,7 @@ textarea::placeholder {
 .btn-secondary {
   background: var(--bg-primary);
   color: var(--text-primary);
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
 }
 
 .btn-secondary:hover {
@@ -1141,13 +1145,13 @@ textarea::placeholder {
 
 /* Focus styles for accessibility */
 *:focus {
-  outline: 2px solid var(--color-black);
+  outline: 2px solid #00000022;
   outline-offset: 2px;
 }
 
 button:focus,
 a:focus {
-  outline: 2px solid var(--color-black);
+  outline: 2px solid #00000022;
   outline-offset: 2px;
 }
 

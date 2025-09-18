@@ -63,12 +63,12 @@
   /* Extends .card utility class */
   position: relative;
   height: 100%;
-  overflow: hidden;
+  overflow: clip;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   padding: 2rem;
-  border: 2px solid var(--border-primary);
+  border: 2px solid #00000022;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
 }
@@ -96,10 +96,10 @@
   font-family: var(--font-display, 'Rajdhani', sans-serif);
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--text-primary);
-  background: var(--bg-primary);
+  color: #ffffff;
+  background: #000000;
   padding: 0.5rem 1rem;
-  border-radius: 2rem;
+  border-radius: 0.25rem;
   border: 1px solid var(--border-primary);
 }
 

@@ -15,10 +15,9 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, #00d4aa 0%, #00ffcc 100%);
+  background: linear-gradient(90deg, #00d4aa 0%, #00d4aa 100%);
   transform-origin: 0%;
   z-index: 1000;
-  box-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
 }
 
 /* Floating Navigation */
