@@ -473,6 +473,7 @@
   .eggShowcase {
     grid-template-columns: 1fr;
     padding: 40px;
+    max-width: calc(100vw - 2rem);
   }
 
   .processSteps {

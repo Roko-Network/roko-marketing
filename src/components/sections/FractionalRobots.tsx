@@ -208,8 +208,7 @@ export const FractionalRobots: FC = () => {
                     borderRadius: '9999px',
                     overflow: 'hidden',
                     position: 'relative',
-                    background:
-                      'radial-gradient(120% 120% at 50% 30%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.05) 40%, rgba(0,0,0,0.0) 60%)'
+                    background: 'transparent'
                   }}
                 >
                   {/* Three.js Canvas */}
