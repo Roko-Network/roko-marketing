@@ -23,11 +23,10 @@ const TRANSITION_MS = 600;
 // Pull-to-paginate tuning
 const PULL_THRESHOLD_FRAC = 0.25;   // 25% of viewport width to snap
 const PULL_MAX_FRAC = 0.35;         // max rubberband pull
-const PULL_RELEASE_MS = 200;        // spring-back delay after last wheel tick
-const WHEEL_PULL_SCALE = 0.85;      // dampen wheel delta applied to pull
+const PULL_RELEASE_MS = 200;        // spring-back delay after last wheel/touch
 
-const SCROLLBAR_EPS = 8;            // for overflow detection (resize observer)
-const EDGE_EPS = 2;                 // for runtime top/bottom checks (tighter)
+const SCROLLBAR_EPS = 8;            // resize/overflow detection
+const EDGE_EPS = 2;                 // runtime top/bottom checks (tighter)
 
 // Map each visible section to a particle "mode":
 // 0=header, 1=slider, 2=dao, 3=docs, 4=bottom
@@ -70,23 +69,25 @@ const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(ma
 
 const getComputedOverflowY = (el: Element) => {
   try {
-    return window.getComputedStyle(el).overflowY;
+    // returns 'visible' | 'hidden' | 'scroll' | 'auto' | 'clip' (modern)
+    return window.getComputedStyle(el).overflowY as string;
   } catch {
     return 'visible';
   }
 };
 
+/** Strict test: only elements with overflow-y: auto/scroll AND actual overflow count */
 const isVertScrollable = (el: HTMLElement) => {
   if (!el) return false;
-  const overflowY = getComputedOverflowY(el);
-  const tall = (el.scrollHeight - el.clientHeight) > EDGE_EPS;
-  return tall || overflowY === 'auto' || overflowY === 'scroll';
+  const oy = getComputedOverflowY(el);
+  if (oy !== 'auto' && oy !== 'scroll') return false; // ignore clip/hidden/visible
+  return (el.scrollHeight - el.clientHeight) > EDGE_EPS;
 };
 
 const nearestScrollableAncestor = (start: EventTarget | null, stopEl?: HTMLElement | null) => {
   let node: any = start as Node | null;
   while (node && node !== document && node !== document.documentElement) {
-    if (stopEl && node === stopEl) break;
+    if (stopEl && node === stopEl) break; // don't climb past deck
     if (node instanceof HTMLElement) {
       if (isVertScrollable(node)) return node;
     }
@@ -95,29 +96,27 @@ const nearestScrollableAncestor = (start: EventTarget | null, stopEl?: HTMLEleme
   return null;
 };
 
-/** Apply some of `deltaY` to the scroll element; return the leftover (unapplied) delta */
-const applyScrollAndReturnLeftover = (el: HTMLElement, deltaY: number): number => {
-  if (!el || deltaY === 0) return deltaY;
-
-  if (deltaY > 0) {
-    // scrolling down → limit by remaining space to bottom
-    const room = Math.max(0, el.scrollHeight - el.clientHeight - el.scrollTop);
-    const applied = Math.min(room, deltaY);
-    if (applied) el.scrollTop += applied;
-    return deltaY - applied;
-  } else {
-    // scrolling up → limit by distance to top
-    const room = Math.max(0, el.scrollTop);
-    const applied = Math.min(room, Math.abs(deltaY));
-    if (applied) el.scrollTop -= applied;
-    return deltaY + applied; // deltaY is negative; add applied (positive) back
-  }
+const canElScrollFurther = (el: HTMLElement, dy: number) => {
+  if (!el) return false;
+  const atTop = el.scrollTop <= EDGE_EPS;
+  const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - EDGE_EPS;
+  if (dy > 0) return !atBottom; // scrolling down
+  if (dy < 0) return !atTop;    // scrolling up
+  return false;
 };
 
-/** Only allow horizontal pull if there is actually a neighbor page in that direction */
+/** Normalize wheel delta to pixels across deltaMode variants */
+const normalizeWheel = (e: WheelEvent) => {
+  let px = e.deltaY;
+  if (e.deltaMode === 1) px *= 16;                 // lines → px (approx)
+  else if (e.deltaMode === 2) px *= window.innerHeight; // pages → px
+  return px;
+};
+
+/** Only allow horizontal pull if neighbor page exists in that direction */
 const canPullDeck = (dir: 1 | -1, curIndex: number, maxIndex: number) => {
-  if (dir > 0) return curIndex < maxIndex; // trying to pull left (next)
-  if (dir < 0) return curIndex > 0;        // trying to pull right (prev)
+  if (dir > 0) return curIndex < maxIndex; // pulling left (next)
+  if (dir < 0) return curIndex > 0;        // pulling right (prev)
   return false;
 };
 
@@ -286,80 +285,80 @@ const HomePage: React.FC = memo(() => {
   };
 
   // ───────────────────────────────────────────────────────────────────────────
-  // Wheel: delta-splitting (scroll nearest scrollable; leftover → horizontal pull)
+  // Wheel: let native vertical scroll run; at edge convert delta to horizontal pull.
+  // Dynamic gain so ~3–4 detents cross threshold (no “freewheel” needed).
   // ───────────────────────────────────────────────────────────────────────────
   const onWheel = useCallback(
     (e: WheelEvent) => {
       if (animatingRef.current) return;
 
-      const dy = e.deltaY;
-      if (dy === 0) return;
+      const dyNorm = normalizeWheel(e);
+      if (dyNorm === 0) return;
 
       const deckEl = deckRef.current;
 
-      // Pick the scrollable under the pointer; fall back to the active slide
+      // nearest scrollable under pointer, else active slide
       const scrollEl =
         (nearestScrollableAncestor(e.target, deckEl) as HTMLElement | null) ||
         (slideRefs.current[index] as HTMLElement | null);
 
-      // We handle the scroll ourselves to compute "leftover" precisely
+      // If vertical can still scroll, let it be native (no preventDefault — smoother)
+      if (scrollEl && canElScrollFurther(scrollEl, dyNorm)) {
+        if (pullPxRef.current !== 0) {
+          setDeckTransitionMs(TRANSITION_MS);
+          setPullPx(0);
+        }
+        return;
+      }
+
+      // Edge reached → convert to horizontal pull
       e.preventDefault();
       setDeckTransitionMs(0);
 
-      let leftover = dy;
-      if (scrollEl) {
-        leftover = applyScrollAndReturnLeftover(scrollEl, dy);
+      const dir: 1 | -1 = dyNorm > 0 ? 1 : -1;
+      const maxIndex = sections.length - 1;
+
+      // Block pull past ends
+      if (!canPullDeck(dir, index, maxIndex)) {
+        setDeckTransitionMs(TRANSITION_MS);
+        setPullPx(0);
+        schedulePullRelease();
+        return;
       }
 
-      if (leftover !== 0) {
-        // Direction based on leftover after vertical consumption
-        const dir: 1 | -1 = leftover > 0 ? 1 : -1;
-        const maxIndex = sections.length - 1;
+      // Dynamic gain: ~3.5 detents to reach threshold
+      const vw = vwRef.current;
+      const thresholdPx = vw * PULL_THRESHOLD_FRAC;
+      const perDetentTarget = thresholdPx / 3.5;
+      const BASE_DETENT_PX = 120; // typical notch in px
+      const gain = perDetentTarget / BASE_DETENT_PX;
 
-        // *** Block horizontal pull if no neighbor in that direction ***
-        if (!canPullDeck(dir, index, maxIndex)) {
-          // ensure any partial pull returns to rest
-          setDeckTransitionMs(TRANSITION_MS);
-          setPullPx(0);
-          schedulePullRelease();
-          return;
-        }
+      const maxPx = vw * PULL_MAX_FRAC;
+      const deltaPx = gain * dyNorm; // +down → positive; subtract to move left
+      const nextPx = clamp(pullPxRef.current - deltaPx, -maxPx, maxPx);
+      setPullPx(nextPx);
 
-        // Convert leftover into horizontal pull
-        const vw = vwRef.current;
-        const maxPx = vw * PULL_MAX_FRAC;
-        const deltaPx = WHEEL_PULL_SCALE * leftover; // +down → left pull (negative px via subtraction below)
-        const nextPx = clamp(pullPxRef.current - deltaPx, -maxPx, maxPx);
-        setPullPx(nextPx);
-        trySnapIfThreshold(dir);
-      }
-
+      trySnapIfThreshold(dir);
       schedulePullRelease();
     },
     [index, sections.length, doIndexChange]
   );
 
   // ───────────────────────────────────────────────────────────────────────────
-  // Touch: gesture-scoped delta-splitting (we take control for the gesture)
+  // Touch: let native vertical scroll run; only start pull at vertical edge.
   // ───────────────────────────────────────────────────────────────────────────
   const tStartY = useRef<number | null>(null);
   const tPrevY = useRef<number | null>(null);
-  const activeScrollElRef = useRef<HTMLElement | null>(null);
   const touchActiveRef = useRef(false);
 
   const onTouchStart = useCallback((e: TouchEvent) => {
     if (e.touches.length !== 1 || animatingRef.current) return;
-
-    const deckEl = deckRef.current;
-    activeScrollElRef.current = (nearestScrollableAncestor(e.target, deckEl) as HTMLElement | null)
-      || (slideRefs.current[index] as HTMLElement | null);
-
     tStartY.current = e.touches[0].clientY;
     tPrevY.current = tStartY.current;
     clearPullTimer();
     setDeckTransitionMs(0);
     touchActiveRef.current = true;
-  }, [index]);
+  }, []);
 
   const onTouchMove = useCallback((e: TouchEvent) => {
     if (animatingRef.current || !touchActiveRef.current) return;
@@ -370,41 +369,45 @@ const HomePage: React.FC = memo(() => {
     const dyMove = prev - y; // >0 finger up → scroll down
     tPrevY.current = y;
 
-    // We handle the scroll + pull split ourselves
-    e.preventDefault();
-    setDeckTransitionMs(0);
+    // Native vertical first
+    const deckEl = deckRef.current;
+    const scrollEl =
+      (nearestScrollableAncestor(e.target, deckEl) as HTMLElement | null) ||
+      (slideRefs.current[index] as HTMLElement | null);
 
-    let leftover = dyMove;
-    const scrollEl = activeScrollElRef.current;
-    if (scrollEl) {
-      leftover = applyScrollAndReturnLeftover(scrollEl, dyMove);
-    }
-
-    if (leftover !== 0) {
-      const dir: 1 | -1 = leftover > 0 ? 1 : -1;
-      const maxIndex = sections.length - 1;
-
-      // *** Block horizontal pull if no neighbor in that direction ***
-      if (!canPullDeck(dir, index, maxIndex)) {
+    if (scrollEl && canElScrollFurther(scrollEl, dyMove)) {
+      if (pullPxRef.current !== 0) {
         setDeckTransitionMs(TRANSITION_MS);
         setPullPx(0);
-        return;
       }
-
-      // Map leftover to horizontal pull
-      const vw = vwRef.current;
-      const maxPx = vw * PULL_MAX_FRAC;
-      const nextPx = clamp(pullPxRef.current - leftover, -maxPx, maxPx);
-      setPullPx(nextPx);
-
-      trySnapIfThreshold(dir);
+      return; // no preventDefault → buttery iOS vertical scroll
     }
+
+    // At vertical edge → pull deck horizontally
+    const dir: 1 | -1 = dyMove > 0 ? 1 : -1;
+    const maxIndex = sections.length - 1;
+
+    if (!canPullDeck(dir, index, maxIndex)) {
+      setDeckTransitionMs(TRANSITION_MS);
+      setPullPx(0);
+      return;
+    }
+
+    e.preventDefault(); // now we control the deck
+    setDeckTransitionMs(0);
+
+    const vw = vwRef.current;
+    const maxPx = vw * PULL_MAX_FRAC;
+
+    const nextPx = clamp(pullPxRef.current - dyMove, -maxPx, maxPx);
+    setPullPx(nextPx);
+
+    trySnapIfThreshold(dir);
   }, [index, sections.length]);
 
   const onTouchEnd = useCallback(() => {
     tStartY.current = null;
     tPrevY.current = null;
-    activeScrollElRef.current = null;
 
     if (!touchActiveRef.current) return;
     touchActiveRef.current = false;
@@ -458,16 +461,52 @@ const HomePage: React.FC = memo(() => {
       window.removeEventListener('touchend', onTouchEnd as EventListener);
     };
   }, [onWheel, onKey, onTouchStart, onTouchMove, onTouchEnd]);
+// Measure and watch the real header height (handles responsive & dynamic changes)
+const [headerHeight, setHeaderHeight] = React.useState<number>(80);
 
-  // Styles
-  const containerStyle: React.CSSProperties = {
-    position: 'relative',
-    width: '100vw',
-    height: '100vh',
-    overflow: 'hidden',
-    background: 'var(--color-calm, #fff)',
-    touchAction: 'pan-y', // allow vertical pans; we intercept during gesture
+React.useLayoutEffect(() => {
+  if (typeof window === 'undefined') return;
+
+  // Try a few common selectors; tweak to match your Header if needed
+  const selectors = ['#site-header', 'header[role="banner"]', '.site-header', 'header'];
+  let headerEl: HTMLElement | null = null;
+  for (const sel of selectors) {
+    const el = document.querySelector<HTMLElement>(sel);
+    if (el) { headerEl = el; break; }
+  }
+
+  const read = () => {
+    const h = headerEl?.getBoundingClientRect().height ?? 0;
+    setHeaderHeight(Math.round(h));
   };
+
+  // Initial read
+  read();
+
+  // Watch for size changes
+  let ro: ResizeObserver | null = null;
+  if (headerEl && 'ResizeObserver' in window) {
+    ro = new ResizeObserver(read);
+    ro.observe(headerEl);
+  }
+
+  // Also update on viewport resize (layout shifts)
+  window.addEventListener('resize', read);
+
+  return () => {
+    window.removeEventListener('resize', read);
+    if (ro && headerEl) ro.unobserve(headerEl);
+  };
+}, []);
+// Styles
+const containerStyle: React.CSSProperties = {
+  position: 'relative',
+  width: '100vw',
+  height: `calc(100vh - ${headerHeight}px)`,
+  overflow: 'hidden',
+  background: 'var(--color-calm, #fff)',
+  touchAction: 'pan-y', // let vertical pans be native; we intercept only at edges
+};
 
   const sceneParams = sceneParamsByPage[index] ?? sceneParamsByPage[0];
 
@@ -489,7 +528,7 @@ const HomePage: React.FC = memo(() => {
         />
       </div>
 
-      {/* HORIZONTAL RAIL OF FULL-PAGE SLIDES (with delta-splitting pull) */}
+      {/* HORIZONTAL RAIL OF FULL-PAGE SLIDES */}
       <div
         ref={deckRef}
         style={{
@@ -501,7 +540,7 @@ const HomePage: React.FC = memo(() => {
           display: 'flex',
           flexDirection: 'row',
           width: `${sections.length * 100}vw`,
-          height: '100vh',
+          height: '100%',
           willChange: 'transform',
           overscrollBehavior: 'contain',
         }}
@@ -515,9 +554,10 @@ const HomePage: React.FC = memo(() => {
               ref={(el) => setSlideRef(el, i)}
               style={{
                 width: '100vw',
-                height: '100vh',
+                height: '100%',
                 overflow: 'auto',
                 overscrollBehavior: 'contain',
+                WebkitOverflowScrolling: 'touch', // iOS momentum on slides
                 boxSizing: 'border-box',
                 transform: `translateX(${offset}px)`,
                 transition: `transform ${TRANSITION_MS}ms cubic-bezier(.2,.8,.2,1)`,

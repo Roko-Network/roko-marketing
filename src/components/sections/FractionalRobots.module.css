@@ -7,12 +7,12 @@
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 1rem;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 80px;
+  margin-bottom: 4rem;
 }
 
 .title {
@@ -315,6 +315,7 @@
   backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 60px;
+  display: none;
   border: 2px solid #00000022;
 }
 
@@ -486,7 +487,7 @@
 
 @media (max-width: 768px) {
   .fractionalRobots {
-    padding: 60px 0;
+    padding: 2rem 0;
   }
 
   .robitProcess,
