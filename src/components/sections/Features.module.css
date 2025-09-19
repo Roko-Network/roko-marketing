@@ -3,7 +3,6 @@
   position: relative;
   padding: 6rem 0;
   color: var(--text-primary);
-  overflow: hidden;
 }
 
 .container {
@@ -11,7 +10,6 @@
   margin: 0 auto;
   padding: 0 2rem;
   position: relative;
-  height:calc(100vh - 192px);
   z-index: 2;
 }
 
@@ -100,7 +98,7 @@
   background: #000000;
   padding: 0.5rem 1rem;
   border-radius: 0.25rem;
-  border: 1px solid var(--border-primary);
+  border: 1px solid #00000022;
 }
 
 /* Card Content */
@@ -136,7 +134,7 @@
   color: var(--text-muted);
   margin: 0;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--border-primary);
+  border-top: 1px solid #00000022;
 }
 
 /* Card Effects */
@@ -171,7 +169,11 @@
 .cardContent:hover .backgroundPattern {
   opacity: 1;
 }
-
+.backgroundElements,
+.hoverOverlay,
+.backgroundPattern {
+  pointer-events: none; /* already true in your CSS for some */
+}
 
 /* Background Elements */
 .backgroundElements {
@@ -213,7 +215,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .features {
-    padding: 4rem 0;
+    padding: 2rem 0;
   }
 
   .container {
@@ -236,8 +238,7 @@
 
 
   .iconContainer {
-    flex-direction: column;
-    align-items: flex-start;
+    
     gap: 1rem;
   }
 

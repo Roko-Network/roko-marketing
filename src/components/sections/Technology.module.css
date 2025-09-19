@@ -17,7 +17,7 @@
 /* Section Header */
 .header {
   text-align: center;
-  margin-bottom: 5rem;
+  margin-bottom: 4rem;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
@@ -535,7 +535,7 @@
 
 @media (max-width: 768px) {
   .technology {
-    padding: 4rem 0;
+    padding: 2rem 0;
   }
 
   .container {

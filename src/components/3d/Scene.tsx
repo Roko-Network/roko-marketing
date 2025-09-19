@@ -5,7 +5,7 @@ import {
   OrbitControls,
   PerspectiveCamera,
   Environment,
-  AdaptiveDpr,
+  // AdaptiveDpr, // removed to keep full native resolution
   AdaptiveEvents,
   Html,
   useProgress
@@ -152,7 +152,7 @@ const circlePointsMaterial = () => {
       vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
       vDepth = -mvPosition.z;
       float size = aSize;
-      gl_PointSize = size * (300.0 / vDepth);
+      gl_PointSize = size * (100.0 / vDepth);
       gl_Position = projectionMatrix * mvPosition;
     }
   `;
@@ -164,10 +164,10 @@ const circlePointsMaterial = () => {
       float r = length(c);
       float edge = smoothstep(0.5, 0.42, r);     // soft circular edge
       float core = smoothstep(0.28, 0.0, r);     // subtle brighter core
-      float depthFog = clamp(1.0 - vDepth * 0.006, 0.2, 1.0);
+      float depthFog = clamp(1.0 - vDepth * 0.06, 0.2, 1.0);
       float alpha = edge * 0.65 * depthFog;
       if (alpha <= 0.001) discard;
-      vec3 smoke = mix(vec3(0.15), vec3(0.85), core * 0.25); // smoky grayscale
+      vec3 smoke = mix(vec3(0.15), vec3(0.85), core * 0.75); // smoky grayscale
       gl_FragColor = vec4(smoke, alpha);
     }
   `;
@@ -519,13 +519,14 @@ const ParticlesSystem: React.FC<{
 
   // initialize particle->icosahedron links
   useMemo(() => {
+    const linkCfg = CONFIG.linkSplines;
     if (!linkCfg.enabled) return;
-    for (let k = 0; k < LINK_COUNT; k++) {
+    for (let k = 0; k < linkCfg.count; k++) {
       linkIdxParticle[k] = (Math.random() * count) | 0;
       linkIdxVertex[k] = (Math.random() * icoVertices.length) | 0;
       linkLife[k] = 1;
     }
-  }, [LINK_COUNT, count, linkIdxParticle, linkIdxVertex, linkLife, icoVertices.length, linkCfg.enabled]);
+  }, [count, icoVertices.length]);
 
   // waves (interference)
   const waves = useMemo(() => CONFIG.waves.map(w => ({ k: new THREE.Vector3(...w.dir).normalize(), w: w.w })), []);
@@ -553,7 +554,7 @@ const ParticlesSystem: React.FC<{
     if (wSlider > 0.12 && (frameCounter.current % 3) === 0) rebuildHash();
 
     sparkMat.opacity = CONFIG.sparks.enabled ? CONFIG.sparks.opacity * wSlider : 0;
-    chordMat.opacity = D.opacity * (0.8 + 0.2 * Math.sin(now * 0.001)); // gentle breathing
+    chordMat.opacity = CONFIG.dao.chords.opacity * (0.8 + 0.2 * Math.sin(now * 0.001)); // gentle breathing
 
     // integrate particles
     for (let i = 0; i < count; i++) {
@@ -688,7 +689,7 @@ const ParticlesSystem: React.FC<{
     }
 
     // PARTICLE -> ICOSAHEDRON GRAY LINKS
-    if (linkCfg.enabled) {
+    if (CONFIG.linkSplines.enabled) {
       let written = 0;
       for (let k = 0; k < LINK_COUNT; k++) {
         if (linkLife[k] <= 0) continue;
@@ -699,7 +700,7 @@ const ParticlesSystem: React.FC<{
         const mid = a.clone().add(b).multiplyScalar(0.5);
         const dir = b.clone().sub(a).normalize();
         const t = now * 0.0015 + linkPhase[k];
-        const amp = linkCfg.wiggleAmp * (0.6 + 0.4 * Math.sin(t * linkCfg.wiggleFreq + k));
+        const amp = CONFIG.linkSplines.wiggleAmp * (0.6 + 0.4 * Math.sin(t * CONFIG.linkSplines.wiggleFreq + k));
         const perp = new THREE.Vector3(-dir.y, dir.x, dir.z).normalize().multiplyScalar(amp);
         const control = mid.add(perp);
         const base = written * linkStride;
@@ -833,6 +834,29 @@ const SceneFallback: React.FC = () => (
   </div>
 );
 
+/* =============================================================================
+   Hook: native device pixel ratio (updates on resize/orientation)
+============================================================================= */
+const MAX_DPR = 4; // safety cap; raise if you want to go beyond 4x
+const useNativeDPR = () => {
+  const get = () =>
+    (typeof window !== 'undefined'
+      ? Math.max(1, Math.min(MAX_DPR, window.devicePixelRatio || 1))
+      : 1);
+  const [dpr, setDpr] = useState<number>(get);
+  useEffect(() => {
+    const update = () => setDpr(get());
+    update();
+    window.addEventListener('resize', update);
+    window.addEventListener('orientationchange', update);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.removeEventListener('orientationchange', update);
+    };
+  }, []);
+  return dpr;
+};
+
 export const Scene: React.FC<SceneProps> = ({
   className = '',
   enableControls = true,
@@ -845,6 +869,7 @@ export const Scene: React.FC<SceneProps> = ({
 }) => {
   const [detectedPerformance, setDetectedPerformance] = useState<'high' | 'medium' | 'low'>('medium');
   const [webGLSupported, setWebGLSupported] = useState(true);
+  const nativeDpr = useNativeDPR();
 
   useEffect(() => {
     const capabilities = detectWebGLCapabilities();
@@ -862,24 +887,34 @@ export const Scene: React.FC<SceneProps> = ({
   }
 
   return (
-    <div className={`w-full h-full ${className}`} style={{ pointerEvents: 'none' }}>
+    <div
+      className={`w-full h-full ${className}`}
+      style={{
+        width: '100%',
+        height: '100%',
+        // allow OrbitControls to receive input when enabled
+        pointerEvents: enableControls ? 'auto' : 'none'
+      }}
+    >
       <Canvas
+        // Full resolution: render at the device's native DPR
+        dpr={nativeDpr}
         gl={{
-          antialias: finalPerformanceLevel !== 'low',
+          antialias: true, // keep crisp at hi-dpi
           alpha: true,
           powerPreference: 'high-performance',
           stencil: false,
           depth: true
         }}
-        dpr={finalPerformanceLevel === 'high' ? [1, 2] : 1}
         camera={{ position: [0, 0, 30], fov: 90 }}
         onCreated={({ gl }) => {
           gl.setClearColor('#000000', 0);
           gl.toneMapping = THREE.ACESFilmicToneMapping;
           gl.toneMappingExposure = 1.1;
         }}
+        style={{ width: '100%', height: '100%' }}
       >
-        <AdaptiveDpr pixelated />
+        {/* Removed <AdaptiveDpr /> so DPR never downscales; keep adaptive events */}
         <AdaptiveEvents />
 
         <PerspectiveCamera makeDefault position={[0, 0, 30]} fov={90} />
@@ -910,7 +945,7 @@ export const Scene: React.FC<SceneProps> = ({
         {showStats && process.env['NODE_ENV'] === 'development' && (
           <Html position={[-8, 6, 0]}>
             <div className="text-white text-xs bg-black/50 p-2 rounded">
-              Performance: {finalPerformanceLevel}
+              Performance: {finalPerformanceLevel} — DPR: {nativeDpr.toFixed(2)}
             </div>
           </Html>
         )}
