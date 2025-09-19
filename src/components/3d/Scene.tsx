@@ -92,6 +92,7 @@ export interface SceneParams {
   fieldOpacity?: number;
   pageIndex?: number;
   pageWeights?: number[];
+  autoRotate?: boolean;
 }
 
 interface SceneProps {
@@ -728,18 +729,24 @@ const ParticlesSystem: React.FC<{
       </points>
 
       {/* Curved gray sparks */}
-      <line material={sparkMat}>
+      {/* @ts-ignore - TypeScript doesn't recognize line primitive */}
+      <line>
+        <primitive object={sparkMat} attach="material" />
         <bufferGeometry ref={sparkGeomRef} />
       </line>
 
       {/* Organic gray chords (stretch & snap) */}
-      <line material={chordMat}>
+      {/* @ts-ignore - TypeScript doesn't recognize line primitive */}
+      <line>
+        <primitive object={chordMat} attach="material" />
         <bufferGeometry ref={chordGeomRef} />
       </line>
 
       {/* Gray particle→icosahedron links */}
       {CONFIG.linkSplines.enabled && (
-        <line material={linkMat}>
+        // @ts-ignore - TypeScript doesn't recognize line primitive
+        <line>
+          <primitive object={linkMat} attach="material" />
           <bufferGeometry ref={linkGeomRef} />
         </line>
       )}
