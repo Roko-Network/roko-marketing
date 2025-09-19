@@ -171,7 +171,7 @@
 }
 
 .partnerLogo {
-  width: max-content;
+  width: auto;
   height: 80px;
   display: flex;
   align-items: center;
@@ -182,6 +182,7 @@
 .partnerLogo img {
   max-width: 80% !important;
   height: 100%;
+  width: auto !important;
   object-fit: contain;
   filter: brightness(0.8);
   transition: filter 0.3s ease;

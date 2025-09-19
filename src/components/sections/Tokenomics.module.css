@@ -72,6 +72,9 @@
     padding: 2rem 0;
   }
 
+  .statsContainer{
+    display:block;
+  }
   .container {
     padding: 0 16px;
   }
