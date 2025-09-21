@@ -93,27 +93,47 @@ switch_branch() {
     log_info "Switching from '${current_branch:-master}' to '$new_branch'"
 
     # Create config directory if needed
-    sudo mkdir -p "$(dirname "$CONFIG_FILE")"
-
-    # Write new configuration
-    sudo tee "$CONFIG_FILE" > /dev/null <<EOF
+    if [ -w "$(dirname "$CONFIG_FILE")" ]; then
+        # We have write permission, no sudo needed
+        mkdir -p "$(dirname "$CONFIG_FILE")"
+        cat > "$CONFIG_FILE" <<EOF
 # ROKO Marketing Deployment Configuration
 # Generated: $(date)
 DEPLOY_BRANCH="$new_branch"
 EOF
+    else
+        # Need sudo
+        sudo mkdir -p "$(dirname "$CONFIG_FILE")"
+        sudo tee "$CONFIG_FILE" > /dev/null <<EOF
+# ROKO Marketing Deployment Configuration
+# Generated: $(date)
+DEPLOY_BRANCH="$new_branch"
+EOF
+    fi
 
     # Update systemd service if it exists
     if systemctl list-unit-files | grep -q "$SERVICE_NAME"; then
         log_info "Updating systemd service configuration..."
 
         # Create override directory
-        sudo mkdir -p "/etc/systemd/system/${SERVICE_NAME}.service.d"
+        OVERRIDE_DIR="/etc/systemd/system/${SERVICE_NAME}.service.d"
+        OVERRIDE_FILE="$OVERRIDE_DIR/branch.conf"
 
-        # Create override configuration
-        sudo tee "/etc/systemd/system/${SERVICE_NAME}.service.d/branch.conf" > /dev/null <<EOF
+        if [ -w "$OVERRIDE_DIR" ] 2>/dev/null; then
+            # We have write permission, no sudo needed
+            mkdir -p "$OVERRIDE_DIR"
+            cat > "$OVERRIDE_FILE" <<EOF
 [Service]
 Environment="DEPLOY_BRANCH=$new_branch"
 EOF
+        else
+            # Need sudo
+            sudo mkdir -p "$OVERRIDE_DIR"
+            sudo tee "$OVERRIDE_FILE" > /dev/null <<EOF
+[Service]
+Environment="DEPLOY_BRANCH=$new_branch"
+EOF
+        fi
 
         # Reload systemd and restart service
         sudo systemctl daemon-reload
@@ -139,7 +159,11 @@ EOF
         log_info "Triggering immediate deployment..."
 
         # Reset last deployed SHA to force update
-        echo "branch-switch" | sudo tee /var/lib/roko-marketing/last-deployed-sha > /dev/null
+        if [ -w "/var/lib/roko-marketing/last-deployed-sha" ]; then
+            echo "branch-switch" > /var/lib/roko-marketing/last-deployed-sha
+        else
+            echo "branch-switch" | sudo tee /var/lib/roko-marketing/last-deployed-sha > /dev/null
+        fi
 
         if [ -x "$SCRIPT_DIR/deploy-watcher.sh" ]; then
             log_info "Running deployment..."
