@@ -124,7 +124,7 @@ export const Header: FC<HeaderProps> = memo(({ className }) => {
             >
               <img src="/favicon-roko.png" alt="" className='headerIcon' />
             </motion.div>
-                        <span className={styles.logoSubtext}>ROKO</span>
+                        <span className={styles.logoSubtext}>ROKO NETWORK</span>
 
           </Link>
 
