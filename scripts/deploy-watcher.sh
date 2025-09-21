@@ -5,14 +5,21 @@
 
 set -e
 
+# Load branch configuration if exists
+CONFIG_FILE="/var/lib/roko-marketing/deploy-config"
+if [ -f "$CONFIG_FILE" ]; then
+    source "$CONFIG_FILE"
+fi
+
 # Configuration
 APP_DIR="${APP_DIR:-/home/roctinam/roko-marketing}"  # Project source directory
 DEPLOY_DIR="${DEPLOY_DIR:-/home/roctinam/production-deploy/roko-marketing}"  # Where Caddy serves from
 REPO_URL="https://github.com/Roko-Network/roko-marketing.git"
-BRANCH="${DEPLOY_BRANCH:-master}"
+BRANCH="${DEPLOY_BRANCH:-master}"  # Can be overridden by config file or environment
 CHECK_INTERVAL="${CHECK_INTERVAL:-600}"  # 10 minutes default
 LOG_FILE="${LOG_FILE:-/home/roctinam/roko-marketing/deploy.log}"
 STATE_FILE="/var/lib/roko-marketing/last-deployed-sha"
+STATE_BRANCH_FILE="/var/lib/roko-marketing/last-deployed-branch"
 LOCK_FILE="/var/run/roko-deploy.lock"
 BUILD_MEMORY="4096"
 
@@ -89,9 +96,12 @@ init_environment() {
     sudo chown -R $USER:$USER "$(dirname "$STATE_FILE")"
     touch "$LOG_FILE"
 
-    # Initialize state file if it doesn't exist
+    # Initialize state files if they don't exist
     if [ ! -f "$STATE_FILE" ]; then
         echo "none" > "$STATE_FILE"
+    fi
+    if [ ! -f "$STATE_BRANCH_FILE" ]; then
+        echo "$BRANCH" > "$STATE_BRANCH_FILE"
     fi
 }
 
@@ -357,19 +367,31 @@ deploy() {
 
 # Check for updates
 check_for_updates() {
+    # Check if branch has changed
+    local last_branch=""
+    if [ -f "$STATE_BRANCH_FILE" ]; then
+        last_branch=$(cat "$STATE_BRANCH_FILE")
+    fi
+
+    if [ "$BRANCH" != "$last_branch" ]; then
+        log_warn "Branch changed from '$last_branch' to '$BRANCH' - forcing update"
+        echo "$BRANCH" > "$STATE_BRANCH_FILE"
+        return 0
+    fi
+
     local remote_sha=$(get_remote_sha)
     local deployed_sha=$(get_deployed_sha)
 
     if [ -z "$remote_sha" ]; then
-        log_error "Could not get remote SHA"
+        log_error "Could not get remote SHA for branch $BRANCH"
         return 1
     fi
 
     if [ "$remote_sha" != "$deployed_sha" ]; then
-        log_info "New version detected: ${remote_sha:0:8} (was: ${deployed_sha:0:8})"
+        log_info "New version detected on $BRANCH: ${remote_sha:0:8} (was: ${deployed_sha:0:8})"
         return 0
     else
-        log_info "No updates available (current: ${remote_sha:0:8})"
+        log_info "No updates available on $BRANCH (current: ${remote_sha:0:8})"
         return 1
     fi
 }

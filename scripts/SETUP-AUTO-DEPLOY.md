@@ -34,6 +34,7 @@ Caddy Web Server (Docker container)
 ✅ **Automatic rollback** - Reverts on build/deploy failures
 ✅ **Resource efficient** - Builds use your server's resources
 ✅ **Simple and secure** - No complex secrets management
+✅ **Branch flexibility** - Deploy from any branch for testing/recovery
 
 ## Setup Instructions
 
@@ -189,6 +190,44 @@ cd ~/roko-marketing
 SKIP_BUILD=0 ./deploy-static.sh  # Builds and deploys
 SKIP_BUILD=1 ./deploy-static.sh  # Deploys existing build
 ```
+
+### Branch Management
+
+The deployment system can deploy from any branch:
+
+```bash
+# Check current branch configuration
+./scripts/deploy-branch.sh status
+
+# List available branches
+./scripts/deploy-branch.sh list
+
+# Switch to a different branch
+./scripts/deploy-branch.sh switch feature/new-ui
+./scripts/deploy-branch.sh switch develop
+./scripts/deploy-branch.sh switch hotfix/urgent-fix
+
+# Quick switches
+./scripts/deploy-branch.sh main      # Switch to master
+./scripts/deploy-branch.sh develop   # Switch to develop
+./scripts/deploy-branch.sh staging   # Switch to staging
+
+# Test a branch temporarily
+./scripts/deploy-branch.sh test feature/experiment
+
+# Restore previous branch after testing
+./scripts/deploy-branch.sh restore
+
+# Emergency recovery (switch to master)
+./scripts/deploy-branch.sh recovery
+```
+
+**Use Cases:**
+- **Testing**: Deploy feature branches to production for testing
+- **Staging**: Switch between staging and production branches
+- **Hotfixes**: Quickly deploy urgent fixes from hotfix branches
+- **Recovery**: Emergency switch back to stable master branch
+- **A/B Testing**: Switch between different versions
 
 ### Monitoring
 
