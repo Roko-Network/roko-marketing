@@ -36,7 +36,7 @@ MemoryLimit=2G
 CPUQuota=50%
 
 # Security hardening
-NoNewPrivileges=true
+# NoNewPrivileges=true removed - prevents sudo from working
 PrivateTmp=true
 ProtectSystem=strict
 ProtectHome=false
