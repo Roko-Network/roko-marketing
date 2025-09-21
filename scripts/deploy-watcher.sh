@@ -1,0 +1,408 @@
+#!/bin/bash
+
+# ROKO Marketing - Git Repository Watcher and Auto-Deploy Script
+# This script runs on the server and checks for updates to deploy automatically
+
+set -e
+
+# Configuration
+APP_DIR="${APP_DIR:-/var/www/roko-marketing}"
+REPO_URL="https://github.com/Roko-Network/roko-marketing.git"
+BRANCH="${DEPLOY_BRANCH:-master}"
+CHECK_INTERVAL="${CHECK_INTERVAL:-600}"  # 10 minutes default
+LOG_FILE="/var/log/roko-deploy-watcher.log"
+STATE_FILE="/var/lib/roko-marketing/last-deployed-sha"
+LOCK_FILE="/var/run/roko-deploy.lock"
+BUILD_MEMORY="4096"
+
+# Colors for output (when running interactively)
+if [ -t 1 ]; then
+    RED='\033[0;31m'
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    BLUE='\033[0;34m'
+    NC='\033[0m'
+else
+    RED=''
+    GREEN=''
+    YELLOW=''
+    BLUE=''
+    NC=''
+fi
+
+# Logging functions
+log_info() {
+    local msg="[$(date '+%Y-%m-%d %H:%M:%S')] INFO: $1"
+    echo -e "${GREEN}${msg}${NC}"
+    echo "$msg" >> "$LOG_FILE"
+}
+
+log_warn() {
+    local msg="[$(date '+%Y-%m-%d %H:%M:%S')] WARN: $1"
+    echo -e "${YELLOW}${msg}${NC}"
+    echo "$msg" >> "$LOG_FILE"
+}
+
+log_error() {
+    local msg="[$(date '+%Y-%m-%d %H:%M:%S')] ERROR: $1"
+    echo -e "${RED}${msg}${NC}" >&2
+    echo "$msg" >> "$LOG_FILE"
+}
+
+# Lock file management
+acquire_lock() {
+    local timeout=300  # 5 minutes
+    local elapsed=0
+
+    while [ -f "$LOCK_FILE" ] && [ $elapsed -lt $timeout ]; do
+        log_warn "Waiting for existing deployment to complete..."
+        sleep 10
+        elapsed=$((elapsed + 10))
+    done
+
+    if [ -f "$LOCK_FILE" ]; then
+        log_error "Could not acquire lock after ${timeout} seconds"
+        return 1
+    fi
+
+    echo $$ > "$LOCK_FILE"
+    trap 'rm -f "$LOCK_FILE"' EXIT
+}
+
+release_lock() {
+    rm -f "$LOCK_FILE"
+    trap - EXIT
+}
+
+# Initialize environment
+init_environment() {
+    # Create necessary directories
+    sudo mkdir -p "$APP_DIR"
+    sudo mkdir -p "$(dirname "$STATE_FILE")"
+    sudo mkdir -p "$(dirname "$LOG_FILE")"
+    sudo mkdir -p /var/backups/roko-marketing
+
+    # Set permissions
+    sudo chown -R $USER:$USER "$APP_DIR"
+    sudo chown -R $USER:$USER "$(dirname "$STATE_FILE")"
+    touch "$LOG_FILE" && sudo chown $USER:$USER "$LOG_FILE"
+
+    # Initialize state file if it doesn't exist
+    if [ ! -f "$STATE_FILE" ]; then
+        echo "none" > "$STATE_FILE"
+    fi
+}
+
+# Get the current SHA from GitHub
+get_remote_sha() {
+    local sha=$(git ls-remote "$REPO_URL" "refs/heads/$BRANCH" 2>/dev/null | awk '{print $1}')
+
+    if [ -z "$sha" ]; then
+        log_error "Failed to get remote SHA for branch $BRANCH"
+        return 1
+    fi
+
+    echo "$sha"
+}
+
+# Get the last deployed SHA
+get_deployed_sha() {
+    if [ -f "$STATE_FILE" ]; then
+        cat "$STATE_FILE"
+    else
+        echo "none"
+    fi
+}
+
+# Save the deployed SHA
+save_deployed_sha() {
+    local sha=$1
+    echo "$sha" > "$STATE_FILE"
+    log_info "Saved deployed SHA: $sha"
+}
+
+# Clone or update repository
+update_repository() {
+    cd "$APP_DIR"
+
+    if [ ! -d ".git" ]; then
+        log_info "Cloning repository for the first time..."
+        git clone "$REPO_URL" .
+        git checkout "$BRANCH"
+    else
+        log_info "Fetching latest changes..."
+        git fetch origin
+        git reset --hard "origin/$BRANCH"
+        git clean -fd
+    fi
+
+    # Get current commit info
+    local current_sha=$(git rev-parse HEAD)
+    local commit_msg=$(git log -1 --pretty=%B)
+    local author=$(git log -1 --pretty=%an)
+
+    log_info "Current commit: $current_sha"
+    log_info "Message: $commit_msg"
+    log_info "Author: $author"
+}
+
+# Build the application
+build_application() {
+    cd "$APP_DIR"
+
+    log_info "Installing dependencies..."
+    npm ci --prefer-offline
+
+    log_info "Building application..."
+    export NODE_OPTIONS="--max-old-space-size=$BUILD_MEMORY"
+    npm run build
+
+    if [ ! -d "dist" ]; then
+        log_error "Build failed - dist directory not found"
+        return 1
+    fi
+
+    # Check build size
+    local build_size=$(du -sh dist/ | awk '{print $1}')
+    log_info "Build completed successfully. Size: $build_size"
+}
+
+# Create backup
+create_backup() {
+    if [ -d "$APP_DIR/dist" ]; then
+        local backup_name="backup-$(date +'%Y%m%d-%H%M%S')-${1:0:8}.tar.gz"
+        local backup_path="/var/backups/roko-marketing/$backup_name"
+
+        log_info "Creating backup: $backup_name"
+        sudo tar -czf "$backup_path" -C "$APP_DIR" dist/
+
+        # Keep only last 5 backups
+        ls -t /var/backups/roko-marketing/backup-*.tar.gz 2>/dev/null | tail -n +6 | xargs -r sudo rm
+
+        log_info "Backup created successfully"
+    fi
+}
+
+# Reload services
+reload_services() {
+    log_info "Reloading services..."
+
+    # Test nginx configuration
+    if sudo nginx -t 2>/dev/null; then
+        sudo systemctl reload nginx
+        log_info "Nginx reloaded successfully"
+    else
+        log_error "Nginx configuration test failed"
+        return 1
+    fi
+
+    # Clear any CDN caches if configured
+    if [ -n "$CF_ZONE_ID" ] && [ -n "$CF_API_TOKEN" ]; then
+        log_info "Clearing Cloudflare cache..."
+        curl -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer $CF_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            --data '{"purge_everything":true}' \
+            -s -o /dev/null || true
+    fi
+}
+
+# Health check
+health_check() {
+    log_info "Running health check..."
+
+    local max_attempts=5
+    local attempt=1
+
+    while [ $attempt -le $max_attempts ]; do
+        local response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost || echo "000")
+
+        if [ "$response" = "200" ] || [ "$response" = "304" ]; then
+            log_info "Health check passed (HTTP $response)"
+            return 0
+        fi
+
+        log_warn "Health check attempt $attempt failed (HTTP $response)"
+        sleep 5
+        attempt=$((attempt + 1))
+    done
+
+    log_error "Health check failed after $max_attempts attempts"
+    return 1
+}
+
+# Rollback deployment
+rollback() {
+    log_error "Initiating rollback..."
+
+    local latest_backup=$(ls -t /var/backups/roko-marketing/backup-*.tar.gz 2>/dev/null | head -n 1)
+
+    if [ -z "$latest_backup" ]; then
+        log_error "No backup available for rollback"
+        return 1
+    fi
+
+    log_info "Rolling back to: $latest_backup"
+    sudo tar -xzf "$latest_backup" -C "$APP_DIR/"
+
+    reload_services
+
+    log_info "Rollback completed"
+}
+
+# Deploy new version
+deploy() {
+    local remote_sha=$1
+
+    log_info "Starting deployment of $remote_sha"
+
+    # Acquire deployment lock
+    if ! acquire_lock; then
+        log_error "Could not acquire deployment lock"
+        return 1
+    fi
+
+    # Create backup of current deployment
+    create_backup "$remote_sha"
+
+    # Update repository
+    if ! update_repository; then
+        log_error "Failed to update repository"
+        release_lock
+        return 1
+    fi
+
+    # Build application
+    if ! build_application; then
+        log_error "Build failed, rolling back..."
+        rollback
+        release_lock
+        return 1
+    fi
+
+    # Reload services
+    if ! reload_services; then
+        log_error "Service reload failed, rolling back..."
+        rollback
+        release_lock
+        return 1
+    fi
+
+    # Health check
+    if ! health_check; then
+        log_error "Health check failed, rolling back..."
+        rollback
+        release_lock
+        return 1
+    fi
+
+    # Save successful deployment
+    save_deployed_sha "$remote_sha"
+
+    log_info "Deployment completed successfully!"
+
+    # Send notification if configured
+    if [ -n "$SLACK_WEBHOOK" ]; then
+        curl -X POST "$SLACK_WEBHOOK" \
+            -H 'Content-Type: application/json' \
+            -d "{\"text\":\"✅ ROKO Marketing deployed successfully\nVersion: ${remote_sha:0:8}\nBranch: $BRANCH\"}" \
+            -s -o /dev/null || true
+    fi
+
+    release_lock
+}
+
+# Check for updates
+check_for_updates() {
+    local remote_sha=$(get_remote_sha)
+    local deployed_sha=$(get_deployed_sha)
+
+    if [ -z "$remote_sha" ]; then
+        log_error "Could not get remote SHA"
+        return 1
+    fi
+
+    if [ "$remote_sha" != "$deployed_sha" ]; then
+        log_info "New version detected: ${remote_sha:0:8} (was: ${deployed_sha:0:8})"
+        return 0
+    else
+        log_info "No updates available (current: ${remote_sha:0:8})"
+        return 1
+    fi
+}
+
+# Continuous watching mode
+watch_mode() {
+    log_info "Starting deployment watcher..."
+    log_info "Repository: $REPO_URL"
+    log_info "Branch: $BRANCH"
+    log_info "Check interval: ${CHECK_INTERVAL}s"
+    log_info "App directory: $APP_DIR"
+
+    while true; do
+        if check_for_updates; then
+            local remote_sha=$(get_remote_sha)
+            deploy "$remote_sha"
+        fi
+
+        log_info "Sleeping for ${CHECK_INTERVAL} seconds..."
+        sleep "$CHECK_INTERVAL"
+    done
+}
+
+# Single check mode
+single_check() {
+    if check_for_updates; then
+        local remote_sha=$(get_remote_sha)
+        deploy "$remote_sha"
+    else
+        log_info "No deployment needed"
+    fi
+}
+
+# Force deployment mode
+force_deploy() {
+    local remote_sha=$(get_remote_sha)
+    log_info "Forcing deployment of $remote_sha"
+    deploy "$remote_sha"
+}
+
+# Main script logic
+main() {
+    init_environment
+
+    case "${1:-watch}" in
+        watch)
+            watch_mode
+            ;;
+        check)
+            single_check
+            ;;
+        force)
+            force_deploy
+            ;;
+        status)
+            local deployed=$(get_deployed_sha)
+            local remote=$(get_remote_sha)
+            echo "Deployed SHA: ${deployed:0:8}"
+            echo "Remote SHA: ${remote:0:8}"
+            if [ "$deployed" = "$remote" ]; then
+                echo "Status: Up to date"
+            else
+                echo "Status: Update available"
+            fi
+            ;;
+        *)
+            echo "Usage: $0 {watch|check|force|status}"
+            echo ""
+            echo "  watch  - Continuously watch for updates (default)"
+            echo "  check  - Check once and deploy if needed"
+            echo "  force  - Force deployment even if up to date"
+            echo "  status - Show deployment status"
+            exit 1
+            ;;
+    esac
+}
+
+# Run main function
+main "$@"

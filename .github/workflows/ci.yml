@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [master, main, develop]
   push:
-    branches: [develop]
+    branches: [develop, master, main]
 
 env:
   NODE_VERSION: '20.x'
