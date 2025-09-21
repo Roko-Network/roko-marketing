@@ -17,8 +17,13 @@ Deploy Watcher Service (systemd)
         ↓
 - Backup current version
 - Pull latest code
-- Build application
-- Health check
+- Build application (npm/vite)
+- Deploy to /home/roctinam/production-deploy/roko-marketing
+        ↓
+Caddy Web Server (Docker container)
+    [Serves files without restart]
+        ↓
+- Health check on port 82
 - Auto-rollback if failed
 ```
 
@@ -53,47 +58,55 @@ Add this public key to your GitHub repository:
 
 ### Step 2: Server Initial Setup
 
-SSH into your Contabo Ubuntu 24 server and run:
+SSH into your server and run:
 
 ```bash
 # Install required packages
 sudo apt-get update
-sudo apt-get install -y nodejs npm git nginx
+sudo apt-get install -y nodejs npm git docker.io docker-compose curl
 
-# Create application user (if not exists)
-sudo useradd -m -s /bin/bash roko-deploy || true
+# Add user to docker group
+sudo usermod -aG docker $USER
+# Log out and back in for group change to take effect
 
 # Create directories
-sudo mkdir -p /var/www/roko-marketing
+mkdir -p ~/roko-marketing
+mkdir -p ~/production-deploy/roko-marketing
 sudo mkdir -p /var/lib/roko-marketing
 sudo mkdir -p /var/backups/roko-marketing
-sudo mkdir -p /var/log
 
 # Set permissions
-sudo chown -R roko-deploy:roko-deploy /var/www/roko-marketing
-sudo chown -R roko-deploy:roko-deploy /var/lib/roko-marketing
-sudo chown -R roko-deploy:roko-deploy /var/backups/roko-marketing
+sudo chown -R $USER:$USER /var/lib/roko-marketing
+sudo chown -R $USER:$USER /var/backups/roko-marketing
 
 # If using deploy key for private repo
-sudo -u roko-deploy mkdir -p /home/roko-deploy/.ssh
-sudo -u roko-deploy nano /home/roko-deploy/.ssh/id_ed25519
+mkdir -p ~/.ssh
+nano ~/.ssh/roko_deploy_key
 # Paste the PRIVATE key content, save and exit
 
-sudo -u roko-deploy chmod 600 /home/roko-deploy/.ssh/id_ed25519
+chmod 600 ~/.ssh/roko_deploy_key
 
 # Configure git to use the deploy key
-sudo -u roko-deploy git config --global core.sshCommand "ssh -i /home/roko-deploy/.ssh/id_ed25519"
+git config --global core.sshCommand "ssh -i ~/.ssh/roko_deploy_key"
 ```
 
 ### Step 3: Install the Deployment Scripts
 
 ```bash
 # Clone the repository initially
-cd /var/www/roko-marketing
-sudo -u roko-deploy git clone https://github.com/Roko-Network/roko-marketing.git .
+cd ~/roko-marketing
+git clone https://github.com/Roko-Network/roko-marketing.git .
 
 # Make scripts executable
 chmod +x scripts/deploy-watcher.sh
+chmod +x deploy-static.sh
+
+# Start Caddy container (one-time setup)
+docker-compose -f docker-compose.caddy.yml up -d
+
+# Verify Caddy is running
+docker ps | grep roko-marketing-server
+curl -I http://localhost:82/health
 ```
 
 ### Step 4: Install Systemd Service
@@ -115,53 +128,25 @@ sudo systemctl start roko-deploy-watcher
 sudo systemctl status roko-deploy-watcher
 ```
 
-### Step 5: Configure Nginx
+### Step 5: Verify Deployment Setup
 
-Create nginx configuration:
-
-```bash
-sudo nano /etc/nginx/sites-available/roko-marketing
-```
-
-Add the following configuration:
-
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com www.your-domain.com;
-
-    root /var/www/roko-marketing/dist;
-    index index.html;
-
-    # Security headers
-    add_header X-Frame-Options "SAMEORIGIN" always;
-    add_header X-Content-Type-Options "nosniff" always;
-    add_header X-XSS-Protection "1; mode=block" always;
-
-    # Gzip
-    gzip on;
-    gzip_types text/plain text/css application/javascript application/json;
-
-    # Cache static assets
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
-    }
-
-    # SPA routing
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-}
-```
-
-Enable the site:
+The deployment uses Caddy running in Docker, which is already configured:
 
 ```bash
-sudo ln -sf /etc/nginx/sites-available/roko-marketing /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl reload nginx
+# Check Caddy is serving the site
+curl -I http://localhost:82
+
+# Check health endpoint
+curl http://localhost:82/health
+
+# View Caddy logs
+docker-compose -f ~/roko-marketing/docker-compose.caddy.yml logs -f
+
+# Files are served from
+ls -la ~/production-deploy/roko-marketing/
 ```
+
+**Note:** Caddy automatically serves new files without restart when they're updated in the deployment directory!
 
 ## Usage
 
@@ -189,7 +174,7 @@ sudo systemctl restart roko-deploy-watcher
 Run the deployment script manually:
 
 ```bash
-cd /var/www/roko-marketing
+cd ~/roko-marketing
 
 # Check deployment status
 ./scripts/deploy-watcher.sh status
@@ -199,6 +184,10 @@ cd /var/www/roko-marketing
 
 # Force deployment even if up to date
 ./scripts/deploy-watcher.sh force
+
+# Or use the original deploy script
+SKIP_BUILD=0 ./deploy-static.sh  # Builds and deploys
+SKIP_BUILD=1 ./deploy-static.sh  # Deploys existing build
 ```
 
 ### Monitoring
@@ -225,8 +214,10 @@ Available environment variables:
 
 - `CHECK_INTERVAL=600` - Check interval in seconds (default: 10 minutes)
 - `DEPLOY_BRANCH=master` - Branch to deploy (default: master)
-- `APP_DIR=/var/www/roko-marketing` - Application directory
+- `APP_DIR=/home/roctinam/roko-marketing` - Application source directory
+- `DEPLOY_DIR=/home/roctinam/production-deploy/roko-marketing` - Deployment directory (where Caddy serves from)
 - `BUILD_MEMORY=4096` - Node.js memory limit for builds (MB)
+- `LOG_FILE=/home/roctinam/roko-marketing/deploy.log` - Log file location
 
 After editing, reload and restart:
 

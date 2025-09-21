@@ -5,18 +5,20 @@ After=network.target
 
 [Service]
 Type=simple
-User=ubuntu
-Group=ubuntu
-WorkingDirectory=/var/www/roko-marketing
+User=roctinam
+Group=roctinam
+WorkingDirectory=/home/roctinam/roko-marketing
 
 # Script to execute
-ExecStart=/var/www/roko-marketing/scripts/deploy-watcher.sh watch
+ExecStart=/home/roctinam/roko-marketing/scripts/deploy-watcher.sh watch
 
 # Environment variables
 Environment="NODE_ENV=production"
-Environment="APP_DIR=/var/www/roko-marketing"
+Environment="APP_DIR=/home/roctinam/roko-marketing"
+Environment="DEPLOY_DIR=/home/roctinam/production-deploy/roko-marketing"
 Environment="DEPLOY_BRANCH=master"
 Environment="CHECK_INTERVAL=600"
+Environment="LOG_FILE=/home/roctinam/roko-marketing/deploy.log"
 
 # Restart policy
 Restart=always
@@ -37,8 +39,8 @@ CPUQuota=50%
 NoNewPrivileges=true
 PrivateTmp=true
 ProtectSystem=strict
-ProtectHome=true
-ReadWritePaths=/var/www/roko-marketing /var/lib/roko-marketing /var/backups/roko-marketing /var/log
+ProtectHome=false
+ReadWritePaths=/home/roctinam/roko-marketing /home/roctinam/production-deploy /var/lib/roko-marketing /var/backups/roko-marketing
 
 [Install]
 WantedBy=multi-user.target

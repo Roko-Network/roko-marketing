@@ -6,11 +6,12 @@
 set -e
 
 # Configuration
-APP_DIR="${APP_DIR:-/var/www/roko-marketing}"
+APP_DIR="${APP_DIR:-/home/roctinam/roko-marketing}"  # Project source directory
+DEPLOY_DIR="${DEPLOY_DIR:-/home/roctinam/production-deploy/roko-marketing}"  # Where Caddy serves from
 REPO_URL="https://github.com/Roko-Network/roko-marketing.git"
 BRANCH="${DEPLOY_BRANCH:-master}"
 CHECK_INTERVAL="${CHECK_INTERVAL:-600}"  # 10 minutes default
-LOG_FILE="/var/log/roko-deploy-watcher.log"
+LOG_FILE="${LOG_FILE:-/home/roctinam/roko-marketing/deploy.log}"
 STATE_FILE="/var/lib/roko-marketing/last-deployed-sha"
 LOCK_FILE="/var/run/roko-deploy.lock"
 BUILD_MEMORY="4096"
@@ -77,15 +78,16 @@ release_lock() {
 # Initialize environment
 init_environment() {
     # Create necessary directories
-    sudo mkdir -p "$APP_DIR"
+    mkdir -p "$APP_DIR"
+    mkdir -p "$DEPLOY_DIR"
     sudo mkdir -p "$(dirname "$STATE_FILE")"
-    sudo mkdir -p "$(dirname "$LOG_FILE")"
+    mkdir -p "$(dirname "$LOG_FILE")"
     sudo mkdir -p /var/backups/roko-marketing
+    mkdir -p "$APP_DIR/caddy_data" "$APP_DIR/caddy_config" "$APP_DIR/logs"
 
     # Set permissions
-    sudo chown -R $USER:$USER "$APP_DIR"
     sudo chown -R $USER:$USER "$(dirname "$STATE_FILE")"
-    touch "$LOG_FILE" && sudo chown $USER:$USER "$LOG_FILE"
+    touch "$LOG_FILE"
 
     # Initialize state file if it doesn't exist
     if [ ! -f "$STATE_FILE" ]; then
@@ -155,7 +157,15 @@ build_application() {
 
     log_info "Building application..."
     export NODE_OPTIONS="--max-old-space-size=$BUILD_MEMORY"
-    npm run build
+
+    # Try to build with vite directly (matching deploy-static.sh approach)
+    if ! npx vite build --mode production; then
+        log_warn "Build failed, trying alternative method..."
+        if ! VITE_DISABLE_PWA=1 npx vite build --mode production; then
+            log_error "Build failed - all methods exhausted"
+            return 1
+        fi
+    fi
 
     if [ ! -d "dist" ]; then
         log_error "Build failed - dist directory not found"
@@ -169,32 +179,49 @@ build_application() {
 
 # Create backup
 create_backup() {
-    if [ -d "$APP_DIR/dist" ]; then
+    if [ -d "$DEPLOY_DIR" ] && [ "$(ls -A "$DEPLOY_DIR" 2>/dev/null)" ]; then
         local backup_name="backup-$(date +'%Y%m%d-%H%M%S')-${1:0:8}.tar.gz"
         local backup_path="/var/backups/roko-marketing/$backup_name"
 
         log_info "Creating backup: $backup_name"
-        sudo tar -czf "$backup_path" -C "$APP_DIR" dist/
+        sudo tar -czf "$backup_path" -C "$(dirname "$DEPLOY_DIR")" "$(basename "$DEPLOY_DIR")"
 
         # Keep only last 5 backups
         ls -t /var/backups/roko-marketing/backup-*.tar.gz 2>/dev/null | tail -n +6 | xargs -r sudo rm
 
         log_info "Backup created successfully"
+    else
+        log_info "No existing deployment to backup"
     fi
 }
 
-# Reload services
-reload_services() {
-    log_info "Reloading services..."
+# Deploy files to production directory
+deploy_files() {
+    log_info "Deploying files to production..."
 
-    # Test nginx configuration
-    if sudo nginx -t 2>/dev/null; then
-        sudo systemctl reload nginx
-        log_info "Nginx reloaded successfully"
-    else
-        log_error "Nginx configuration test failed"
-        return 1
+    # Clear old files in deployment directory
+    if [ -d "$DEPLOY_DIR" ] && [ "$(ls -A "$DEPLOY_DIR" 2>/dev/null)" ]; then
+        log_info "Clearing old deployment files..."
+        find "$DEPLOY_DIR" -mindepth 1 -delete 2>/dev/null || {
+            log_warn "Could not clear some old files in $DEPLOY_DIR"
+        }
     fi
+
+    # Copy new files to deployment directory
+    log_info "Copying new files to $DEPLOY_DIR..."
+    cp -r "$APP_DIR/dist/"* "$DEPLOY_DIR/" || {
+        log_error "Failed to copy files to deployment directory"
+        return 1
+    }
+
+    # Set proper permissions
+    find "$DEPLOY_DIR" -type f -exec chmod 644 {} \;
+    find "$DEPLOY_DIR" -type d -exec chmod 755 {} \;
+
+    log_info "Files deployed successfully"
+
+    # Note: Caddy automatically serves new files without restart!
+    log_info "Caddy will automatically serve the updated files (no restart needed)"
 
     # Clear any CDN caches if configured
     if [ -n "$CF_ZONE_ID" ] && [ -n "$CF_API_TOKEN" ]; then
@@ -213,13 +240,20 @@ health_check() {
 
     local max_attempts=5
     local attempt=1
+    local health_url="http://localhost:82/health"  # Caddy is on port 82
 
     while [ $attempt -le $max_attempts ]; do
-        local response=$(curl -s -o /dev/null -w "%{http_code}" http://localhost || echo "000")
+        local response=$(curl -s -o /dev/null -w "%{http_code}" "$health_url" || echo "000")
 
-        if [ "$response" = "200" ] || [ "$response" = "304" ]; then
+        if [ "$response" = "200" ]; then
             log_info "Health check passed (HTTP $response)"
-            return 0
+
+            # Also check if main site is accessible
+            local site_response=$(curl -s -o /dev/null -w "%{http_code}" "http://localhost:82/" || echo "000")
+            if [ "$site_response" = "200" ] || [ "$site_response" = "304" ]; then
+                log_info "Site is accessible (HTTP $site_response)"
+                return 0
+            fi
         fi
 
         log_warn "Health check attempt $attempt failed (HTTP $response)"
@@ -243,11 +277,20 @@ rollback() {
     fi
 
     log_info "Rolling back to: $latest_backup"
-    sudo tar -xzf "$latest_backup" -C "$APP_DIR/"
 
-    reload_services
+    # Clear current deployment
+    if [ -d "$DEPLOY_DIR" ]; then
+        find "$DEPLOY_DIR" -mindepth 1 -delete 2>/dev/null || true
+    fi
 
-    log_info "Rollback completed"
+    # Restore backup to deployment directory
+    sudo tar -xzf "$latest_backup" -C "$(dirname "$DEPLOY_DIR")"
+
+    # Fix permissions
+    find "$DEPLOY_DIR" -type f -exec chmod 644 {} \;
+    find "$DEPLOY_DIR" -type d -exec chmod 755 {} \;
+
+    log_info "Rollback completed - Caddy will automatically serve restored files"
 }
 
 # Deploy new version
@@ -280,9 +323,9 @@ deploy() {
         return 1
     fi
 
-    # Reload services
-    if ! reload_services; then
-        log_error "Service reload failed, rolling back..."
+    # Deploy files to production
+    if ! deploy_files; then
+        log_error "File deployment failed, rolling back..."
         rollback
         release_lock
         return 1
