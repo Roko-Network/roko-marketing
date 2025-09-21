@@ -242,15 +242,14 @@ docker-compose -f docker-compose.caddy.yml logs
 
 - **[Quick Start Guide](scripts/QUICK-START.md)** - 5-minute setup for new installations
 - **[Auto-Deploy Setup](scripts/SETUP-AUTO-DEPLOY.md)** - Detailed setup documentation
-- **[CI Workflow](.github/workflows/ci.yml)** - GitHub Actions for testing PRs
 
 ## Migration from Old System
 
 If you're migrating from the old GitHub Actions deployment:
 
 1. Remove old GitHub Secrets (no longer needed)
-2. Run the setup script: `sudo ./scripts/setup-deployment.sh`
-3. Start the service: `sudo systemctl start roko-deploy-watcher`
-4. Old workflows will continue to run CI tests but won't deploy
+2. Delete `.github/workflows/` directory (not using GitHub Actions)
+3. Run the setup script: `sudo ./scripts/setup-deployment.sh`
+4. Start the service: `sudo systemctl start roko-deploy-watcher`
 
 The new system is simpler, more secure, and requires no GitHub configuration!
