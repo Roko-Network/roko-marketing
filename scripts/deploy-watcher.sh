@@ -97,13 +97,26 @@ init_environment() {
     # Create necessary directories
     mkdir -p "$APP_DIR"
     mkdir -p "$DEPLOY_DIR"
-    sudo mkdir -p "$(dirname "$STATE_FILE")"
-    mkdir -p "$(dirname "$LOG_FILE")"
-    sudo mkdir -p /var/backups/roko-marketing
-    mkdir -p "$APP_DIR/caddy_data" "$APP_DIR/caddy_config" "$APP_DIR/logs"
 
-    # Set permissions
-    sudo chown -R $USER:$USER "$(dirname "$STATE_FILE")"
+    # Create state directory with sudo only if needed
+    if [ ! -w "$(dirname "$STATE_FILE")" ]; then
+        sudo mkdir -p "$(dirname "$STATE_FILE")"
+        sudo chown -R $USER:$USER "$(dirname "$STATE_FILE")"
+    else
+        mkdir -p "$(dirname "$STATE_FILE")"
+    fi
+
+    mkdir -p "$(dirname "$LOG_FILE")"
+
+    # Create backup directory with sudo only if needed
+    if [ ! -w "/var/backups" ]; then
+        sudo mkdir -p /var/backups/roko-marketing
+        sudo chown -R $USER:$USER /var/backups/roko-marketing
+    else
+        mkdir -p /var/backups/roko-marketing
+    fi
+
+    mkdir -p "$APP_DIR/caddy_data" "$APP_DIR/caddy_config" "$APP_DIR/logs"
     touch "$LOG_FILE"
 
     # Initialize state files if they don't exist
@@ -204,10 +217,17 @@ create_backup() {
         local backup_path="/var/backups/roko-marketing/$backup_name"
 
         log_info "Creating backup: $backup_name"
-        sudo tar -czf "$backup_path" -C "$(dirname "$DEPLOY_DIR")" "$(basename "$DEPLOY_DIR")"
 
-        # Keep only last 5 backups
-        ls -t /var/backups/roko-marketing/backup-*.tar.gz 2>/dev/null | tail -n +6 | xargs -r sudo rm
+        # Check if we need sudo for backup operations
+        if [ -w "/var/backups/roko-marketing" ]; then
+            tar -czf "$backup_path" -C "$(dirname "$DEPLOY_DIR")" "$(basename "$DEPLOY_DIR")"
+            # Keep only last 5 backups
+            ls -t /var/backups/roko-marketing/backup-*.tar.gz 2>/dev/null | tail -n +6 | xargs -r rm
+        else
+            sudo tar -czf "$backup_path" -C "$(dirname "$DEPLOY_DIR")" "$(basename "$DEPLOY_DIR")"
+            # Keep only last 5 backups
+            ls -t /var/backups/roko-marketing/backup-*.tar.gz 2>/dev/null | tail -n +6 | xargs -r sudo rm
+        fi
 
         log_info "Backup created successfully"
     else
@@ -304,7 +324,11 @@ rollback() {
     fi
 
     # Restore backup to deployment directory
-    sudo tar -xzf "$latest_backup" -C "$(dirname "$DEPLOY_DIR")"
+    if [ -w "$(dirname "$DEPLOY_DIR")" ]; then
+        tar -xzf "$latest_backup" -C "$(dirname "$DEPLOY_DIR")"
+    else
+        sudo tar -xzf "$latest_backup" -C "$(dirname "$DEPLOY_DIR")"
+    fi
 
     # Fix permissions
     find "$DEPLOY_DIR" -type f -exec chmod 644 {} \;

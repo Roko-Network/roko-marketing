@@ -127,15 +127,26 @@ $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart $SERVICE_NAME
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl reload $SERVICE_NAME
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl status $SERVICE_NAME
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl daemon-reload
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl is-active $SERVICE_NAME
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/journalctl -u $SERVICE_NAME *
 
 # File operations for deployment
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/tee /var/lib/roko-marketing/deploy-config
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/tee /var/lib/roko-marketing/last-deployed-sha
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/systemd/system/${SERVICE_NAME}.service.d/branch.conf
+
+# Directory operations
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/mkdir -p /var/lib/roko-marketing
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/mkdir -p /var/backups/roko-marketing
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/mkdir -p /etc/systemd/system/${SERVICE_NAME}.service.d
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/chown -R $DEPLOY_USER\:$DEPLOY_GROUP /var/lib/roko-marketing
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/chown -R $DEPLOY_USER\:$DEPLOY_GROUP /var/backups/roko-marketing
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/rm -f /var/backups/roko-marketing/*
 
 # Backup operations
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/tar -czf /var/backups/roko-marketing/* *
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/tar -xzf /var/backups/roko-marketing/* *
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/tar *
 EOF
 
     # Validate sudoers file
