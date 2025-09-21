@@ -7,3 +7,17 @@ roko-info-site/
 awesome-claude-code-subagents/
 node_modules/
 dist/
+
+# Deployment artifacts
+deploy.log
+production-deploy/deploy.log
+*.lock
+/var/lib/roko-marketing/deploy.lock
+
+# Logs
+logs/
+*.log
+
+# Caddy data (Docker volumes)
+caddy_data/
+caddy_config/
