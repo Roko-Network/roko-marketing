@@ -98,22 +98,34 @@ init_environment() {
     mkdir -p "$APP_DIR"
     mkdir -p "$DEPLOY_DIR"
 
-    # Create state directory with sudo only if needed
-    if [ ! -w "$(dirname "$STATE_FILE")" ]; then
-        sudo mkdir -p "$(dirname "$STATE_FILE")"
-        sudo chown -R $USER:$USER "$(dirname "$STATE_FILE")"
+    # Create state directory - skip if running as systemd service
+    if [ -z "$SYSTEMD_EXEC_PID" ]; then
+        # Not running as systemd service, check permissions
+        if [ ! -w "$(dirname "$STATE_FILE")" ]; then
+            sudo mkdir -p "$(dirname "$STATE_FILE")"
+            sudo chown -R $USER:$USER "$(dirname "$STATE_FILE")"
+        else
+            mkdir -p "$(dirname "$STATE_FILE")"
+        fi
     else
-        mkdir -p "$(dirname "$STATE_FILE")"
+        # Running as systemd service, directories should already exist
+        mkdir -p "$(dirname "$STATE_FILE")" 2>/dev/null || true
     fi
 
     mkdir -p "$(dirname "$LOG_FILE")"
 
-    # Create backup directory with sudo only if needed
-    if [ ! -w "/var/backups" ]; then
-        sudo mkdir -p /var/backups/roko-marketing
-        sudo chown -R $USER:$USER /var/backups/roko-marketing
+    # Create backup directory - skip if running as systemd service
+    if [ -z "$SYSTEMD_EXEC_PID" ]; then
+        # Not running as systemd service, check permissions
+        if [ ! -w "/var/backups" ]; then
+            sudo mkdir -p /var/backups/roko-marketing
+            sudo chown -R $USER:$USER /var/backups/roko-marketing
+        else
+            mkdir -p /var/backups/roko-marketing
+        fi
     else
-        mkdir -p /var/backups/roko-marketing
+        # Running as systemd service, directory should already exist
+        mkdir -p /var/backups/roko-marketing 2>/dev/null || true
     fi
 
     mkdir -p "$APP_DIR/caddy_data" "$APP_DIR/caddy_config" "$APP_DIR/logs"
@@ -219,11 +231,13 @@ create_backup() {
         log_info "Creating backup: $backup_name"
 
         # Check if we need sudo for backup operations
-        if [ -w "/var/backups/roko-marketing" ]; then
+        if [ -n "$SYSTEMD_EXEC_PID" ] || [ -w "/var/backups/roko-marketing" ]; then
+            # Running as systemd service or have write permissions
             tar -czf "$backup_path" -C "$(dirname "$DEPLOY_DIR")" "$(basename "$DEPLOY_DIR")"
             # Keep only last 5 backups
             ls -t /var/backups/roko-marketing/backup-*.tar.gz 2>/dev/null | tail -n +6 | xargs -r rm
         else
+            # Not systemd and no write permissions, use sudo
             sudo tar -czf "$backup_path" -C "$(dirname "$DEPLOY_DIR")" "$(basename "$DEPLOY_DIR")"
             # Keep only last 5 backups
             ls -t /var/backups/roko-marketing/backup-*.tar.gz 2>/dev/null | tail -n +6 | xargs -r sudo rm
@@ -324,9 +338,11 @@ rollback() {
     fi
 
     # Restore backup to deployment directory
-    if [ -w "$(dirname "$DEPLOY_DIR")" ]; then
+    if [ -n "$SYSTEMD_EXEC_PID" ] || [ -w "$(dirname "$DEPLOY_DIR")" ]; then
+        # Running as systemd service or have write permissions
         tar -xzf "$latest_backup" -C "$(dirname "$DEPLOY_DIR")"
     else
+        # Not systemd and no write permissions, use sudo
         sudo tar -xzf "$latest_backup" -C "$(dirname "$DEPLOY_DIR")"
     fi
 
