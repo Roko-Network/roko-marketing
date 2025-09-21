@@ -60,11 +60,9 @@ create_directories() {
     chown -R "$DEPLOY_USER:$DEPLOY_GROUP" "/etc/systemd/system/${SERVICE_NAME}.service.d"
     chmod 755 "/etc/systemd/system/${SERVICE_NAME}.service.d"
 
-    # Lock file directory
-    log_info "Creating /var/run directory permissions..."
-    touch /var/run/roko-deploy.lock
-    chown "$DEPLOY_USER:$DEPLOY_GROUP" /var/run/roko-deploy.lock
-    chmod 644 /var/run/roko-deploy.lock
+    # Lock file will be in /var/lib/roko-marketing (already created above)
+    # No need for /var/run permissions anymore
+    log_info "Lock file will be created in /var/lib/roko-marketing/"
 
     # Application directories (if not exist)
     log_info "Ensuring application directories exist..."

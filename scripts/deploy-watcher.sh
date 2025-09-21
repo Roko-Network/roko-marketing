@@ -20,7 +20,7 @@ CHECK_INTERVAL="${CHECK_INTERVAL:-600}"  # 10 minutes default
 LOG_FILE="${LOG_FILE:-/home/roctinam/roko-marketing/deploy.log}"
 STATE_FILE="/var/lib/roko-marketing/last-deployed-sha"
 STATE_BRANCH_FILE="/var/lib/roko-marketing/last-deployed-branch"
-LOCK_FILE="/var/run/roko-deploy.lock"
+LOCK_FILE="/var/lib/roko-marketing/deploy.lock"  # User-accessible location
 BUILD_MEMORY="4096"
 
 # Colors for output (when running interactively)
