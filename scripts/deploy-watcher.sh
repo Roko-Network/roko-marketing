@@ -62,6 +62,15 @@ acquire_lock() {
     local timeout=300  # 5 minutes
     local elapsed=0
 
+    # Check if lock file exists and if the process is still running
+    if [ -f "$LOCK_FILE" ]; then
+        local lock_pid=$(cat "$LOCK_FILE" 2>/dev/null)
+        if [ -n "$lock_pid" ] && ! kill -0 "$lock_pid" 2>/dev/null; then
+            log_warn "Removing stale lock file from PID $lock_pid"
+            rm -f "$LOCK_FILE"
+        fi
+    fi
+
     while [ -f "$LOCK_FILE" ] && [ $elapsed -lt $timeout ]; do
         log_warn "Waiting for existing deployment to complete..."
         sleep 10
@@ -70,6 +79,7 @@ acquire_lock() {
 
     if [ -f "$LOCK_FILE" ]; then
         log_error "Could not acquire lock after ${timeout} seconds"
+        log_error "If no deployment is running, remove lock with: rm $LOCK_FILE"
         return 1
     fi
 
@@ -434,6 +444,18 @@ force_deploy() {
 
 # Main script logic
 main() {
+    # Handle unlock before environment init (doesn't need full setup)
+    if [ "${1:-}" = "unlock" ]; then
+        if [ -f "$LOCK_FILE" ]; then
+            echo "Removing lock file: $LOCK_FILE"
+            rm -f "$LOCK_FILE"
+            echo "Lock file removed"
+        else
+            echo "No lock file found"
+        fi
+        exit 0
+    fi
+
     init_environment
 
     case "${1:-watch}" in
@@ -451,19 +473,30 @@ main() {
             local remote=$(get_remote_sha)
             echo "Deployed SHA: ${deployed:0:8}"
             echo "Remote SHA: ${remote:0:8}"
+            echo "Branch: $BRANCH"
             if [ "$deployed" = "$remote" ]; then
                 echo "Status: Up to date"
             else
                 echo "Status: Update available"
             fi
+            if [ -f "$LOCK_FILE" ]; then
+                local lock_pid=$(cat "$LOCK_FILE" 2>/dev/null)
+                echo "Lock: Active (PID: $lock_pid)"
+            else
+                echo "Lock: None"
+            fi
+            ;;
+        unlock)
+            # Handled above
             ;;
         *)
-            echo "Usage: $0 {watch|check|force|status}"
+            echo "Usage: $0 {watch|check|force|status|unlock}"
             echo ""
             echo "  watch  - Continuously watch for updates (default)"
             echo "  check  - Check once and deploy if needed"
             echo "  force  - Force deployment even if up to date"
             echo "  status - Show deployment status"
+            echo "  unlock - Remove stale lock file"
             exit 1
             ;;
     esac
