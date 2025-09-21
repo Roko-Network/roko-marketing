@@ -35,14 +35,18 @@ show_status() {
         current_branch=$(systemctl show -p Environment roko-deploy-watcher 2>/dev/null | grep DEPLOY_BRANCH | cut -d= -f3 || echo "master")
     fi
 
-    echo "Deployment Branch: ${GREEN}$current_branch${NC}"
+    echo -e "Deployment Branch: ${GREEN}$current_branch${NC}"
     echo "Configuration File: $CONFIG_FILE"
 
-    # Check service status
-    if systemctl is-active --quiet "$SERVICE_NAME" 2>/dev/null; then
-        echo "Service Status: ${GREEN}Active${NC}"
+    # Check service status - first check if service exists
+    if systemctl list-unit-files 2>/dev/null | grep -q "$SERVICE_NAME.service"; then
+        if systemctl is-active --quiet "$SERVICE_NAME" 2>/dev/null; then
+            echo -e "Service Status: ${GREEN}Active${NC}"
+        else
+            echo -e "Service Status: ${YELLOW}Inactive (stopped)${NC}"
+        fi
     else
-        echo "Service Status: ${YELLOW}Not running or not installed${NC}"
+        echo -e "Service Status: ${RED}Not installed${NC}"
     fi
 
     # Show last deployment
@@ -63,7 +67,7 @@ list_branches() {
         sed 's|refs/heads/||' | \
         while read branch; do
             if [ "$branch" = "${current_branch:-master}" ]; then
-                echo "  ${GREEN}→ $branch (current)${NC}"
+                echo -e "  ${GREEN}→ $branch (current)${NC}"
             else
                 echo "    $branch"
             fi
