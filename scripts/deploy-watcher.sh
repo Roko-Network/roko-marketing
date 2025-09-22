@@ -215,7 +215,13 @@ build_application() {
     fi
 
     log_info "Installing dependencies..."
-    npm ci --prefer-offline
+    # Skip husky install in CI/production environment
+    export HUSKY=0
+    export CI=true
+    npm ci --prefer-offline --ignore-scripts
+
+    # Run essential postinstall scripts manually if needed
+    # (skip husky but run other necessary scripts)
 
     # Verify vite is available after installing dependencies
     if ! npx vite --version &> /dev/null; then
