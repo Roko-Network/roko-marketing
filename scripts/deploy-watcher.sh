@@ -23,6 +23,17 @@ STATE_BRANCH_FILE="/var/lib/roko-marketing/last-deployed-branch"
 LOCK_FILE="/var/lib/roko-marketing/deploy.lock"  # User-accessible location
 BUILD_MEMORY="4096"
 
+# Load NVM if available (for Node.js/npm access in systemd context)
+export NVM_DIR="/home/roctinam/.nvm"
+if [ -s "$NVM_DIR/nvm.sh" ]; then
+    source "$NVM_DIR/nvm.sh"
+    # Use default Node version or specific version if needed
+    nvm use default >/dev/null 2>&1 || true
+fi
+
+# Ensure npm/npx are in PATH (fallback if NVM not available)
+export PATH="/home/roctinam/.nvm/versions/node/v22.19.0/bin:$PATH"
+
 # Colors for output (when running interactively)
 if [ -t 1 ]; then
     RED='\033[0;31m'
@@ -197,8 +208,23 @@ update_repository() {
 build_application() {
     cd "$APP_DIR"
 
+    # Verify Node.js and npm are accessible
+    if ! command -v npm &> /dev/null; then
+        log_error "npm not found in PATH. Check NVM configuration."
+        return 1
+    fi
+
     log_info "Installing dependencies..."
     npm ci --prefer-offline
+
+    # Verify vite is available after installing dependencies
+    if ! npx vite --version &> /dev/null; then
+        log_warn "Vite not found via npx, checking if it's installed..."
+        if [ ! -f "node_modules/.bin/vite" ]; then
+            log_error "Vite not installed. Running npm ci again..."
+            npm ci
+        fi
+    fi
 
     log_info "Building application..."
     export NODE_OPTIONS="--max-old-space-size=$BUILD_MEMORY"
