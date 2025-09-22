@@ -54,9 +54,7 @@ const Tokenomics: React.FC = memo(() => {
           animate={inView ? 'visible' : 'hidden'}
         >
           <h2 className={styles.title}>
-            <span className={styles.gradientText}>Tokenomics</span>
-            <br />
-            at a glance
+            <span className={styles.gradientText}>Tokenomics at a glance</span>
           </h2>
           <p className={styles.subtitle}>
             Real-time statistics and key metrics for the ROKO token ecosystem.

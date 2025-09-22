@@ -20,7 +20,7 @@
   <meta property="og:title" content="ROKO Network - The Temporal Layer for Web3" />
   <meta property="og:description"
     content="Build time-sensitive blockchain applications with nanosecond precision. IEEE 1588 PTP-grade synchronization for Web3." />
-  <meta property="og:image" content="https://roko.network/images/og-image.png" />
+  <meta property="og:image" content="/og.png" />
   <meta property="og:site_name" content="ROKO Network" />
   <meta property="og:locale" content="en_US" />
 
@@ -30,7 +30,7 @@
   <meta property="twitter:title" content="ROKO Network - The Temporal Layer for Web3" />
   <meta property="twitter:description"
     content="Build time-sensitive blockchain applications with nanosecond precision. IEEE 1588 PTP-grade synchronization for Web3." />
-  <meta property="twitter:image" content="https://roko.network/images/twitter-image.png" />
+  <meta property="twitter:image" content="/og.png" />
   <meta property="twitter:creator" content="@roko_network" />
   <meta property="twitter:site" content="@roko_network" />
 
@@ -48,7 +48,7 @@
 
   <!-- Favicons -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png" />
@@ -97,9 +97,14 @@
 
     .loading-logo {
       background-image: url(favicon-roko.png);
-      width: 108px;
-      height: 102px;
-      animation: pulse 2s ease-in-out infinite;
+      width: 80px;
+      height: 80px;
+      padding: 0px;
+      top: calc(50vh - 55px);
+      left: calc(50vw - 55px);
+      position: absolute;
+      box-sizing: border-box;
+      z-index: 20;
     }
 
     .loading-text {
@@ -108,6 +113,7 @@
       font-size: 24px;
       font-weight: 600;
       color: #1A202C;
+
       margin-bottom: 16px;
     }
 
@@ -123,11 +129,17 @@
     .loading-spinner {
       width: 100px;
       height: 100px;
-      border: 3px solid rgba(160, 174, 192, 0.3);
-      border-top: 3px solid #000000;
+      top: calc(50vh - 50px);
+      left: calc(50vw - 50px);
+      border: 5px solid rgba(160, 174, 192, 0.3);
+      border-top: 5px solid #000000aa;
+      border-bottom: 5px solid #000000aa;
       border-radius: 50%;
+      position: absolute;
       animation: spin 1s linear infinite;
-      margin-top: -100px;
+      box-sizing: border-box;
+      filter: blur(0px);
+      z-index: 10;
     }
 
     @keyframes spin {

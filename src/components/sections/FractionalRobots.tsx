@@ -75,9 +75,9 @@ const EggModel: FC<EggModelProps> = ({ hovered }) => {
         const m = o.material as THREE.MeshStandardMaterial;
         if (m) {
           if (!m.emissive) m.emissive = new THREE.Color('#fff3d1');
-          m.emissiveIntensity = 0.35;
-          m.metalness = m.metalness ?? 0.2;
-          m.roughness = m.roughness ?? 0.45;
+          m.emissiveIntensity = 0.005;
+          m.metalness = m.metalness ?? 0.002;
+          m.roughness = m.roughness ?? 0.95;
         }
       }
     });
@@ -220,9 +220,9 @@ export const FractionalRobots: FC = () => {
                       gl={{ antialias: true, alpha: true }}
                       style={{ width: '100%', height: '100%' }}
                     >
-                      <ambientLight intensity={3} />
-                      <spotLight position={[5, 5, 4]} intensity={22} />
-                      <spotLight position={[-3, -5, -5]} intensity={10} />
+                      <ambientLight intensity={2} />
+                      <spotLight position={[-15, 5, -4]} intensity={10} />
+                      <spotLight position={[-3, -5, -15]} intensity={10} />
                       <spotLight position={[3, -2, -5]} intensity={10} />
                       <Suspense fallback={null}>
                         <EggModel hovered={isEggHovered} />
@@ -230,7 +230,7 @@ export const FractionalRobots: FC = () => {
                           enablePan={false}
                           enableZoom={false}
                           autoRotate
-                          autoRotateSpeed={isEggHovered ? 1.0 : 0.35}
+                          autoRotateSpeed={isEggHovered ? 0.15 : 0.15}
                         />
                       </Suspense>
                     </Canvas>

@@ -21,6 +21,42 @@ import { detectWebGLCapabilities } from '../../utils/performance';
 const CONFIG = {
   counts: { min: 2400, max: 6000, densityDiv: 2000 },
 
+  // global timing (drives all dramatic beats)
+  timing: {
+    bpm: 92,          // master tempo
+    swing: 0.1,       // 0..0.25 (push/pull off-beats)
+    barBeats: 4,      // 4/4 feel
+    pulseDecay: 1.6   // how fast flash decays (per second)
+  },
+
+  // beat-visuals
+  pulses: {
+    enabled: true,
+    max: 12,
+    segments: 128,
+    lifeSec: 1.25,
+    expand: 10.0,     // how far rings bloom from DAO radius
+    brightness: 1.2   // extra glow
+  },
+
+  metronome: {
+    enabled: true,
+    arcDeg: 70,       // sweep arc length
+    segments: 80,
+    thickness: 1.0,   // just visual weight (line brightness)
+    brightness: 1.1
+  },
+
+  // dummy "services" around the DAO ring
+  services: {
+    enabled: true,
+    count: 12,
+    jitter: 0.25,       // randomness in placement
+    pingChance: 0.9,    // per-beat chance any given service pings
+    pingLife: 0.9,      // seconds
+    radialTickLen: 3.0  // length of the little radial “tick” lines
+  },
+
   // shapes
   torus: { R: 33, r: 6.6, swirl: 3.3, mousePull: 0.33, pinch: 0.66, pinchGain: 0.33 },
   tunnel: { xSpan: 36, widenBase: 9, widenGain: 23.5, widenPow: 1.58, radiusScale: 0.50 },
@@ -31,7 +67,7 @@ const CONFIG = {
       max: 110,
       spawnPerFrame: 12,
       fadeSec: 0.2,
-      // colors will be overridden to gray per-vertex; keep as placeholders
+      // colors are grayscale via vertex color * material color
       color: 0x000000,
       opacity: 0.36,
       segments: 33,
@@ -41,7 +77,7 @@ const CONFIG = {
       minRestLen: 3.0,     // clamp rest so short links don’t instantly snap
       maxRestLen: 22.0,    // clamp very long ones
       springiness: 2.25,   // controls bulge of curve under tension
-      snapRecoil: 0.8      // brief brighter flash at snap moment
+      snapRecoil: 1.25     // brighter flash at snap moment (amped a bit)
     }
   },
 
@@ -142,9 +178,9 @@ const SceneLighting: React.FC<{ performanceLevel: 'high' | 'medium' | 'low' }> =
 };
 
 /* =============================================================================
-   Circle Points Shader (smoky grayscale discs)
+   Circle Points Shader (smoky grayscale discs) — now beat/time reactive
 ============================================================================= */
-const circlePointsMaterial = () => {
+const circlePointsMaterial = (baseAlpha = 0.65) => {
   const vertex = `
     attribute float aSize;
     varying float vDepth;
@@ -152,22 +188,33 @@ const circlePointsMaterial = () => {
       vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
       vDepth = -mvPosition.z;
       float size = aSize;
-      gl_PointSize = size * (100.0 / vDepth);
+      gl_PointSize = size * (100.0 / max(vDepth, 0.001));
       gl_Position = projectionMatrix * mvPosition;
     }
   `;
   const fragment = `
     precision mediump float;
     varying float vDepth;
+    uniform float uTime;
+    uniform float uBeatPulse;  // 0..1 fast decay after each beat
+    uniform float uBaseAlpha;
+
     void main() {
       vec2 c = gl_PointCoord - vec2(0.5);
       float r = length(c);
       float edge = smoothstep(0.5, 0.42, r);     // soft circular edge
       float core = smoothstep(0.28, 0.0, r);     // subtle brighter core
       float depthFog = clamp(1.0 - vDepth * 0.06, 0.2, 1.0);
-      float alpha = edge * 0.65 * depthFog;
+
+      // low-frequency shimmer + beat flash (grayscale only)
+      float shimmer = 0.04 * sin(uTime * 2.2 + r * 9.0);
+      float beat = 1.0 + uBeatPulse * 0.8;
+
+      float alpha = edge * uBaseAlpha * depthFog * beat;
       if (alpha <= 0.001) discard;
-      vec3 smoke = mix(vec3(0.15), vec3(0.85), core * 0.75); // smoky grayscale
+
+      float coreLift = core * (0.75 + 0.25 * uBeatPulse) + shimmer;
+      vec3 smoke = mix(vec3(0.15), vec3(0.9), clamp(coreLift, 0.0, 1.0));
       gl_FragColor = vec4(smoke, alpha);
     }
   `;
@@ -176,12 +223,70 @@ const circlePointsMaterial = () => {
     fragmentShader: fragment,
     transparent: true,
     depthWrite: false,
-    blending: THREE.AdditiveBlending
+    blending: THREE.AdditiveBlending,
+    uniforms: {
+      uTime: { value: 0 },
+      uBeatPulse: { value: 0 },
+      uBaseAlpha: { value: baseAlpha }
+    }
   });
 };
 
 /* =============================================================================
+   Helpers
+============================================================================= */
+const TAU = Math.PI * 2;
+function clamp01(x: number) { return Math.max(0, Math.min(1, x)); }
+
+/* write a full circle polyline */
+function writeCircle(
+  out: Float32Array,
+  col: Float32Array | undefined,
+  base: number,
+  segments: number,
+  radius: number,
+  z: number,
+  brightness: number
+) {
+  const step = TAU / (segments - 1);
+  const g = clamp01(brightness);
+  for (let s = 0; s < segments; s++) {
+    const a = s * step;
+    const i3 = base + s * 3;
+    out[i3] = Math.cos(a) * radius;
+    out[i3 + 1] = Math.sin(a) * radius;
+    out[i3 + 2] = z;
+    if (col) { col[i3] = g; col[i3 + 1] = g; col[i3 + 2] = g; }
+  }
+}
+
+/* write an arc polyline [startAngle, startAngle+arc] */
+function writeArc(
+  out: Float32Array,
+  col: Float32Array | undefined,
+  base: number,
+  segments: number,
+  radius: number,
+  startAngle: number,
+  arc: number,
+  z: number,
+  brightness: number
+) {
+  const g = clamp01(brightness);
+  for (let s = 0; s < segments; s++) {
+    const t = s / (segments - 1);
+    const a = startAngle + arc * t;
+    const i3 = base + s * 3;
+    out[i3] = Math.cos(a) * radius;
+    out[i3 + 1] = Math.sin(a) * radius;
+    out[i3 + 2] = z;
+    if (col) { col[i3] = g; col[i3 + 1] = g; col[i3 + 2] = g; }
+  }
+}
+
+/* =============================================================================
    Particles System with Curved Gray Links + Organic Snap Chords
+   + Beat-Synced Pulse Rings, Metronome Arc, and Service Pings
 ============================================================================= */
 const ParticlesSystem: React.FC<{
   performanceLevel: 'high' | 'medium' | 'low';
@@ -216,7 +321,7 @@ const ParticlesSystem: React.FC<{
   // Points
   const pointsGeomRef = useRef<THREE.BufferGeometry>(null);
   const pointsMatRef = useRef<THREE.ShaderMaterial>();
-  if (!pointsMatRef.current) pointsMatRef.current = circlePointsMaterial();
+  if (!pointsMatRef.current) pointsMatRef.current = circlePointsMaterial(0.65);
 
   // ---- Curved SPARKS (slider) ----
   const sparks = CONFIG.sparks;
@@ -306,7 +411,7 @@ const ParticlesSystem: React.FC<{
       pos[i * 3 + 1] = gauss() * sigma * 0.95;
       pos[i * 3 + 2] = gauss() * sigma * 0.95;
       phase[i] = Math.random() * Math.PI * 2;
-      sizeAttr[i] = 0.1 + Math.random() * 0.7; // (px) noticeably smoky but subtle
+      sizeAttr[i] = 0.1 + Math.random() * 0.7; // (px) smoky but subtle
     }
   }, [count, pos, phase, sizeAttr]);
 
@@ -433,7 +538,7 @@ const ParticlesSystem: React.FC<{
     return near;
   };
 
-  // helper: write quadratic bezier polyline to buffers with grayscale color
+  // helper: write quadratic bezier polyline to buffers with grayscale color (brightness applied)
   const writeBezier = (
     out: Float32Array,
     base: number,
@@ -445,8 +550,7 @@ const ParticlesSystem: React.FC<{
     colOut?: Float32Array,
     brightness = 1
   ) => {
-    const rgb = new THREE.Color(0, 0, 0);
-    const r = rgb.r * brightness, g = rgb.g * brightness, bl = rgb.b * brightness;
+    const g = clamp01(gray * brightness);
     for (let s = 0; s < segments; s++) {
       const t = s / (segments - 1), mt = 1 - t;
       const x = mt * mt * a.x + 2 * mt * t * control.x + t * t * b.x;
@@ -454,7 +558,7 @@ const ParticlesSystem: React.FC<{
       const z = mt * mt * a.z + 2 * mt * t * control.z + t * t * b.z;
       const i3 = base + s * 3;
       out[i3] = x; out[i3 + 1] = y; out[i3 + 2] = z;
-      if (colOut) { colOut[i3] = r; colOut[i3 + 1] = g; colOut[i3 + 2] = bl; }
+      if (colOut) { colOut[i3] = g; colOut[i3 + 1] = g; colOut[i3 + 2] = g; }
     }
   };
 
@@ -483,7 +587,7 @@ const ParticlesSystem: React.FC<{
         const normal = new THREE.Vector3(-dir.y, dir.x, dir.z).normalize().multiplyScalar(0.7 + Math.random() * 0.6);
         const control = mid.add(normal);
         const base = k * sparkStride;
-        writeBezier(sparkPos, base, sparkSegments, a, b, control, 0.65, sparkCol);
+        writeBezier(sparkPos, base, sparkSegments, a, b, control, 0.85, sparkCol, 1.0);
         sparkGeomRef.current?.setDrawRange(0, (countActiveSparks()) * sparkSegments);
         if (Math.random() < 0.6) spawnSparkFrom(best, depth + 1, maxDepth);
       }
@@ -512,7 +616,7 @@ const ParticlesSystem: React.FC<{
     const dir = b.clone().sub(a).normalize();
     const control = mid.add(new THREE.Vector3(-dir.y, dir.x, dir.z).normalize().multiplyScalar(1.0));
     const base = k * chordStride;
-    writeBezier(chordPos, base, chordSegments, a, b, control, 0.70, chordCol);
+    writeBezier(chordPos, base, chordSegments, a, b, control, 0.9, chordCol, 0.9);
     chordGeomRef.current?.setDrawRange(0, (countActiveChords()) * chordSegments);
   };
   const countActiveChords = () => { let c = 0; for (let s = 0; s < MAX_CHORDS; s++) if (chordLife[s] > 0) c++; return c; };
@@ -531,15 +635,167 @@ const ParticlesSystem: React.FC<{
   // waves (interference)
   const waves = useMemo(() => CONFIG.waves.map(w => ({ k: new THREE.Vector3(...w.dir).normalize(), w: w.w })), []);
 
+  /* =========================
+     Timing / Beat structures
+  ==========================*/
+  const lastBeatIdx = useRef(0);
+  const beatPulse = useRef(0); // 0..1 decays
+  const beatFracRef = useRef(0);
+
+  const bpm = CONFIG.timing.bpm;
+  const barBeats = CONFIG.timing.barBeats;
+
+  function updateBeat(nowSec: number, dt: number) {
+    // straight phase in beats
+    const beatsFloat = nowSec * (bpm / 60);
+    const baseIdx = Math.floor(beatsFloat);
+    let frac = beatsFloat - baseIdx;
+
+    // swing (push/pull off-beat)
+    const s = CONFIG.timing.swing;
+    if (s > 0) {
+      // warp the second half of each beat
+      if (frac > 0.5) {
+        frac = 0.5 + (frac - 0.5) * (1.0 + s);
+      } else {
+        frac = frac * (1.0 - s);
+      }
+    }
+
+    beatFracRef.current = frac;
+
+    if (baseIdx !== lastBeatIdx.current) {
+      lastBeatIdx.current = baseIdx;
+      beatPulse.current = 1.0; // trigger flash
+      onBeat(baseIdx);
+    } else {
+      beatPulse.current = Math.max(0, beatPulse.current - CONFIG.timing.pulseDecay * dt);
+    }
+  }
+
+  /* =========================
+     Beat-driven visuals
+  ==========================*/
+  // Pulse rings (pooled)
+  const PR = CONFIG.pulses;
+  const MAX_RINGS = PR.max;
+  const R_SEG = PR.segments;
+  const ringStride = R_SEG * 3;
+  const ringPos = useMemo(() => new Float32Array(MAX_RINGS * ringStride), [MAX_RINGS, ringStride]);
+  const ringCol = useMemo(() => new Float32Array(MAX_RINGS * ringStride), [MAX_RINGS, ringStride]);
+  const ringLife = useMemo(() => new Float32Array(MAX_RINGS).fill(0), [MAX_RINGS]);
+  const ringGeomRef = useRef<THREE.BufferGeometry>(null);
+  const ringMat = useMemo(
+    () => new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.26,
+      vertexColors: true,
+      blending: THREE.AdditiveBlending
+    }),
+    []
+  );
+
+  // Metronome arc
+  const M = CONFIG.metronome;
+  const M_SEG = M.segments;
+  const metroPos = useMemo(() => new Float32Array(M_SEG * 3), [M_SEG]);
+  const metroCol = useMemo(() => new Float32Array(M_SEG * 3), [M_SEG]);
+  const metroGeomRef = useRef<THREE.BufferGeometry>(null);
+  const metroMat = useMemo(
+    () => new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.22,
+      vertexColors: true,
+      blending: THREE.AdditiveBlending
+    }),
+    []
+  );
+
+  // Services (dummy) around DAO ring
+  const SVC = CONFIG.services;
+  const serviceAngles = useMemo(() => {
+    const arr: number[] = [];
+    for (let i = 0; i < SVC.count; i++) {
+      const t = i / SVC.count;
+      const jit = (Math.random() - 0.5) * SVC.jitter;
+      arr.push((t + jit) * TAU);
+    }
+    return arr.sort((a, b) => a - b);
+  }, []);
+  const serviceLife = useMemo(() => new Float32Array(SVC.count).fill(0), []);
+  const servicePos = useMemo(() => new Float32Array(SVC.count * 3), []);
+  const serviceSize = useMemo(() => new Float32Array(SVC.count), []);
+  const serviceGeomRef = useRef<THREE.BufferGeometry>(null);
+  const serviceMatRef = useRef<THREE.ShaderMaterial>();
+  if (!serviceMatRef.current) serviceMatRef.current = circlePointsMaterial(0.9);
+
+  // service radial ticks (short radial lines)
+  const tickSegments = 2; // just a segment from ring outward
+  const tickStride = tickSegments * 3;
+  const tickPos = useMemo(() => new Float32Array(SVC.count * tickStride), []);
+  const tickCol = useMemo(() => new Float32Array(SVC.count * tickStride), []);
+  const tickGeomRef = useRef<THREE.BufferGeometry>(null);
+  const tickMat = useMemo(
+    () => new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      transparent: true,
+      opacity: 0.28,
+      vertexColors: true,
+      blending: THREE.AdditiveBlending
+    }),
+    []
+  );
+
+  // set up visuals attributes once
+  useEffect(() => {
+    ringGeomRef.current?.setAttribute('position', new THREE.BufferAttribute(ringPos, 3));
+    ringGeomRef.current?.setAttribute('color', new THREE.BufferAttribute(ringCol, 3));
+
+    metroGeomRef.current?.setAttribute('position', new THREE.BufferAttribute(metroPos, 3));
+    metroGeomRef.current?.setAttribute('color', new THREE.BufferAttribute(metroCol, 3));
+
+    serviceGeomRef.current?.setAttribute('position', new THREE.BufferAttribute(servicePos, 3));
+    serviceGeomRef.current?.setAttribute('aSize', new THREE.BufferAttribute(serviceSize, 1));
+
+    tickGeomRef.current?.setAttribute('position', new THREE.BufferAttribute(tickPos, 3));
+    tickGeomRef.current?.setAttribute('color', new THREE.BufferAttribute(tickCol, 3));
+  }, [ringPos, ringCol, metroPos, metroCol, servicePos, serviceSize, tickPos, tickCol]);
+
+  // beat callback
+  const onBeat = (beatIdx: number) => {
+    // spawn a pulse ring
+    if (PR.enabled) {
+      let k = -1;
+      for (let i = 0; i < MAX_RINGS; i++) { if (ringLife[i] <= 0) { k = i; break; } }
+      if (k >= 0) ringLife[k] = PR.lifeSec;
+    }
+
+    // on-beat: oversample chord spawns briefly
+    for (let s = 0; s < (D.spawnPerFrame * 2); s++) spawnChord();
+
+    // services ping
+    if (SVC.enabled) {
+      for (let i = 0; i < SVC.count; i++) {
+        if (Math.random() < SVC.pingChance) {
+          serviceLife[i] = SVC.pingLife;
+        }
+      }
+    }
+  };
+
   // Animation
   const lastRef = useRef(performance.now());
   const frameCounter = useRef(0);
 
   useFrame(() => {
     const now = performance.now();
-    const dt = Math.min(0.05, (now - lastRef.current) / 100) || 0.016;
+    const dt = Math.min(0.05, (now - lastRef.current) / 100) || 0.016; // ~1/100s base
     lastRef.current = now;
     frameCounter.current++;
+
+    const nowSec = now * 0.001;
 
     const [wHeader, wSlider, wDao, wDocs, wBottom] = weights as Weights;
     const denom = (wHeader + wSlider + wDao + wDocs + wBottom) || 1;
@@ -553,8 +809,27 @@ const ParticlesSystem: React.FC<{
 
     if (wSlider > 0.12 && (frameCounter.current % 3) === 0) rebuildHash();
 
-    sparkMat.opacity = CONFIG.sparks.enabled ? CONFIG.sparks.opacity * wSlider : 0;
-    chordMat.opacity = CONFIG.dao.chords.opacity * (0.8 + 0.2 * Math.sin(now * 0.001)); // gentle breathing
+    // timing update
+    updateBeat(nowSec, dt);
+
+    // inject beat into materials
+    if (pointsMatRef.current) {
+      pointsMatRef.current.uniforms.uTime.value = nowSec;
+      pointsMatRef.current.uniforms.uBeatPulse.value = beatPulse.current;
+    }
+    if (serviceMatRef.current) {
+      serviceMatRef.current.uniforms.uTime.value = nowSec;
+      serviceMatRef.current.uniforms.uBeatPulse.value = beatPulse.current;
+    }
+
+    // metronome + ring opacities modulate subtly on beat
+    const baseMetroOpacity = 0.18 + 0.12 * beatPulse.current;
+    const baseRingOpacity = 0.22 + 0.18 * beatPulse.current;
+    (metroMat as any).opacity = M.enabled ? baseMetroOpacity : 0;
+    (ringMat as any).opacity = PR.enabled ? baseRingOpacity : 0;
+
+    // chords breathe (slightly) and strobe with beat
+    chordMat.opacity = CONFIG.dao.chords.opacity * (0.8 + 0.2 * Math.sin(nowSec * 1.0) + 0.3 * beatPulse.current);
 
     // integrate particles
     for (let i = 0; i < count; i++) {
@@ -584,20 +859,21 @@ const ParticlesSystem: React.FC<{
       if (kInterf > 0) {
         for (let w = 0; w < waves.length; w++) {
           const kk = waves[w].k, om = waves[w].w;
-          const th = kk.x * px + kk.y * py + kk.z * pz + om * now * 0.001;
+          const th = kk.x * px + kk.y * py + kk.z * pz + om * nowSec;
           const g = Math.cos(th);
           ax += kk.x * g * kInterf; ay += kk.y * g * kInterf; az += kk.z * g * kInterf;
         }
       }
 
-      // PHI pairing
+      // PHI pairing (lightly strobe with beat)
       const partner = ((i * (PHI - 1)) % 1) * count | 0; const j3 = partner * 3;
-      ax += (pos[j3] - px) * CONFIG.forces.phiCouple * (1 + CONFIG.forces.phiAmp * Math.sin(now * 0.0012 * PHI + phase[i]));
-      ay += (pos[j3 + 1] - py) * CONFIG.forces.phiCouple * (1 + CONFIG.forces.phiAmp * Math.cos(now * 0.0010 * PHI + phase[i]));
-      az += (pos[j3 + 2] - pz) * CONFIG.forces.phiCouple * (1 + CONFIG.forces.phiAmp * Math.sin(now * 0.0008 * PHI + phase[i]));
+      const beatGain = 1 + 0.35 * beatPulse.current;
+      ax += (pos[j3] - px) * CONFIG.forces.phiCouple * beatGain * (1 + CONFIG.forces.phiAmp * Math.sin(nowSec * 1.2 * PHI + phase[i]));
+      ay += (pos[j3 + 1] - py) * CONFIG.forces.phiCouple * beatGain * (1 + CONFIG.forces.phiAmp * Math.cos(nowSec * 1.0 * PHI + phase[i]));
+      az += (pos[j3 + 2] - pz) * CONFIG.forces.phiCouple * beatGain * (1 + CONFIG.forces.phiAmp * Math.sin(nowSec * 0.8 * PHI + phase[i]));
 
-      ax += Math.sin(phase[i] + now * 0.0014) * kWig * 0.025;
-      ay += Math.cos(phase[i] + now * 0.0016) * kWig * 0.025;
+      ax += Math.sin(phase[i] + nowSec * 1.4) * kWig * 0.025;
+      ay += Math.cos(phase[i] + nowSec * 1.6) * kWig * 0.025;
 
       vel[i3] = (vel[i3] + ax * dt) * kDamp;
       vel[i3 + 1] = (vel[i3 + 1] + ay * dt) * kDamp;
@@ -608,9 +884,10 @@ const ParticlesSystem: React.FC<{
       pos[i3 + 2] = pz + vel[i3 + 2] * dt;
     }
 
-    // CURVED SPARKS
+    // CURVED SPARKS (slightly amped on slider + beat)
     if (CONFIG.sparks.enabled && wSlider > 0.15) {
-      for (let s = 0; s < CONFIG.sparks.spawnPerFrame; s++) {
+      const extra = Math.floor(beatPulse.current * 10);
+      for (let s = 0; s < CONFIG.sparks.spawnPerFrame + extra; s++) {
         const i = (Math.random() * count) | 0; spawnSparkFrom(i, 0, CONFIG.sparks.maxDepth);
       }
     }
@@ -624,12 +901,12 @@ const ParticlesSystem: React.FC<{
         const b = new THREE.Vector3(pos[iB * 3], pos[iB * 3 + 1], pos[iB * 3 + 2]);
         const mid = a.clone().add(b).multiplyScalar(0.5);
         const dir = b.clone().sub(a).normalize();
-        const wig = Math.sin((now * 0.002) + s) * 0.6;
+        const wig = Math.sin((nowSec * 2.0) + s) * (0.4 + 0.4 * beatPulse.current);
         const normal = new THREE.Vector3(-dir.y, dir.x, dir.z).normalize().multiplyScalar(0.8 + wig);
         const control = mid.add(normal);
         const base = drawnS * sparkStride;
         const age = sparkLife[s] / CONFIG.sparks.fadeSec;
-        writeBezier(sparkPos, base, sparkSegments, a, b, control, 0.62, sparkCol, 0.8 + 0.2 * age);
+        writeBezier(sparkPos, base, sparkSegments, a, b, control, 0.9, sparkCol, 0.7 + 0.3 * age + 0.2 * beatPulse.current);
         drawnS++;
       }
     }
@@ -641,7 +918,7 @@ const ParticlesSystem: React.FC<{
       }
     }
 
-    // ORGANIC CHORDS: stretch & snap
+    // ORGANIC CHORDS: stretch & snap (snap gets bigger recoil)
     if (wDao > 0.15) { for (let s = 0; s < D.spawnPerFrame; s++) spawnChord(); }
     let drawnC = 0;
     for (let s = 0; s < MAX_CHORDS; s++) {
@@ -660,23 +937,22 @@ const ParticlesSystem: React.FC<{
         const mid = a.clone().add(b).multiplyScalar(0.5);
         const dir = b.clone().sub(a).normalize();
         const normal = new THREE.Vector3(-dir.y, dir.x, dir.z).normalize().multiplyScalar(bulge);
-        const wig = Math.cos((now * 0.0018) + s * 1.3) * 0.45 * (1 + tension); // extra wiggle when stretched
+        const wig = Math.cos((nowSec * 1.8) + s * 1.3) * 0.45 * (1 + tension);
         const control = mid.add(normal.multiplyScalar(1.0 + wig));
 
         // snap if overstretched
         if (dist > D.snapStretch * rest) {
-          // quick “recoil flash” by brightening momentarily
           const base = drawnC * chordStride;
-          writeBezier(chordPos, base, chordSegments, a, b, control, 0.85, chordCol, 1.0 + D.snapRecoil);
+          writeBezier(chordPos, base, chordSegments, a, b, control, 1.0, chordCol, 1.0 + D.snapRecoil + 0.6 * beatPulse.current);
           chordLife[s] = 0; // snap (remove next frame)
           drawnC++;
           continue;
         }
 
-        // normal draw (brightness increases slightly with tension)
+        // normal draw (brightness increases with tension + beat)
         const base = drawnC * chordStride;
-        const bright = 0.8 + 0.6 * Math.min(1, tension);
-        writeBezier(chordPos, base, chordSegments, a, b, control, 0.75, chordCol, bright);
+        const bright = 0.75 + 0.6 * Math.min(1, tension) + 0.25 * beatPulse.current;
+        writeBezier(chordPos, base, chordSegments, a, b, control, 0.85, chordCol, bright);
         drawnC++;
       }
     }
@@ -688,7 +964,7 @@ const ParticlesSystem: React.FC<{
       }
     }
 
-    // PARTICLE -> ICOSAHEDRON GRAY LINKS
+    // PARTICLE -> ICOSAHEDRON GRAY LINKS (strobe slightly)
     if (CONFIG.linkSplines.enabled) {
       let written = 0;
       for (let k = 0; k < LINK_COUNT; k++) {
@@ -699,12 +975,12 @@ const ParticlesSystem: React.FC<{
         const b = icoVertices[iV];
         const mid = a.clone().add(b).multiplyScalar(0.5);
         const dir = b.clone().sub(a).normalize();
-        const t = now * 0.0015 + linkPhase[k];
+        const t = nowSec * 1.5 + linkPhase[k];
         const amp = CONFIG.linkSplines.wiggleAmp * (0.6 + 0.4 * Math.sin(t * CONFIG.linkSplines.wiggleFreq + k));
-        const perp = new THREE.Vector3(-dir.y, dir.x, dir.z).normalize().multiplyScalar(amp);
+        const perp = new THREE.Vector3(-dir.y, dir.x, dir.z).normalize().multiplyScalar(amp * (1 + 0.5 * beatPulse.current));
         const control = mid.add(perp);
         const base = written * linkStride;
-        writeBezier(linkPos, base, LINK_SEG, a, b, control, 0.7, linkCol, 1.0);
+        writeBezier(linkPos, base, LINK_SEG, a, b, control, 0.9, linkCol, 1.0 + 0.2 * beatPulse.current);
         written++;
       }
       if (linkGeomRef.current) {
@@ -714,6 +990,97 @@ const ParticlesSystem: React.FC<{
           linkGeomRef.current.attributes.color.needsUpdate = true;
         }
       }
+    }
+
+    /* =========================
+       Beat-driven adornments
+    ==========================*/
+    // Pulse rings
+    let activeRings = 0;
+    if (PR.enabled && wDao > 0.05) {
+      for (let i = 0; i < MAX_RINGS; i++) {
+        const life = ringLife[i];
+        if (life > 0) {
+          ringLife[i] = Math.max(0, life - dt);
+          const t = 1 - ringLife[i] / PR.lifeSec; // 0..1
+          const radius = CONFIG.dao.radius + t * PR.expand;
+          const bright = PR.brightness * (1 - t) * (0.6 + 0.4 * beatPulse.current);
+          const base = activeRings * ringStride;
+          writeCircle(ringPos, ringCol, base, R_SEG, radius, 0, bright);
+          activeRings++;
+        }
+      }
+      if (ringGeomRef.current) {
+        ringGeomRef.current.setDrawRange(0, activeRings * R_SEG);
+        if (activeRings) {
+          ringGeomRef.current.attributes.position.needsUpdate = true;
+          ringGeomRef.current.attributes.color.needsUpdate = true;
+        }
+      }
+    } else if (ringGeomRef.current) {
+      ringGeomRef.current.setDrawRange(0, 0);
+    }
+
+    // Metronome arc (sweeps continuously)
+    if (M.enabled && wDao > 0.02) {
+      const beatAngle = beatFracRef.current * TAU; // full circle per beat
+      const arcRad = (M.arcDeg / 180) * Math.PI;
+      const start = beatAngle - arcRad * 0.5;
+      writeArc(metroPos, metroCol, 0, M_SEG, CONFIG.dao.radius, start, arcRad, 0, M.brightness * (0.8 + 0.2 * beatPulse.current));
+      if (metroGeomRef.current) {
+        (metroGeomRef.current as any).setDrawRange?.(0, M_SEG);
+        metroGeomRef.current.attributes.position.needsUpdate = true;
+        metroGeomRef.current.attributes.color.needsUpdate = true;
+      }
+    } else if (metroGeomRef.current) {
+      (metroGeomRef.current as any).setDrawRange?.(0, 0);
+    }
+
+    // Services pings: points + ticks
+    if (SVC.enabled && wDao > 0.02) {
+      for (let i = 0; i < SVC.count; i++) {
+        // decay life
+        serviceLife[i] = Math.max(0, serviceLife[i] - dt);
+        const a = serviceAngles[i];
+        const baseR = CONFIG.dao.radius;
+        const r = baseR;
+        const x = Math.cos(a) * r;
+        const y = Math.sin(a) * r;
+
+        // point position
+        const i3 = i * 3;
+        servicePos[i3] = x; servicePos[i3 + 1] = y; servicePos[i3 + 2] = 0;
+
+        // size pulses when alive
+        const lifeT = serviceLife[i] / SVC.pingLife; // 0..1
+        serviceSize[i] = 0.9 + 5.5 * lifeT * (0.6 + 0.4 * beatPulse.current);
+
+        // radial tick
+        const len = SVC.radialTickLen * (lifeT);
+        tickPos[i * tickStride + 0] = x;
+        tickPos[i * tickStride + 1] = y;
+        tickPos[i * tickStride + 2] = 0;
+
+        tickPos[i * tickStride + 3] = Math.cos(a) * (r + len);
+        tickPos[i * tickStride + 4] = Math.sin(a) * (r + len);
+        tickPos[i * tickStride + 5] = 0;
+
+        // grayscale color
+        const g = 0.8 * (0.4 + 0.6 * lifeT);
+        tickCol[i * tickStride + 0] = g; tickCol[i * tickStride + 1] = g; tickCol[i * tickStride + 2] = g;
+        tickCol[i * tickStride + 3] = g; tickCol[i * tickStride + 4] = g; tickCol[i * tickStride + 5] = g;
+      }
+      if (serviceGeomRef.current) {
+        serviceGeomRef.current.attributes.position.needsUpdate = true;
+        serviceGeomRef.current.attributes.aSize.needsUpdate = true;
+      }
+      if (tickGeomRef.current) {
+        (tickGeomRef.current as any).setDrawRange?.(0, SVC.count * tickSegments);
+        tickGeomRef.current.attributes.position.needsUpdate = true;
+        tickGeomRef.current.attributes.color.needsUpdate = true;
+      }
+    } else {
+      if (tickGeomRef.current) (tickGeomRef.current as any).setDrawRange?.(0, 0);
     }
 
     // push particle position updates
@@ -749,6 +1116,40 @@ const ParticlesSystem: React.FC<{
         <line>
           <primitive object={linkMat} attach="material" />
           <bufferGeometry ref={linkGeomRef} />
+        </line>
+      )}
+
+      {/* Beat pulse rings */}
+      {PR.enabled && (
+        // @ts-ignore
+        <line>
+          <primitive object={ringMat} attach="material" />
+          <bufferGeometry ref={ringGeomRef} />
+        </line>
+      )}
+
+      {/* Metronome sweep arc */}
+      {M.enabled && (
+        // @ts-ignore
+        <line>
+          <primitive object={metroMat} attach="material" />
+          <bufferGeometry ref={metroGeomRef} />
+        </line>
+      )}
+
+      {/* Service ping points around DAO */}
+      {SVC.enabled && (
+        <points material={serviceMatRef.current!}>
+          <bufferGeometry ref={serviceGeomRef} />
+        </points>
+      )}
+
+      {/* Service radial ticks */}
+      {SVC.enabled && (
+        // @ts-ignore
+        <line>
+          <primitive object={tickMat} attach="material" />
+          <bufferGeometry ref={tickGeomRef} />
         </line>
       )}
     </group>
@@ -793,7 +1194,7 @@ const SceneContent: React.FC<{
     <>
       <SceneLighting performanceLevel={performanceLevel} />
 
-      {/* Particles + gray links + organic chords */}
+      {/* Particles + gray links + organic chords + beat-driven adornments */}
       <ParticlesSystem
         performanceLevel={performanceLevel}
         weights={weights}

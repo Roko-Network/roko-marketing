@@ -88,15 +88,17 @@ const shouldInvert = (img: HTMLImageElement, src: string) => {
 };
 
 const partners: Partner[] = [
-  { id: 'fractional-robots', name: 'Fractional Robots', category: 'partners', description: 'Specialized solutions for distributed systems and agent coordination', logo: '/logos/fractional.png', website: 'https://fractionalrobots.com', featured: true },
-  { id: 'exa-group', name: 'Exa Group', category: 'partners', description: 'Token engineering and DAO strategy specialists improving capital efficiency', logo: '/logos/ExaWhite.png', website: 'https://www.exagroup.xyz', featured: true },
+  { id: 'community', name: 'Roko Community', category: 'partners', description: 'All of our supporters and incredible longstanding community members who have made all of this possible.', logo: '/logos/favicon-roko.png', website: '', featured: true },
+  { id: 'hyperspawn', name: 'Hyperspawn Robotics', category: 'partners', description: 'Low cost robotics systems, manufacturing, testing, and deploying experimental control policies for an open-source bipedal robot named Dropbear.', logo: '/logos/hyperspawn.png', website: 'https://www.hyperspawn.co', featured: true },
+  { id: 'fractional-robots', name: 'Fractional Robots', category: 'partners', description: 'Think tank and rapid prototyping focused on the development of AI powered software and hardware..', logo: '/logos/dropbear.png', website: 'https://fractionalrobots.com', featured: true },
+  { id: 'exa-group', name: 'Exa Group', category: 'partners', description: 'Comprehensive treasury management and strategic investment advisory to protect and grow your digital assets through battle-tested strategies and cutting-edge technology.', logo: '/logos/ExaWhite.png', website: 'https://www.exagroup.xyz', featured: true },
   { id: 'selfient', name: 'Selfient', category: 'partners', description: 'EVM blockchain technology company providing no-code smart contract creation tools', logo: '/logos/selfient.svg', website: 'https://www.selfient.xyz', featured: true },
   { id: 'unforkable', name: 'Unforkable', category: 'partners', description: 'DeFi engineering specialists building secure smart contracts and full-stack solutions', logo: '/logos/unfork.png', website: 'https://unforkable.co', featured: false },
-  { id: 'trustid', name: 'TrustID', category: 'partners', description: 'Identity verification platform providing portable, privacy-safe digital identity', logo: '/logos/trustid.svg', website: 'https://www.trustid.life/business', featured: false },
-  { id: 'time-beat', name: 'Time Beat', category: 'service-providers', description: 'IEEE-1588 PTP & NTP precision time synchronization solutions for critical systems', logo: '/logos/timebeat.svg', website: 'https://www.timebeat.app', featured: true },
+  { id: 'trustid', name: 'TrustID', category: 'partners', description: 'The new standard for consent and identity management. Portable across the web. Trusted by AI. Built for growth.', logo: '/logos/trustid.svg', website: 'https://www.trustid.life/business', featured: false },
+  { id: 'time-beat', name: 'Time Beat', category: 'service-providers', description: 'An End-To-End Timing & IEEE-1588 Clock sync ecosystem provider.', logo: '/logos/timebeat.svg', website: 'https://www.timebeat.app', featured: true },
   { id: 'iskout', name: 'Iskout', category: 'service-providers', description: 'Rapid precision hiring and talent acquisition specialists for tech companies', logo: '/logos/iskout.png', website: 'https://www.iskout.com', featured: false },
   { id: 'ocp-tap', name: 'OCP TAP', category: 'built-on', description: 'Open Compute Project Time Appliances providing IEEE 1588 PTP timing infrastructure', logo: '/logos/ocp.svg', website: 'https://www.opencompute.org/projects/time-appliances-project-tap', featured: true },
-  { id: 'polkadot', name: 'Polkadot', category: 'built-on', description: 'Multichain platform enabling blockchain interoperability and scalable applications', logo: '/logos/polkadot.png', website: 'https://polkadot.com/platform/sdk', featured: true }
+  { id: 'polkadot', name: 'Polkadot', category: 'built-on', description: 'Highly customizable, chain-agnostic modular architecture and an extensive suite of tools and libraries, enabling next-level blockchain innovation.', logo: '/logos/polkadot.png', website: 'https://polkadot.com/platform/sdk', featured: true }
 ];
 
 const featuredSolutions: Solution[] = [
