@@ -222,29 +222,21 @@ build_application() {
     # Skip husky install in CI/production environment
     export HUSKY=0
     export CI=true
+    export NODE_ENV=development
 
-    # Ensure clean install
-    if ! npm ci --prefer-offline --ignore-scripts; then
+    # Clean install to avoid corruption issues
+    rm -rf node_modules
+
+    # Ensure clean install without skipping scripts (needed for proper install)
+    if ! npm ci --prefer-offline; then
         log_error "npm ci failed"
         return 1
     fi
 
     # Verify vite is available after installing dependencies
     if ! npx vite --version &> /dev/null; then
-        log_warn "Vite not found via npx, checking if it's installed..."
-        if [ ! -f "node_modules/.bin/vite" ]; then
-            log_error "Vite not installed. Trying clean install..."
-            rm -rf node_modules
-            if ! npm ci --prefer-offline --ignore-scripts; then
-                log_error "Failed to install dependencies"
-                return 1
-            fi
-        fi
-    fi
-
-    # Final check for vite
-    if ! npx vite --version &> /dev/null; then
-        log_error "Vite still not available after reinstall"
+        log_error "Vite not found after npm ci"
+        ls -la node_modules/.bin/vite 2>&1 | log_info
         return 1
     fi
 
