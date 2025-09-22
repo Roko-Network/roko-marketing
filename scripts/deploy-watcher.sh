@@ -224,13 +224,15 @@ build_application() {
     export CI=true
     export NODE_ENV=development
 
-    # Clean install to avoid corruption issues
-    rm -rf node_modules
-
-    # Ensure clean install without skipping scripts (needed for proper install)
+    # npm ci will clean node_modules automatically if needed
+    # Using --force to handle any permission or locking issues
     if ! npm ci --prefer-offline; then
-        log_error "npm ci failed"
-        return 1
+        log_warn "First npm ci attempt failed, retrying with force..."
+        # Try again with force flag to overcome any issues
+        if ! npm ci --prefer-offline --force; then
+            log_error "npm ci failed even with --force"
+            return 1
+        fi
     fi
 
     # Verify vite is available after installing dependencies
