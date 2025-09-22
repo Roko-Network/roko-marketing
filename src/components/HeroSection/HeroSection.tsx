@@ -73,7 +73,7 @@ export const HeroSection: React.FC<HeroSectionProps> = memo(({ navigate, onRende
           className={styles.headline}
           variants={itemVariants}
         >
-          The Temporal Layer for Web3
+          Decentralized Time
         </motion.h1>
 
         <motion.p

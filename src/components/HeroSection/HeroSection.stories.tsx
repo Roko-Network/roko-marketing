@@ -37,7 +37,7 @@ export const WithInteractions: Story = {
 
     // Wait for hero content to load
     await waitFor(() => {
-      expect(canvas.getByText('The Temporal Layer for Web3')).toBeInTheDocument();
+      expect(canvas.getByText('Decentralized Time')).toBeInTheDocument();
     });
 
     // Check for CTA buttons
@@ -146,7 +146,7 @@ export const PerformanceTest: Story = {
     const canvas = within(canvasElement);
 
     await waitFor(() => {
-      expect(canvas.getByText('The Temporal Layer for Web3')).toBeInTheDocument();
+      expect(canvas.getByText('Decentralized Time')).toBeInTheDocument();
     });
 
     const loadTime = performance.now() - startTime;

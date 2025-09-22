@@ -8,6 +8,7 @@ import FractionalRobots from '../../components/sections/FractionalRobots';
 import Tokenomics from '../../components/sections/Tokenomics';
 import GovernanceProposals from '../../components/GovernanceProposals/GovernanceProposals';
 import Ecosystem from '../../components/sections/Ecosystem';
+import Metrics from '../../components/sections/Metrics';
 import Scene from '../../components/3d/Scene';
 
 type SceneParams = {
@@ -125,13 +126,14 @@ const HomePage: React.FC = memo(() => {
   const sections = useMemo(
     () => [
       { key: 'hero', node: <Hero /> },
+      { key: 'ecosystem', node: <Ecosystem /> },
+      { key: 'metrics', node: <Metrics /> },
       { key: 'features', node: <Features /> },
       { key: 'technology', node: <Technology /> },
       { key: 'selfient', node: <SelfientPartnership /> },
       { key: 'fractional', node: <FractionalRobots /> },
-      { key: 'tokenomics', node: <Tokenomics /> },
-      { key: 'governance', node: <GovernanceProposals /> },
-      { key: 'ecosystem', node: <Ecosystem /> },
+      //{ key: 'tokenomics', node: <Tokenomics /> },
+      //{ key: 'governance', node: <GovernanceProposals /> },
     ],
     []
   );
@@ -577,34 +579,52 @@ const containerStyle: React.CSSProperties = {
         })}
       </div>
 
-      {/* Pagination dots */}
+          {/* Top pagination bars (1px below header) */}
       <div
+        role="tablist"
+        aria-label="Page navigation"
         style={{
-          position: 'absolute',
-          right: 16,
-          top: '50%',
-          transform: 'translateY(-50%)',
+          position: 'fixed',                // stays aligned to header regardless of slide transform
+          left: 0,
+          right: 0,
+          top: `${headerHeight + 0}px`,     // 1px below the header
+          zIndex: 10,
+          padding: '0 0px',
           display: 'flex',
-          flexDirection: 'column',
-          gap: 8,
-          pointerEvents: 'none',
-          zIndex: 2,
+          alignItems: 'center',
+          gap: 1,
+          pointerEvents: 'auto',            // set to 'none' if you want it non-interactive
+          height: 1,                       // small hit area for clicks/taps
         }}
       >
-        {sections.map((_, i) => (
-          <div
-            key={i}
-            aria-hidden
-            style={{
-              width: 6,
-              height: 6,
-              borderRadius: 999,
-              background: i === index ? 'black' : 'rgba(0,0,0,0.25)',
-              opacity: 0.9,
-            }}
-          />
-        ))}
+        {sections.map((s, i) => {
+          const isActive = i === index;
+          return (
+            <div
+              key={s.key}
+              onClick={() => {
+                setDeckTransitionMs(TRANSITION_MS);
+                setPullPx(0);
+                doIndexChange(i);
+              }}
+              aria-selected={isActive}
+              aria-label={`Go to ${s.key}`}
+              style={{
+                flex: 1,                     // equidistant segments across the width
+                height: 5,                   // “line” thickness
+                background: isActive ? '#00000022' : '#00000011',
+                border: 'none',
+                borderRadius: 1,
+                padding: 0,
+                cursor: 'pointer',
+                outline: 'none',
+                transition: 'background 200ms ease',
+              }}
+            />
+          );
+        })}
       </div>
+
     </div>
   );
 });

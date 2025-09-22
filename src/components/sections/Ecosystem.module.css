@@ -209,6 +209,22 @@
   transition: all 0.3s ease;
 }
 
+.partnerCard .partnerLogo {
+transition:all 0.5s ease;
+}
+
+.partnerCard:hover .partnerLogo {
+  transform: scale(1.05);
+}
+
+.partnerCard .partnerCategory {
+transition:all 0.5s ease;
+}
+
+.partnerCard:hover .partnerCategory {
+background:black;color:white;
+}
+
 .partnerCard:hover .logoPlaceholder {
   transform: scale(1.05);
 }
