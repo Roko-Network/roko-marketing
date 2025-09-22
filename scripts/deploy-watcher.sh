@@ -209,6 +209,10 @@ build_application() {
     cd "$APP_DIR"
 
     # Verify Node.js and npm are accessible
+    log_info "Current PATH: $PATH"
+    log_info "Node version: $(node --version 2>&1 || echo 'node not found')"
+    log_info "NPM version: $(npm --version 2>&1 || echo 'npm not found')"
+
     if ! command -v npm &> /dev/null; then
         log_error "npm not found in PATH. Check NVM configuration."
         return 1
@@ -218,18 +222,30 @@ build_application() {
     # Skip husky install in CI/production environment
     export HUSKY=0
     export CI=true
-    npm ci --prefer-offline --ignore-scripts
 
-    # Run essential postinstall scripts manually if needed
-    # (skip husky but run other necessary scripts)
+    # Ensure clean install
+    if ! npm ci --prefer-offline --ignore-scripts; then
+        log_error "npm ci failed"
+        return 1
+    fi
 
     # Verify vite is available after installing dependencies
     if ! npx vite --version &> /dev/null; then
         log_warn "Vite not found via npx, checking if it's installed..."
         if [ ! -f "node_modules/.bin/vite" ]; then
-            log_error "Vite not installed. Running npm ci again..."
-            npm ci
+            log_error "Vite not installed. Trying clean install..."
+            rm -rf node_modules
+            if ! npm ci --prefer-offline --ignore-scripts; then
+                log_error "Failed to install dependencies"
+                return 1
+            fi
         fi
+    fi
+
+    # Final check for vite
+    if ! npx vite --version &> /dev/null; then
+        log_error "Vite still not available after reinstall"
+        return 1
     fi
 
     log_info "Building application..."
