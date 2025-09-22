@@ -1,0 +1,46 @@
+[Unit]
+Description=ROKO Marketing Deployment Watcher
+Documentation=https://github.com/Roko-Network/roko-marketing
+After=network.target
+
+[Service]
+Type=simple
+User=roctinam
+Group=roctinam
+WorkingDirectory=/home/roctinam/roko-marketing
+
+# Script to execute
+ExecStart=/home/roctinam/roko-marketing/scripts/deploy-watcher.sh watch
+
+# Environment variables
+Environment="NODE_ENV=production"
+Environment="APP_DIR=/home/roctinam/roko-marketing"
+Environment="DEPLOY_DIR=/home/roctinam/production-deploy/roko-marketing"
+Environment="DEPLOY_BRANCH=master"
+Environment="CHECK_INTERVAL=600"
+Environment="LOG_FILE=/home/roctinam/roko-marketing/deploy.log"
+
+# Restart policy
+Restart=always
+RestartSec=30
+StartLimitInterval=400
+StartLimitBurst=3
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=roko-deploy
+
+# Resource limits
+MemoryLimit=2G
+CPUQuota=50%
+
+# Security hardening
+# NoNewPrivileges=true removed - prevents sudo from working
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=false
+ReadWritePaths=/home/roctinam/roko-marketing /home/roctinam/production-deploy /var/lib/roko-marketing /var/backups/roko-marketing
+
+[Install]
+WantedBy=multi-user.target

@@ -1,727 +1,255 @@
-# ROKO Network Marketing Site - Deployment Guide
-
-This comprehensive guide covers all aspects of deploying the ROKO Network marketing site, from development to production environments.
-
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Prerequisites](#prerequisites)
-3. [Environment Setup](#environment-setup)
-4. [Local Development](#local-development)
-5. [Build Process](#build-process)
-6. [Deployment Strategies](#deployment-strategies)
-7. [Platform-Specific Deployment](#platform-specific-deployment)
-8. [Docker Deployment](#docker-deployment)
-9. [CI/CD Pipeline](#cicd-pipeline)
-10. [Monitoring & Observability](#monitoring--observability)
-11. [Performance Optimization](#performance-optimization)
-12. [Security Configuration](#security-configuration)
-13. [Troubleshooting](#troubleshooting)
-14. [Rollback Procedures](#rollback-procedures)
-15. [Maintenance](#maintenance)
+# ROKO Marketing Site - Deployment Guide
 
 ## Overview
 
-The ROKO Network marketing site is a high-performance React application built with Vite, featuring:
+The ROKO Marketing site uses a **secure, pull-based deployment system** that automatically deploys from GitHub without exposing SSH keys or requiring complex CI/CD configuration.
 
-- **Zero-downtime deployments** across multiple platforms
-- **Automatic rollback** on deployment failures
-- **Real-time monitoring** and alerting
-- **Multi-environment support** (development, staging, production)
-- **CDN optimization** for global performance
-- **Progressive Web App** capabilities
+### Key Features
+- ✅ **No SSH keys in GitHub** - Secure from repository collaborators
+- ✅ **Zero-downtime deployment** - Caddy serves new files instantly
+- ✅ **Automatic rollback** - Reverts on build/deploy failures
+- ✅ **Branch flexibility** - Deploy any branch for testing/recovery
+- ✅ **10-minute auto-deploy** - Polls GitHub for updates
+- ✅ **One-time setup** - Single sudo command, then sudo-free operation
 
-### Architecture
+## Quick Start (New Setup)
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Development   │    │     Staging     │    │   Production    │
-│                 │    │                 │    │                 │
-│ localhost:5173  │───▶│staging.roko.net │───▶│  roko.network   │
-│                 │    │                 │    │                 │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Local Build   │    │  Preview Build  │    │ Production Build│
-│                 │    │                 │    │                 │
-│ Unoptimized     │    │ Pre-optimized   │    │ Fully Optimized │
-│ Source maps     │    │ Basic minify    │    │ Advanced minify │
-│ Hot reload      │    │ Error tracking  │    │ All monitoring  │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+For a complete new setup, see: **[scripts/QUICK-START.md](scripts/QUICK-START.md)**
+
+```bash
+# One-time setup (5 minutes)
+sudo ./scripts/setup-deployment.sh
+
+# Start automatic deployment
+sudo systemctl start roko-deploy-watcher
 ```
 
-## Prerequisites
+That's it! The system will now automatically deploy updates from GitHub.
 
-### Required Software
+## Architecture
 
-- **Node.js**: v20.0.0 or higher
-- **npm**: v10.0.0 or higher
-- **Git**: Latest version
-- **Docker**: v20.0.0+ (optional, for containerized deployment)
+```
+GitHub Repository (master branch)
+        ↓
+    [Polls every 10 minutes]
+        ↓
+Deploy Watcher Service (systemd)
+        ↓
+    [Builds locally on server]
+        ↓
+Deployment Directory (/home/roctinam/production-deploy/roko-marketing)
+        ↓
+    [Mounted as volume]
+        ↓
+Caddy Web Server (Docker) → Port 82
+    [No restart needed - serves new files instantly]
+```
 
-### Required Accounts & Services
+## Common Operations
 
-- **GitHub**: For code repository and CI/CD
-- **Vercel**: For primary hosting (recommended)
-- **Netlify**: For backup hosting
-- **AWS**: For S3 + CloudFront deployment
-- **Cloudflare**: For CDN and DNS management
-- **Sentry**: For error tracking
-- **DataDog**: For performance monitoring
+### Check Deployment Status
+```bash
+./scripts/deploy-branch.sh status
+```
+
+### Deploy Immediately
+```bash
+./scripts/deploy-watcher.sh check   # Deploy if updates available
+./scripts/deploy-watcher.sh force    # Force deploy even if up-to-date
+```
+
+### Switch Branches
+```bash
+# Deploy from a different branch
+./scripts/deploy-branch.sh switch develop
+./scripts/deploy-branch.sh switch feature/new-ui
+./scripts/deploy-branch.sh switch hotfix/urgent-fix
+
+# Quick switches
+./scripts/deploy-branch.sh main      # Switch to master
+./scripts/deploy-branch.sh staging   # Switch to staging
+
+# Emergency recovery
+./scripts/deploy-branch.sh recovery  # Force switch to master
+```
+
+### View Logs
+```bash
+# Service logs
+journalctl -u roko-deploy-watcher -f
+
+# Deployment logs
+tail -f ~/roko-marketing/deploy.log
+
+# Caddy logs
+docker-compose -f docker-compose.caddy.yml logs -f
+```
+
+### Manual Deployment (Legacy)
+```bash
+# Using the original deploy script
+./deploy-static.sh              # Build and deploy
+SKIP_BUILD=1 ./deploy-static.sh # Deploy existing build
+```
+
+## Directory Structure
+
+```
+/home/roctinam/
+├── roko-marketing/              # Source code (git repository)
+│   ├── scripts/
+│   │   ├── deploy-watcher.sh   # Automatic deployment script
+│   │   ├── deploy-branch.sh    # Branch management
+│   │   └── setup-deployment.sh # One-time setup
+│   └── dist/                    # Build output
+│
+├── production-deploy/
+│   └── roko-marketing/          # Deployed files (Caddy serves from here)
+│
+└── /var/lib/roko-marketing/     # Deployment state
+    ├── deploy-config            # Branch configuration
+    ├── last-deployed-sha        # Current deployment version
+    └── deploy.lock              # Deployment lock file
+```
+
+## Service Management
+
+### Start/Stop Service
+```bash
+sudo systemctl start roko-deploy-watcher   # Start auto-deployment
+sudo systemctl stop roko-deploy-watcher    # Stop auto-deployment
+sudo systemctl restart roko-deploy-watcher # Restart service
+sudo systemctl status roko-deploy-watcher  # Check service status
+```
+
+### Enable/Disable Auto-start
+```bash
+sudo systemctl enable roko-deploy-watcher  # Start on boot
+sudo systemctl disable roko-deploy-watcher # Don't start on boot
+```
+
+## Configuration
+
+### Change Deployment Branch
+```bash
+./scripts/deploy-branch.sh switch <branch-name>
+```
+
+### Adjust Check Interval
+Edit the systemd service:
+```bash
+sudo systemctl edit roko-deploy-watcher
+```
+
+Add:
+```ini
+[Service]
+Environment="CHECK_INTERVAL=300"  # 5 minutes instead of 10
+```
 
 ### Environment Variables
-
-Copy `.env.example` to create environment-specific configuration files:
-
-```bash
-# Development
-cp .env.example .env.local
-
-# Staging
-cp .env.example .env.staging
-
-# Production
-cp .env.example .env.production
-```
-
-## Environment Setup
-
-### Development Environment
-
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/roko-network/roko-marketing.git
-   cd roko-marketing
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   npm ci --prefer-offline
-   ```
-
-3. **Configure environment**:
-   ```bash
-   cp .env.example .env.local
-   # Edit .env.local with your configuration
-   ```
-
-4. **Start development server**:
-   ```bash
-   npm run dev
-   ```
-
-### Staging Environment
-
-1. **Configure staging variables**:
-   ```bash
-   # .env.staging
-   NODE_ENV=production
-   VITE_BUILD_ENV=staging
-   VITE_API_BASE_URL=https://staging-api.roko.network
-   VITE_ENABLE_ANALYTICS=false
-   VITE_ENABLE_ERROR_TRACKING=true
-   ```
-
-2. **Build for staging**:
-   ```bash
-   npm run build:staging
-   ```
-
-### Production Environment
-
-1. **Configure production variables**:
-   ```bash
-   # .env.production
-   NODE_ENV=production
-   VITE_BUILD_ENV=production
-   VITE_API_BASE_URL=https://api.roko.network
-   VITE_ENABLE_ANALYTICS=true
-   VITE_ENABLE_ERROR_TRACKING=true
-   VITE_SENTRY_DSN=your_sentry_dsn
-   ```
-
-2. **Build for production**:
-   ```bash
-   npm run build
-   ```
-
-## Build Process
-
-### Build Scripts
-
-| Script | Purpose | Environment |
-|--------|---------|-------------|
-| `npm run dev` | Development server | Development |
-| `npm run build` | Production build | Production |
-| `npm run build:staging` | Staging build | Staging |
-| `npm run build:ci` | CI/CD build | All |
-| `npm run build:docker` | Docker build | Production |
-| `npm run preview` | Preview built app | Any |
-
-### Build Optimization
-
-The build process includes:
-
-1. **TypeScript compilation** with strict checks
-2. **Code splitting** for optimal loading
-3. **Asset optimization** (images, fonts, etc.)
-4. **Tree shaking** to remove unused code
-5. **Minification** and compression
-6. **Source map generation** (hidden in production)
-7. **Bundle analysis** and size checking
-
-### Build Verification
-
-After building, verify the output:
-
-```bash
-# Check build size
-npm run size
-
-# Analyze bundle composition
-npm run build:analyze
-
-# Preview the built application
-npm run preview
-
-# Run performance audit
-npm run perf:lighthouse
-```
-
-## Deployment Strategies
-
-### 1. Blue-Green Deployment
-
-Deploy to a parallel environment, then switch traffic:
-
-```bash
-# Deploy to green environment
-vercel deploy --target=staging
-
-# Run health checks
-npm run health:check
-
-# Promote to production
-vercel promote
-```
-
-### 2. Rolling Deployment
-
-Gradual rollout with automatic rollback:
-
-```bash
-# Deploy with canary release
-kubectl apply -f k8s/canary-deployment.yaml
-
-# Monitor metrics
-kubectl get pods -l version=canary
-
-# Complete rollout or rollback
-kubectl apply -f k8s/production-deployment.yaml
-```
-
-### 3. Atomic Deployment
-
-Single-step deployment with instant rollback capability:
-
-```bash
-# Deploy atomically
-npm run deploy:production
-
-# Automatic health checks run
-# Rollback triggered if checks fail
-```
-
-## Platform-Specific Deployment
-
-### Vercel (Recommended Primary)
-
-1. **Install Vercel CLI**:
-   ```bash
-   npm install -g vercel
-   ```
-
-2. **Configure Vercel**:
-   ```bash
-   vercel login
-   vercel link
-   ```
-
-3. **Deploy**:
-   ```bash
-   # Preview deployment
-   vercel
-
-   # Production deployment
-   vercel --prod
-   ```
-
-4. **Environment Variables**:
-   ```bash
-   vercel env add VITE_API_BASE_URL production
-   vercel env add VITE_SENTRY_DSN production
-   ```
-
-### Netlify (Backup Hosting)
-
-1. **Install Netlify CLI**:
-   ```bash
-   npm install -g netlify-cli
-   ```
-
-2. **Configure Netlify**:
-   ```bash
-   netlify login
-   netlify link
-   ```
-
-3. **Deploy**:
-   ```bash
-   # Build and deploy
-   npm run build
-   netlify deploy --prod --dir=dist
-   ```
-
-### AWS S3 + CloudFront
-
-1. **Configure AWS CLI**:
-   ```bash
-   aws configure
-   ```
-
-2. **Deploy script** (included in CI/CD):
-   ```bash
-   # Sync to S3
-   aws s3 sync dist/ s3://roko-marketing-production --delete
-
-   # Invalidate CloudFront
-   aws cloudfront create-invalidation --distribution-id EXXXXX --paths "/*"
-   ```
-
-### Cloudflare Pages
-
-1. **Connect GitHub repository** to Cloudflare Pages
-2. **Configure build settings**:
-   - Build command: `npm run build`
-   - Output directory: `dist`
-   - Environment variables: Set in dashboard
-
-## Docker Deployment
-
-### Building Docker Image
-
-```bash
-# Build production image
-docker build -t roko-marketing:latest .
-
-# Build with build arguments
-docker build \
-  --build-arg VERSION=1.0.0 \
-  --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-  -t roko-marketing:1.0.0 .
-```
-
-### Running Docker Container
-
-```bash
-# Run single container
-docker run -p 80:80 roko-marketing:latest
-
-# Run with Docker Compose
-docker-compose up -d
-
-# Scale with Docker Compose
-docker-compose up -d --scale roko-marketing=3
-```
-
-### Kubernetes Deployment
-
-```yaml
-# k8s/deployment.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: roko-marketing
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: roko-marketing
-  template:
-    metadata:
-      labels:
-        app: roko-marketing
-    spec:
-      containers:
-      - name: roko-marketing
-        image: roko-marketing:latest
-        ports:
-        - containerPort: 80
-        resources:
-          requests:
-            memory: "128Mi"
-            cpu: "100m"
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
-```
-
-Deploy to Kubernetes:
-
-```bash
-kubectl apply -f k8s/
-kubectl rollout status deployment/roko-marketing
-```
-
-## CI/CD Pipeline
-
-### GitHub Actions Workflow
-
-The CI/CD pipeline automatically:
-
-1. **Runs quality checks** (linting, type checking, tests)
-2. **Builds the application** for multiple environments
-3. **Performs security scans** and audits
-4. **Runs performance tests** and accessibility checks
-5. **Deploys to staging** for integration testing
-6. **Deploys to production** after approval
-7. **Monitors deployment** and rolls back on failure
-
-### Manual Deployment
-
-For manual deployments, use the provided scripts:
-
-```bash
-# Deploy to staging
-npm run deploy:staging
-
-# Deploy to production (requires confirmation)
-npm run deploy:production
-
-# Emergency deployment (skips some checks)
-npm run deploy:emergency
-```
-
-### Environment Promotion
-
-Promote builds through environments:
-
-```bash
-# Promote staging to production
-vercel promote --scope=roko-network
-
-# Or use the GitHub Actions workflow
-gh workflow run deploy.yml -f environment=production
-```
-
-## Monitoring & Observability
-
-### Health Checks
-
-Automated health checks run every 30 seconds:
-
-```bash
-# Manual health check
-npm run health:check
-
-# Continuous monitoring
-npm run health:monitor
-```
-
-### Performance Monitoring
-
-Real-time performance tracking includes:
-
-- **Core Web Vitals** (LCP, FID, CLS)
-- **Custom metrics** (API response times, bundle sizes)
-- **User experience** tracking
-- **Error rate** monitoring
-
-### Alerting
-
-Alerts are sent via:
-
-- **Slack** notifications for deployment events
-- **Email** alerts for critical errors
-- **PagerDuty** integration for emergency issues
-
-### Dashboards
-
-Monitor the application through:
-
-- **Vercel Analytics**: Built-in performance metrics
-- **DataDog**: Custom dashboards and alerts
-- **Sentry**: Error tracking and performance
-- **Lighthouse CI**: Automated performance audits
-
-## Performance Optimization
-
-### CDN Configuration
-
-The application uses multiple CDN layers:
-
-1. **Vercel Edge Network** (primary)
-2. **Cloudflare** (DNS and additional caching)
-3. **AWS CloudFront** (backup)
-
-### Caching Strategy
-
-| Asset Type | Cache Duration | Strategy |
-|------------|----------------|----------|
-| HTML files | 1 hour | `must-revalidate` |
-| JS/CSS files | 1 year | `immutable` |
-| Images | 1 year | `immutable` |
-| Fonts | 1 year | `immutable` |
-| API responses | 5 minutes | `stale-while-revalidate` |
-
-### Asset Optimization
-
-Automated optimization includes:
-
-- **Image compression** with WebP fallbacks
-- **Font optimization** with preloading
-- **JavaScript splitting** for optimal loading
-- **CSS purging** to remove unused styles
-
-## Security Configuration
-
-### Content Security Policy (CSP)
-
-Strict CSP headers are enforced:
-
-```
-Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com;
-```
-
-### Security Headers
-
-All responses include security headers:
-
-- `X-Frame-Options: SAMEORIGIN`
-- `X-Content-Type-Options: nosniff`
-- `X-XSS-Protection: 1; mode=block`
-- `Strict-Transport-Security: max-age=31536000`
-- `Referrer-Policy: strict-origin-when-cross-origin`
-
-### Dependency Scanning
-
-Automated security scanning includes:
-
-- **npm audit** for known vulnerabilities
-- **Snyk scanning** for advanced threat detection
-- **Dependabot** for automatic dependency updates
-
-## Troubleshooting
-
-### Common Issues
-
-#### Build Failures
-
-**Issue**: TypeScript compilation errors
-```bash
-# Solution: Fix type errors
-npm run type-check
-```
-
-**Issue**: Bundle size exceeds limits
-```bash
-# Solution: Analyze and optimize
-npm run build:analyze
-npm run size:why
-```
-
-#### Deployment Failures
-
-**Issue**: Environment variables missing
-```bash
-# Solution: Check environment configuration
-vercel env ls
-```
-
-**Issue**: Build artifacts too large
-```bash
-# Solution: Enable compression
-# Already configured in nginx.conf and vercel.json
-```
-
-#### Runtime Issues
-
-**Issue**: API calls failing
-```bash
-# Check network connectivity
-curl -I https://api.roko.network/health
-
-# Check CORS configuration
-# Verify in browser network tab
-```
-
-**Issue**: Performance degradation
-```bash
-# Run performance audit
-npm run perf:lighthouse
-
-# Check Core Web Vitals
-npm run perf:check
-```
-
-### Debug Mode
-
-Enable debug mode for detailed logging:
-
-```bash
-# Development
-VITE_DEBUG=true npm run dev
-
-# Production (not recommended)
-VITE_DEBUG=true npm run build
-```
-
-### Log Analysis
-
-Access deployment logs:
-
-```bash
-# Vercel logs
-vercel logs
-
-# Netlify logs
-netlify logs
-
-# Docker logs
-docker logs roko-marketing
-```
+- `DEPLOY_BRANCH` - Branch to deploy (default: master)
+- `CHECK_INTERVAL` - Seconds between checks (default: 600)
+- `APP_DIR` - Source directory (default: ~/roko-marketing)
+- `DEPLOY_DIR` - Deployment directory (default: ~/production-deploy/roko-marketing)
 
 ## Rollback Procedures
 
 ### Automatic Rollback
-
 The system automatically rolls back if:
-
-- Health checks fail after deployment
-- Error rate exceeds 5% for 5 minutes
-- Core Web Vitals degrade significantly
+- Build fails
+- Health check fails
+- Deployment errors occur
 
 ### Manual Rollback
-
-#### Vercel Rollback
-
 ```bash
-# List recent deployments
-vercel list
+# List available backups
+ls -la /var/backups/roko-marketing/
 
-# Rollback to specific deployment
-vercel rollback <deployment-url>
+# Restore specific backup
+sudo tar -xzf /var/backups/roko-marketing/backup-TIMESTAMP.tar.gz \
+  -C /home/roctinam/production-deploy/
+
+# Or use the emergency recovery
+./scripts/deploy-branch.sh recovery
 ```
 
-#### AWS S3 Rollback
+## Troubleshooting
 
+### Deployment Stuck
 ```bash
-# Restore from backup
-aws s3 sync s3://roko-marketing-backup-$(date +%Y%m%d) s3://roko-marketing-production --delete
+# Check for stale lock
+./scripts/deploy-watcher.sh status
 
-# Invalidate CloudFront
-aws cloudfront create-invalidation --distribution-id EXXXXX --paths "/*"
+# Remove stale lock if needed
+./scripts/deploy-watcher.sh unlock
+
+# Retry deployment
+./scripts/deploy-watcher.sh check
 ```
 
-#### Docker Rollback
-
+### Service Won't Start
 ```bash
-# Rollback to previous image
-kubectl rollout undo deployment/roko-marketing
+# Check logs
+journalctl -u roko-deploy-watcher -n 50
 
-# Or rollback to specific revision
-kubectl rollout undo deployment/roko-marketing --to-revision=2
+# Verify permissions
+ls -la /var/lib/roko-marketing/
+
+# Re-run setup if needed
+sudo ./scripts/setup-deployment.sh
 ```
 
-### Emergency Procedures
-
-For critical issues:
-
-1. **Immediate rollback**:
-   ```bash
-   npm run rollback:emergency
-   ```
-
-2. **Enable maintenance mode**:
-   ```bash
-   # Redirect traffic to maintenance page
-   vercel alias set maintenance.roko.network roko.network
-   ```
-
-3. **Hotfix deployment**:
-   ```bash
-   # Skip CI/CD for critical fixes
-   npm run deploy:hotfix
-   ```
-
-## Maintenance
-
-### Regular Maintenance Tasks
-
-#### Weekly Tasks
-
-- **Dependency updates**: Review and update dependencies
-- **Performance review**: Analyze Core Web Vitals trends
-- **Security audit**: Review security scan results
-- **Backup verification**: Test backup restoration
-
-#### Monthly Tasks
-
-- **Bundle size optimization**: Analyze and optimize bundle size
-- **CDN performance review**: Check CDN hit rates and performance
-- **Error trend analysis**: Review error patterns and fix issues
-- **Capacity planning**: Review traffic trends and scale accordingly
-
-#### Quarterly Tasks
-
-- **Major dependency updates**: Update major dependencies
-- **Security assessment**: Comprehensive security review
-- **Performance optimization**: Deep performance analysis and optimization
-- **Disaster recovery testing**: Test complete system recovery
-
-### Maintenance Scripts
-
+### Build Failures
 ```bash
-# Update dependencies
-npm run update:dependencies
+# Check memory
+free -h
 
-# Clean up old builds
-npm run cleanup:builds
-
-# Optimize assets
-npm run optimize:assets
-
-# Generate performance report
-npm run report:performance
+# Increase build memory in script
+# Edit CHECK_INTERVAL in deploy-watcher.sh
+BUILD_MEMORY="8192"  # Increase from 4096
 ```
 
-### Monitoring Maintenance
-
-Keep monitoring systems healthy:
-
+### Caddy Issues
 ```bash
-# Health check monitoring endpoints
-npm run health:monitoring
+# Check if Caddy is running
+docker ps | grep roko-marketing-server
 
-# Verify alert systems
-npm run test:alerts
+# Restart Caddy
+docker-compose -f docker-compose.caddy.yml restart
 
-# Update monitoring configuration
-npm run update:monitoring
+# View Caddy logs
+docker-compose -f docker-compose.caddy.yml logs
 ```
 
-## Support & Contact
+## Security Notes
 
-For deployment issues:
+1. **No GitHub Secrets** - The server pulls changes, no push access needed
+2. **User-level Service** - Runs as your user, not root
+3. **Limited Sudo** - Only specific service commands have passwordless sudo
+4. **Automatic Backups** - Last 5 deployments kept for recovery
+5. **Health Checks** - Failed deployments automatically revert
 
-- **DevOps Team**: devops@roko.network
-- **Emergency Hotline**: Available in internal docs
-- **Documentation**: This file and related docs in `/docs`
-- **Issue Tracking**: GitHub Issues for non-urgent items
+## Performance
 
----
+- **Build Time**: ~1-2 minutes (depends on server specs)
+- **Deployment**: Instant (file copy only)
+- **Downtime**: Zero (Caddy serves new files immediately)
+- **Check Interval**: 10 minutes (configurable)
+- **Backup Retention**: 5 versions
 
-**Last Updated**: $(date)
-**Document Version**: 1.0.0
-**Maintained By**: ROKO DevOps Team
+## Related Documentation
+
+- **[Quick Start Guide](scripts/QUICK-START.md)** - 5-minute setup for new installations
+- **[Auto-Deploy Setup](scripts/SETUP-AUTO-DEPLOY.md)** - Detailed setup documentation
+
+## Migration from Old System
+
+If you're migrating from the old GitHub Actions deployment:
+
+1. Remove old GitHub Secrets (no longer needed)
+2. Delete `.github/workflows/` directory (not using GitHub Actions)
+3. Run the setup script: `sudo ./scripts/setup-deployment.sh`
+4. Start the service: `sudo systemctl start roko-deploy-watcher`
+
+The new system is simpler, more secure, and requires no GitHub configuration!
