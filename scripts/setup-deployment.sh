@@ -126,14 +126,17 @@ $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop $SERVICE_NAME
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl restart $SERVICE_NAME
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl reload $SERVICE_NAME
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl status $SERVICE_NAME
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl reset-failed $SERVICE_NAME
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl daemon-reload
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/systemctl is-active $SERVICE_NAME
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/journalctl -u $SERVICE_NAME *
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/journalctl -xeu $SERVICE_NAME *
 
 # File operations for deployment
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/tee /var/lib/roko-marketing/deploy-config
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/tee /var/lib/roko-marketing/last-deployed-sha
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/tee /etc/systemd/system/${SERVICE_NAME}.service.d/branch.conf
+$DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/sed -i * /etc/systemd/system/${SERVICE_NAME}.service
 
 # Directory operations
 $DEPLOY_USER ALL=(ALL) NOPASSWD: /usr/bin/mkdir -p /var/lib/roko-marketing
