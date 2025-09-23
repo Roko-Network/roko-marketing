@@ -128,7 +128,7 @@ export const HomePage: FC<HomePageProps> = ({ className }) => {
         <title>ROKO Network - Temporal Blockchain Infrastructure with Time measuring precision</title>
         <meta
           name="description"
-          content="Revolutionary blockchain infrastructure combining hardware-grade timing measurement with enterprise-grade performance. Build time-critical Web3 applications with IEEE 1588 PTP synchronization."
+          content="Novel blockchain infrastructure combining hardware-grade timing measurement with enterprise-grade performance. Build time-critical Web3 applications with IEEE 1588 PTP synchronization."
         />
         <meta
           name="keywords"
@@ -139,7 +139,7 @@ export const HomePage: FC<HomePageProps> = ({ className }) => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://roko.network/" />
         <meta property="og:title" content="ROKO Network - Temporal Blockchain Infrastructure" />
-        <meta property="og:description" content="Revolutionary blockchain infrastructure with hardware-grade timing measurement for next-generation Web3 applications." />
+        <meta property="og:description" content="Novel blockchain infrastructure with hardware-grade timing measurement for next-generation Web3 applications." />
         <meta property="og:image" content="https://roko.network/images/og-image.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
@@ -148,7 +148,7 @@ export const HomePage: FC<HomePageProps> = ({ className }) => {
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://roko.network/" />
         <meta property="twitter:title" content="ROKO Network - Temporal Blockchain Infrastructure" />
-        <meta property="twitter:description" content="Revolutionary blockchain infrastructure with hardware-grade timing measurement for next-generation Web3 applications." />
+        <meta property="twitter:description" content="Novel blockchain infrastructure with hardware-grade timing measurement for next-generation Web3 applications." />
         <meta property="twitter:image" content="https://roko.network/images/twitter-image.png" />
 
         {/* Additional SEO */}
