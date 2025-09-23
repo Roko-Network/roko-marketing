@@ -108,7 +108,7 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
   // Particle material
   const particleMaterial = useMemo(() => {
     return new THREE.PointsMaterial({
-      size: 0.02,
+      size: 0.08,
       vertexColors: true,
       transparent: true,
       opacity: 0.8,
@@ -131,7 +131,7 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
     const adjustedDelta = delta * config.animationSpeed;
 
     // Rotate orb
-    orbRef.current.rotation.x += 0.001 * adjustedDelta * 60;
+    orbRef.current.rotation.x += 0.01 * adjustedDelta * 60;
     orbRef.current.rotation.y += 0.002 * adjustedDelta * 60;
 
     // Pulsate emission
@@ -189,7 +189,7 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
         scale={orbScale}
         material={orbMaterial}
       >
-        <icosahedronGeometry args={[2, config.orbDetail]} />
+        <icosahedronGeometry args={[5, config.orbDetail]} />
       </animated.mesh>
 
       {/* Particle system */}
@@ -209,7 +209,7 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
 
       {/* Inner glow effect */}
       <mesh scale={scale * 0.8}>
-        <icosahedronGeometry args={[2, 1]} />
+        <icosahedronGeometry args={[3, 1]} />
         <meshBasicMaterial
           color="#000000ff"
           transparent
@@ -221,11 +221,11 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
 
       {/* Outer energy field */}
       <mesh scale={scale * 1.3}>
-        <icosahedronGeometry args={[2, 0]} />
+        <icosahedronGeometry args={[9, 0]} />
         <meshBasicMaterial
           color="#000000ff"
           transparent
-          opacity={0.05}
+          opacity={0.1}
           blending={THREE.AdditiveBlending}
           wireframe
         />

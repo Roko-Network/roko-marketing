@@ -17,6 +17,7 @@
   transition: top 0.2s ease;
   font-weight: 500;
   border-radius: 0 0 4px 0;
+  display: none;
 }
 
 .skipLink:focus {
@@ -61,7 +62,6 @@
 }
 
 .logoText {
-  font-family: var(--font-display);
   font-size: 1.75rem;
   font-weight: 700;
   letter-spacing: 0.025em;
@@ -74,14 +74,13 @@
 }
 
 .logoSubtext {
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--text-secondary);
+
+  font-size: 1rem;
+  font-weight: 100;
+  color: var(--text-primary);
   letter-spacing: 0.05em;
+  margin:auto 0.5rem;
   text-transform: uppercase;
-  margin: auto 1rem;
-  line-height: 1;
 }
 
 @keyframes gradientShift {

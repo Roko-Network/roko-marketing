@@ -1,4 +1,4 @@
-import { FC, useState, useCallback, useMemo, useEffect } from 'react';
+import React, { FC, useState, useCallback, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
@@ -10,6 +10,7 @@ import {
   StarIcon
 } from '@heroicons/react/24/outline';
 import styles from './Ecosystem.module.css';
+import Footer from '../../components/organisms/Footer';
 
 interface Partner {
   id: string;
@@ -88,14 +89,15 @@ const shouldInvert = (img: HTMLImageElement, src: string) => {
 };
 
 const partners: Partner[] = [
+  { id: 'time-beat', name: 'Time Beat', category: 'service-providers', description: 'An End-To-End Timing & IEEE-1588 Clock sync ecosystem provider.', logo: '/logos/timebeat.svg', website: 'https://www.timebeat.app', featured: true },
+  { id: 'unforkable', name: 'Unforkable', category: 'partners', description: 'DeFi engineering specialists building secure smart contracts and full-stack solutions', logo: '/logos/unfork.png', website: 'https://unforkable.co', featured: false },
   { id: 'community', name: 'Roko Community', category: 'partners', description: 'All of our supporters and incredible longstanding community members who have made all of this possible.', logo: '/logos/favicon-roko.png', website: '', featured: true },
   { id: 'hyperspawn', name: 'Hyperspawn Robotics', category: 'partners', description: 'Low cost robotics systems, manufacturing, testing, and deploying experimental control policies for an open-source bipedal robot named Dropbear.', logo: '/logos/hyperspawn.png', website: 'https://www.hyperspawn.co', featured: true },
   { id: 'fractional-robots', name: 'Fractional Robots', category: 'partners', description: 'Think tank and rapid prototyping focused on the development of AI powered software and hardware..', logo: '/logos/dropbear.png', website: 'https://fractionalrobots.com', featured: true },
-  { id: 'exa-group', name: 'Exa Group', category: 'partners', description: 'Comprehensive treasury management and strategic investment advisory to protect and grow your digital assets through battle-tested strategies and cutting-edge technology.', logo: '/logos/ExaWhite.png', website: 'https://www.exagroup.xyz', featured: true },
   { id: 'selfient', name: 'Selfient', category: 'partners', description: 'EVM blockchain technology company providing no-code smart contract creation tools', logo: '/logos/selfient.svg', website: 'https://www.selfient.xyz', featured: true },
-  { id: 'unforkable', name: 'Unforkable', category: 'partners', description: 'DeFi engineering specialists building secure smart contracts and full-stack solutions', logo: '/logos/unfork.png', website: 'https://unforkable.co', featured: false },
+  { id: 'exa-group', name: 'Exa Group', category: 'partners', description: 'Comprehensive treasury management and strategic investment advisory to protect and grow your digital assets through battle-tested strategies and cutting-edge technology.', logo: '/logos/ExaWhite.png', website: 'https://www.exagroup.xyz', featured: true },
   { id: 'trustid', name: 'TrustID', category: 'partners', description: 'The new standard for consent and identity management. Portable across the web. Trusted by AI. Built for growth.', logo: '/logos/trustid.svg', website: 'https://www.trustid.life/business', featured: false },
-  { id: 'time-beat', name: 'Time Beat', category: 'service-providers', description: 'An End-To-End Timing & IEEE-1588 Clock sync ecosystem provider.', logo: '/logos/timebeat.svg', website: 'https://www.timebeat.app', featured: true },
+  { id: 'integro', name: 'Integro', category: 'partners', description: 'AI orchestration and custom automation solutions provider.', logo: '/logos/integro.png', website: 'https://integrolabs.io', featured: false },
   { id: 'iskout', name: 'Iskout', category: 'service-providers', description: 'Rapid precision hiring and talent acquisition specialists for tech companies', logo: '/logos/iskout.png', website: 'https://www.iskout.com', featured: false },
   { id: 'ocp-tap', name: 'OCP TAP', category: 'built-on', description: 'Open Compute Project Time Appliances providing IEEE 1588 PTP timing infrastructure', logo: '/logos/ocp.svg', website: 'https://www.opencompute.org/projects/time-appliances-project-tap', featured: true },
   { id: 'polkadot', name: 'Polkadot', category: 'built-on', description: 'Highly customizable, chain-agnostic modular architecture and an extensive suite of tools and libraries, enabling next-level blockchain innovation.', logo: '/logos/polkadot.png', website: 'https://polkadot.com/platform/sdk', featured: true }
@@ -120,14 +122,14 @@ export const Ecosystem: FC = () => {
     useState<'all' | 'partners' | 'service-providers' | 'built-on'>('all');
 
   const [invertMap, setInvertMap] = useState<Record<string, boolean>>({});
-  const [loadedMap, setLoadedMap] = useState<Record<string, boolean>>({}); // NEW: ensure visible immediately
+  const [loadedMap, setLoadedMap] = useState<Record<string, boolean>>({}); // ensure visible immediately
 
   const filteredPartners = useMemo(
     () => (selectedCategory === 'all' ? partners : partners.filter(p => p.category === selectedCategory)),
     [selectedCategory]
   );
 
-  // NEW: Preload currently visible partner logos to avoid Safari/transform lazy glitches
+  // Preload currently visible partner logos to avoid Safari/transform lazy glitches
   useEffect(() => {
     filteredPartners.forEach(p => {
       const src = normalizeLogoSrc(p.logo);
@@ -183,8 +185,15 @@ export const Ecosystem: FC = () => {
   };
 
   return (
-    <section ref={ref} className={styles.ecosystem} role="region" aria-label="ROKO Network ecosystem and partnerships">
-      <div className={styles.container}>
+    <section
+      ref={ref}
+      className={styles.ecosystem}
+      role="region"
+      aria-label="ROKO Network ecosystem and partnerships"
+      // Make the section a flex column so the footer can sit at the bottom of the page/slide.
+      style={{ display: 'flex', flexDirection: 'column', minHeight: '100%' }}
+    >
+      <div className={styles.container} style={{ flex: '1 0 auto' }}>
         {/* Header */}
         <motion.div className={styles.header}
           initial={{ opacity: 0, y: 20 }}
@@ -234,8 +243,6 @@ export const Ecosystem: FC = () => {
                     <img
                       src={src}
                       alt={`${partner.name} logo`}
-                      // IMPORTANT: remove lazy to avoid Safari-in-transform bugs
-                      // loading="eager"
                       decoding="async"
                       crossOrigin="anonymous"
                       className={styles.logoImg}
@@ -243,7 +250,6 @@ export const Ecosystem: FC = () => {
                         width: '100%',
                         height: '100%',
                         objectFit: 'contain',
-                        // Force visible by default; fade is optional if you want:
                         opacity: loaded ? 1 : 1,
                         filter: invert ? 'invert(1)' : undefined,
                         transition: 'filter 160ms ease'
@@ -263,7 +269,6 @@ export const Ecosystem: FC = () => {
                       <span className={styles.partnerCategory}>{partner.category}</span>
                     </div>
                     <p className={styles.partnerDescription}>{partner.description}</p>
-                    {/* link moved to wrapper */}
                   </div>
 
                   {partner.featured && (
@@ -369,10 +374,15 @@ export const Ecosystem: FC = () => {
         </motion.div>
       </div>
 
-      {/* Background Elements */}
-      <div className={styles.backgroundElements}>
+      {/* Background Elements (likely decorative/absolute). Keep in DOM but below footer z-index. */}
+      <div className={styles.backgroundElements} aria-hidden="true">
         <div className={styles.meshPattern} />
         <div className={styles.floatingOrbs} />
+      </div>
+
+      {/* FOOTER pinned to the bottom of the section/slide via flex + margin-top:auto */}
+      <div style={{ marginTop: 'auto', position: 'relative', zIndex: 1 }}>
+        <Footer />
       </div>
 
       <div className="sr-only" aria-live="polite" />

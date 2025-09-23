@@ -66,24 +66,32 @@ export const Hero: FC<HeroProps> = () => {
         initial="hidden"
         animate={inView ? 'visible' : 'hidden'}
       >
+
+
         {/* Main Headline */}
         <motion.div className={styles.headlineContainer} variants={itemVariants}>
-          <h1 className={styles.headline}>
-            <span className={styles.gradientText}>The Temporal Layer</span>
+          <h1 className={styles.mainHeader}>
+            <span className={styles.gradientText}>DECENTRALIZED TIME</span>
             <br />
             <motion.span
-              className={styles.typewriter}
+              className={styles.mainSubheader}
               variants={typewriterVariants}
             >
-              for Web3
+              ROKO NETWORK
             </motion.span>
           </h1>
+        </motion.div>
+        {/* Main Headline */}
+        <motion.div className={styles.headlineContainer} variants={itemVariants}>
+          <h3 className={styles.headline}>
+            <span className={styles.gradientText}>The Temporal Layer for Web3</span>
+          </h3>
         </motion.div>
 
         {/* Subheadline */}
         <motion.p className={styles.subheadline} variants={itemVariants}>
           Time measuring precision blockchain infrastructure powered by{' '}
-          <span className={styles.highlight}>IEEE 1588 PTP</span> hardware synchronization.
+          <span className={styles.highlight}><a href="https://standards.ieee.org/ieee/1588/4355/">IEEE 1588 PTP</a></span> hardware synchronization.
           <br />
           Build the next generation of time-critical Web3 applications.
         </motion.p>

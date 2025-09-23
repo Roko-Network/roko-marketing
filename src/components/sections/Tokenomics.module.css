@@ -2,6 +2,7 @@
 .tokenomics {
   position: relative;
   overflow: hidden;
+  padding-bottom: 2rem;
 }
 
 .container {
@@ -28,6 +29,8 @@
 }
 
 .gradientText {
+  mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+  opacity: 1;
   color: #000000;
 }
 
@@ -36,10 +39,9 @@
   font-size: clamp(1.125rem, 2.5vw, 1.5rem);
   line-height: 1.6;
   color: #000000;
-  max-width: 600px;
+  max-width: 800px;
   margin: 0 auto;
   opacity: 0.7;
-  display: none;
 }
 
 .statsContainer {
@@ -71,9 +73,10 @@
     padding: 2rem 0;
   }
 
-  .statsContainer{
-    display:block;
+  .statsContainer {
+    display: block;
   }
+
   .container {
     padding: 0 16px;
   }

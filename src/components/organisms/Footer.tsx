@@ -19,6 +19,7 @@ interface FooterSection {
 interface SocialLink {
   platform: string;
   href: string;
+  /** Path or URL to icon image (e.g., '/discord.svg') */
   icon: string;
   label: string;
 }
@@ -26,6 +27,13 @@ interface SocialLink {
 export interface FooterProps {
   className?: string;
 }
+
+/** Normalize asset paths (supports '/x.svg', 'x.svg', 'https://...', 'data:') */
+const normalizeAssetSrc = (p?: string) => {
+  if (!p) return '';
+  if (/^(https?:)?\/\//i.test(p) || p.startsWith('data:') || p.startsWith('/')) return p;
+  return `/${p.replace(/^\/?public\//, '')}`;
+};
 
 /**
  * Footer Component
@@ -50,44 +58,14 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
     }
   ];
 
-  // Social media links
+  // Social media links (icons now file paths)
   const socialLinks: SocialLink[] = [
-    {
-      platform: 'twitter',
-      href: 'https://twitter.com/rokonetwork',
-      icon: '𝕏',
-      label: 'Follow ROKO Network on Twitter'
-    },
-    {
-      platform: 'discord',
-      href: 'https://discord.gg/rokonetwork',
-      icon: '💬',
-      label: 'Join ROKO Network Discord'
-    },
-    {
-      platform: 'telegram',
-      href: 'https://t.me/rokonetwork',
-      icon: '✈️',
-      label: 'Join ROKO Network Telegram'
-    },
-    {
-      platform: 'github',
-      href: 'https://github.com/rokonetwork',
-      icon: '🐙',
-      label: 'ROKO Network on GitHub'
-    },
-    {
-      platform: 'docs',
-      href: 'https://docs.roko.network/',
-      icon: '📚',
-      label: 'ROKO Network Documentation'
-    },
-    {
-      platform: 'medium',
-      href: 'https://medium.com/@rokonetwork',
-      icon: '📝',
-      label: 'Read ROKO Network on Medium'
-    }
+    { platform: 'twitter',  href: 'https://twitter.com/rokonetwork',      icon: '/x.svg',  label: 'Follow ROKO Network on Twitter' },
+    { platform: 'discord',  href: 'https://discord.gg/rokonetwork',       icon: '/discord.svg',  label: 'Join ROKO Network Discord' },
+    { platform: 'telegram', href: 'https://t.me/rokonetwork',             icon: '/telegram.svg', label: 'Join ROKO Network Telegram' },
+    { platform: 'github',   href: 'https://github.com/rokonetwork',       icon: '/github.svg',   label: 'ROKO Network on GitHub' },
+    { platform: 'docs',     href: 'https://docs.roko.network/',           icon: '/gitbook.svg',     label: 'ROKO Network Documentation' },
+    { platform: 'medium',   href: 'https://medium.com/@rokonetwork',      icon: '/medium.svg',   label: 'Read ROKO Network on Medium' }
   ];
 
   // Handle newsletter subscription
@@ -124,10 +102,7 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
+      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
     }
   };
 
@@ -136,10 +111,7 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.5,
-        ease: 'easeOut'
-      }
+      transition: { duration: 0.5, ease: 'easeOut' }
     }
   };
 
@@ -158,17 +130,13 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
           <motion.div className={styles.brandSection} variants={sectionVariants}>
             <Link to="/" className={styles.brandLink} aria-label="ROKO Network - Home">
               <div className={styles.brandLogo}>
-                <span className={styles.brandName}>ROKO</span>
-                <span className={styles.brandSubtext}>Network</span>
+                <img src="favicon-roko.png" className={styles.rokoFooterIcon} alt="" />
+                <span className={styles.brandSubtext}>ROKO NETWORK</span>
               </div>
             </Link>
 
             <p className={styles.brandDescription}>
               The Temporal Layer for Web3
-              <br />
-              <span className={styles.precisionTagline}>
-                Hardware timing measurement. Infinite Possibilities.
-              </span>
             </p>
 
             {/* Newsletter subscription */}
@@ -213,48 +181,19 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
                   aria-live="polite"
                 >
                   {subscriptionStatus === 'success' && (
-                    <span className={styles.successMessage}>
-                      ✓ Successfully subscribed!
-                    </span>
+                    <span className={styles.successMessage}>✓ Successfully subscribed!</span>
                   )}
                   {subscriptionStatus === 'error' && (
-                    <span className={styles.errorMessage}>
-                      ✗ Please enter a valid email address
-                    </span>
+                    <span className={styles.errorMessage}>✗ Please enter a valid email address</span>
                   )}
                 </div>
               </form>
-            </div>
-
-            {/* Social links */}
-            <div className={styles.socialLinks}>
-              <h3 className={styles.socialTitle}>Connect With Us</h3>
-              <div className={styles.socialGrid}>
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.platform}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.socialLink}
-                    aria-label={social.label}
-                  >
-                    <span className={styles.socialIcon} aria-hidden="true">
-                      {social.icon}
-                    </span>
-                  </a>
-                ))}
-              </div>
             </div>
           </motion.div>
 
           {/* Navigation sections */}
           {footerSections.map((section) => (
-            <motion.div
-              key={section.title}
-              className={styles.navSection}
-              variants={sectionVariants}
-            >
+            <motion.div key={section.title} className={styles.navSection} variants={sectionVariants}>
               <h3 className={styles.sectionTitle}>{section.title}</h3>
               <ul className={styles.linkList}>
                 {section.links.map((link) => (
@@ -268,14 +207,9 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
                         aria-describedby={link.description ? `${link.href.replace(/[^a-zA-Z0-9]/g, '')}-desc` : undefined}
                       >
                         {link.label}
-                        <span className={styles.externalIcon} aria-label="Opens in new tab">
-                          ↗
-                        </span>
+                        <span className={styles.externalIcon} aria-label="Opens in new tab">↗</span>
                         {link.description && (
-                          <span
-                            id={`${link.href.replace(/[^a-zA-Z0-9]/g, '')}-desc`}
-                            className={styles.srOnly}
-                          >
+                          <span id={`${link.href.replace(/[^a-zA-Z0-9]/g, '')}-desc`} className={styles.srOnly}>
                             {link.description}
                           </span>
                         )}
@@ -288,10 +222,7 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
                       >
                         {link.label}
                         {link.description && (
-                          <span
-                            id={`${link.href.replace(/[^a-zA-Z0-9]/g, '')}-desc`}
-                            className={styles.srOnly}
-                          >
+                          <span id={`${link.href.replace(/[^a-zA-Z0-9]/g, '')}-desc`} className={styles.srOnly}>
                             {link.description}
                           </span>
                         )}
@@ -302,6 +233,33 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
               </ul>
             </motion.div>
           ))}
+
+          {/* Social links (icons rendered from file paths) */}
+          <div className={styles.socialLinks}>
+          <span className={styles.socialTitle}>
+          Discover Roko</span>
+            <div className={styles.socialGrid}>
+              {socialLinks.map((social) => (
+                <a
+                  key={social.platform}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.socialLink}
+                  aria-label={social.label}
+                >
+                  <img
+                    src={normalizeAssetSrc(social.icon)}
+                    className={styles.socialIcon}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
         </motion.div>
 
         {/* Bottom section */}
@@ -318,15 +276,9 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
                 © {new Date().getFullYear()} ROKO Network. All rights reserved.
               </p>
               <div className={styles.legalLinks}>
-                <Link to="/privacy" className={styles.legalLink}>
-                  Privacy Policy
-                </Link>
-                <Link to="/terms" className={styles.legalLink}>
-                  Terms of Service
-                </Link>
-                <Link to="/cookies" className={styles.legalLink}>
-                  Cookie Policy
-                </Link>
+                <Link to="/privacy" className={styles.legalLink}>Privacy Policy</Link>
+                <Link to="/terms" className={styles.legalLink}>Terms of Service</Link>
+                <Link to="/cookies" className={styles.legalLink}>Cookie Policy</Link>
               </div>
             </div>
 
@@ -343,3 +295,8 @@ export const Footer: FC<FooterProps> = memo(({ className }) => {
 });
 
 Footer.displayName = 'Footer';
+
+// ✅ support both import styles:
+//    import Footer from '.../Footer'
+//    import { Footer } from '.../Footer'
+export default Footer;

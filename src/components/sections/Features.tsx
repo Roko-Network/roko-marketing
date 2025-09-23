@@ -128,7 +128,7 @@ export const Features: FC = () => {
         '0 0 40px rgba(0, 120, 212, 0.2)',
         '0 0 20px rgba(0, 120, 212, 0.1)'
       ],
-      borderColor: '#0078D4',
+      borderColor: '#000000',
       transition: {
         duration: 0.3,
         ease: 'easeInOut'

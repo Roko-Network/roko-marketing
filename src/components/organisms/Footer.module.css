@@ -22,10 +22,21 @@
    ============================================================================= */
 
 .footer {
-  background: var(--bg-primary);
-  border-top: 1px solid var(--border-primary);
   padding: 2rem 0 2rem;
   margin-top: auto;
+  position: relative;
+}
+
+.footer::after {
+  content: '';
+
+  mask: linear-gradient(to top, black, #000e, #0008, #0004, transparent);
+  backdrop-filter: blur(16px)brightness(1.5);
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0px;
 }
 
 .container {
@@ -38,13 +49,17 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
-  margin-bottom: 3rem;
+}
+
+.rokoFooterIcon {
+  height: 32px;
+  margin: auto 0px;
 }
 
 /* Desktop grid layout */
 @media (min-width: 768px) {
   .content {
-    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1fr 1fr ;
     gap: 2rem;
   }
 }
@@ -96,18 +111,21 @@
 }
 
 .brandSubtext {
-  font-family: var(--font-body);
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 100;
   color: var(--text-primary);
   letter-spacing: 0.05em;
+  margin: auto 0.5rem;
   text-transform: uppercase;
 }
 
 @keyframes gradientShift {
-  0%, 100% {
+
+  0%,
+  100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -161,12 +179,14 @@
   gap: 0.5rem;
   align-items: stretch;
 }
-
+input:focus {
+  outline: none;
+}
 .emailInput {
   flex: 1;
   padding: 0.875rem 1rem;
   background: var(--bg-primary);
-  border: 1px solid var(--border-medium);
+  border: 2px solid var(--border-medium);
   border-radius: 6px;
   color: var(--text-primary);
   font-family: var(--font-body);
@@ -274,7 +294,7 @@
 .socialTitle {
   font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 400;
   color: var(--text-primary);
   margin: 0;
   letter-spacing: 0.025em;
@@ -282,7 +302,7 @@
 
 .socialGrid {
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   flex-wrap: wrap;
 }
 
@@ -290,10 +310,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-medium);
+  width: 64px;
+  height: 64px;
   border-radius: 8px;
   color: var(--text-secondary);
   text-decoration: none;
@@ -309,7 +327,6 @@
 }
 
 .socialLink:focus {
-  outline: 2px solid #00000022;
   outline-offset: 2px;
 }
 
@@ -333,7 +350,7 @@
   color: var(--text-primary);
   font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 400;
   margin: 0;
   letter-spacing: 0.025em;
 }
@@ -348,24 +365,25 @@
 }
 
 .footerLink {
-  color: var(--text-secondary);
+  color:black;
+  padding:0.5rem 1rem;
   text-decoration: none;
-  font-family: var(--font-body);
   font-size: 15px;
-  font-weight: 400;
+  border:2px solid black;
+  font-weight: 500;
   line-height: 1.5;
   transition: all 0.2s ease;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.25rem 0;
   border-radius: 4px;
   min-height: 44px;
 }
 
 .footerLink:hover {
-  color: var(--text-primary);
   transform: translateX(4px);
+  background:black;color:white;
 }
 
 .footerLink:focus {
@@ -390,7 +408,6 @@
    ============================================================================= */
 
 .bottom {
-  border-top: 1px solid var(--border-medium);
   padding-top: 2rem;
 }
 
@@ -580,6 +597,7 @@
 
 /* Touch device optimizations */
 @media (hover: none) and (pointer: coarse) {
+
   .footerLink,
   .legalLink,
   .socialLink {

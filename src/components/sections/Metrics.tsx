@@ -88,6 +88,10 @@ export const GovernanceProposals: FC = () => {
       role="region"
       aria-label="ROKO Network governance proposals"
     >
+        {/* ⬇️ Insert Tokenomics here, underneath proposals (or empty-state) and before the Snapshot CTA */}
+        <Tokenomics />
+        <br />
+        <br />
       <div className={styles.container}>
         <motion.div
           className={styles.header}
@@ -213,8 +217,6 @@ export const GovernanceProposals: FC = () => {
           </div>
         )}
 
-        {/* ⬇️ Insert Tokenomics here, underneath proposals (or empty-state) and before the Snapshot CTA */}
-        <Tokenomics />
 
         <motion.div
           className={styles.cta}
