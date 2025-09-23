@@ -16,7 +16,7 @@ const PressPage: React.FC = () => {
       id: '2024-q3-launch',
       date: 'October 15, 2024',
       title: 'ROKO Network Announces Testnet Launch with Nanosecond Precision',
-      summary: 'Revolutionary temporal blockchain infrastructure goes live for developer testing'
+      summary: 'Novel temporal blockchain infrastructure goes live for developer testing'
     },
     {
       id: '2024-funding',

@@ -155,7 +155,7 @@ export const Features: FC = () => {
             <span className={styles.gradientText}>Temporal Precision at Scale</span>
           </h2>
           <p className={styles.subtitle}>
-            Revolutionary blockchain infrastructure combining nanosecond timing accuracy
+            Novel blockchain infrastructure combining nanosecond timing accuracy
             with enterprise-grade reliability for the next generation of Web3 applications.
           </p>
         </motion.div>
