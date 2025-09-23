@@ -1,7 +1,7 @@
 /* Ecosystem Section Styles */
 .ecosystem {
   position: relative;
-padding-top:6rem;
+  padding-top: 6rem;
   color: #000000;
   overflow: hidden;
 }
@@ -39,7 +39,9 @@ padding-top:6rem;
 }
 
 .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;  color: #000000;
+  mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+  opacity: 1;
+  color: #000000;
 }
 
 .subtitle {
@@ -143,9 +145,10 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   border-color: #00000022;
 }
 
-.rokoIcon{
-  height:200px;
+.rokoIcon {
+  height: 200px;
 }
+
 .featuredBadge {
   position: absolute;
   top: 1rem;
@@ -210,7 +213,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 }
 
 .partnerCard .partnerLogo {
-transition:all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .partnerCard:hover .partnerLogo {
@@ -218,11 +221,12 @@ transition:all 0.5s ease;
 }
 
 .partnerCard .partnerCategory {
-transition:all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .partnerCard:hover .partnerCategory {
-background:black;color:white;
+  background: black;
+  color: white;
 }
 
 .partnerCard:hover .logoPlaceholder {
@@ -915,7 +919,7 @@ background:black;color:white;
 @media (max-width: 768px) {
   .ecosystem {
     padding: 2rem 0;
-    padding-bottom:unset;
+    padding-bottom: unset;
   }
 
   .container {
@@ -1040,7 +1044,9 @@ background:black;color:white;
   }
 
   .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;    background: none;
+    mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+    opacity: 1;
+    background: none;
     -webkit-text-fill-color: initial;
     color: #ffffff;
   }

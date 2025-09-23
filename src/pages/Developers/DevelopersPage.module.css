@@ -14,13 +14,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    135deg,
-    #000000 0%,
-    #0a0a0a 30%,
-    #181818 70%,
-    #000000 100%
-  );
+  background: linear-gradient(135deg,
+      #000000 0%,
+      #0a0a0a 30%,
+      #181818 70%,
+      #000000 100%);
   z-index: 1;
 }
 
@@ -31,11 +29,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(
-    ellipse at 70% 30%,
-    rgba(0, 212, 170, 0.08) 0%,
-    transparent 60%
-  );
+  background: radial-gradient(ellipse at 70% 30%,
+      rgba(0, 212, 170, 0.08) 0%,
+      transparent 60%);
   z-index: 2;
 }
 
@@ -64,7 +60,9 @@
 }
 
 .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;  background: linear-gradient(135deg, #00d4aa 0%, #ffffff 100%);
+  mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+  opacity: 1;
+  background: linear-gradient(135deg, #00d4aa 0%, #ffffff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -264,8 +262,15 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .glowEffect {
@@ -281,8 +286,17 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.1); }
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
 }
 
 /* Responsive Design */
@@ -341,7 +355,9 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   }
 
   .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;    background: none;
+    mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+    opacity: 1;
+    background: none;
     -webkit-text-fill-color: initial;
     color: #ffffff;
   }
@@ -349,6 +365,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
   .gridOverlay,
   .glowEffect {
     animation: none;

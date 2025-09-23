@@ -145,9 +145,12 @@
 }
 
 @keyframes temporal-breathe {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: var(--shadow-temporal);
   }
+
   50% {
     box-shadow: var(--shadow-glow);
   }
@@ -320,14 +323,12 @@
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(
-    135deg,
-    var(--color-accent) 0%,
-    transparent 25%,
-    var(--color-primary) 50%,
-    transparent 75%,
-    var(--color-accent) 100%
-  );
+  background: linear-gradient(135deg,
+      var(--color-accent) 0%,
+      transparent 25%,
+      var(--color-primary) 50%,
+      transparent 75%,
+      var(--color-accent) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -342,34 +343,30 @@
 
 @keyframes holographic-flow {
   0% {
-    background: linear-gradient(
-      135deg,
-      var(--color-accent) 0%,
-      transparent 25%,
-      var(--color-primary) 50%,
-      transparent 75%,
-      var(--color-accent) 100%
-    );
+    background: linear-gradient(135deg,
+        var(--color-accent) 0%,
+        transparent 25%,
+        var(--color-primary) 50%,
+        transparent 75%,
+        var(--color-accent) 100%);
   }
+
   50% {
-    background: linear-gradient(
-      135deg,
-      var(--color-primary) 0%,
-      transparent 25%,
-      var(--color-accent) 50%,
-      transparent 75%,
-      var(--color-primary) 100%
-    );
+    background: linear-gradient(135deg,
+        var(--color-primary) 0%,
+        transparent 25%,
+        var(--color-accent) 50%,
+        transparent 75%,
+        var(--color-primary) 100%);
   }
+
   100% {
-    background: linear-gradient(
-      135deg,
-      var(--color-accent) 0%,
-      transparent 25%,
-      var(--color-primary) 50%,
-      transparent 75%,
-      var(--color-accent) 100%
-    );
+    background: linear-gradient(135deg,
+        var(--color-accent) 0%,
+        transparent 25%,
+        var(--color-primary) 50%,
+        transparent 75%,
+        var(--color-accent) 100%);
   }
 }
 
@@ -420,10 +417,13 @@
 }
 
 @keyframes temporal-particle {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0;
     transform: scale(0);
   }
+
   50% {
     opacity: 1;
     transform: scale(1);
@@ -635,6 +635,7 @@
    ============================================================================= */
 
 @media (max-width: 768px) {
+
   .card--lg,
   .card--xl {
     padding: var(--space-6);
@@ -704,6 +705,7 @@
    ============================================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
   .card,
   .cardImage,
   .featureCta {

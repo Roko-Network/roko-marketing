@@ -32,7 +32,9 @@
 }
 
 .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;  color: var(--text-primary);
+  mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+  opacity: 1;
+  color: var(--text-primary);
 }
 
 .subtitle {
@@ -176,10 +178,12 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 .cardContent:hover .backgroundPattern {
   opacity: 1;
 }
+
 .backgroundElements,
 .hoverOverlay,
 .backgroundPattern {
-  pointer-events: none; /* already true in your CSS for some */
+  pointer-events: none;
+  /* already true in your CSS for some */
 }
 
 /* Background Elements */
@@ -245,7 +249,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 
 
   .iconContainer {
-    
+
     gap: 1rem;
   }
 
@@ -283,7 +287,9 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   }
 
   .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;    background: none;
+    mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+    opacity: 1;
+    background: none;
     -webkit-text-fill-color: initial;
     color: #ffffff;
   }
