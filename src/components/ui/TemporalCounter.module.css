@@ -43,11 +43,9 @@
 
 /* Atomic Variant - Clock Aesthetic */
 .temporalCounter--atomic {
-  background: radial-gradient(
-    circle at center,
-    rgba(0, 212, 170, 0.1) 0%,
-    rgba(24, 24, 24, 0.9) 60%
-  );
+  background: radial-gradient(circle at center,
+      rgba(0, 212, 170, 0.1) 0%,
+      rgba(24, 24, 24, 0.9) 60%);
   border: 2px solid rgba(0, 212, 170, 0.3);
   box-shadow:
     var(--shadow-glow),
@@ -56,12 +54,10 @@
 
 /* Quantum Variant - Particle Effects */
 .temporalCounter--quantum {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 212, 170, 0.15) 0%,
-    rgba(24, 24, 24, 0.9) 30%,
-    rgba(186, 192, 204, 0.1) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(0, 212, 170, 0.15) 0%,
+      rgba(24, 24, 24, 0.9) 30%,
+      rgba(186, 192, 204, 0.1) 100%);
   border: 1px solid transparent;
   background-clip: padding-box;
   position: relative;
@@ -73,13 +69,11 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(
-      135deg,
-      var(--color-accent) 0%,
-      transparent 30%,
-      var(--color-primary) 70%,
-      transparent 100%
-    );
+    background: linear-gradient(135deg,
+        var(--color-accent) 0%,
+        transparent 30%,
+        var(--color-primary) 70%,
+        transparent 100%);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -234,12 +228,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.3) 50%,
-      transparent 100%
-    );
+    background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        transparent 100%);
     animation: accuracy-shimmer 2s ease-in-out infinite;
   }
 }
@@ -528,7 +520,7 @@
   min-width: 80px;
 }
 
-.timerUnit + .timerUnit::before {
+.timerUnit+.timerUnit::before {
   content: ':';
   color: var(--text-tertiary);
   font-size: var(--text-h3);
@@ -545,39 +537,38 @@
 /* Quantum Effects */
 @keyframes quantum-border-flow {
   0% {
-    background: linear-gradient(
-      135deg,
-      var(--color-accent) 0%,
-      transparent 30%,
-      var(--color-primary) 70%,
-      transparent 100%
-    );
+    background: linear-gradient(135deg,
+        var(--color-accent) 0%,
+        transparent 30%,
+        var(--color-primary) 70%,
+        transparent 100%);
   }
+
   50% {
-    background: linear-gradient(
-      135deg,
-      var(--color-primary) 0%,
-      transparent 30%,
-      var(--color-accent) 70%,
-      transparent 100%
-    );
+    background: linear-gradient(135deg,
+        var(--color-primary) 0%,
+        transparent 30%,
+        var(--color-accent) 70%,
+        transparent 100%);
   }
+
   100% {
-    background: linear-gradient(
-      135deg,
-      var(--color-accent) 0%,
-      transparent 30%,
-      var(--color-primary) 70%,
-      transparent 100%
-    );
+    background: linear-gradient(135deg,
+        var(--color-accent) 0%,
+        transparent 30%,
+        var(--color-primary) 70%,
+        transparent 100%);
   }
 }
 
 @keyframes quantum-particle {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0;
     transform: scale(0) translateY(0);
   }
+
   50% {
     opacity: 1;
     transform: scale(1) translateY(-10px);
@@ -586,10 +577,13 @@
 
 /* Synchronization Effects */
 @keyframes sync-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     border-color: var(--border-primary);
     box-shadow: none;
   }
+
   50% {
     border-color: var(--color-accent);
     box-shadow: var(--shadow-glow);
@@ -601,6 +595,7 @@
     transform: scale(1);
     opacity: 0.5;
   }
+
   100% {
     transform: scale(3);
     opacity: 0;
@@ -608,38 +603,53 @@
 }
 
 @keyframes syncing-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
 }
 
 @keyframes drift-flicker {
-  0%, 80%, 100% {
+
+  0%,
+  80%,
+  100% {
     opacity: 1;
   }
-  85%, 95% {
+
+  85%,
+  95% {
     opacity: 0.3;
   }
 }
 
 @keyframes error-blink {
-  0%, 50% {
+
+  0%,
+  50% {
     opacity: 1;
   }
-  51%, 100% {
+
+  51%,
+  100% {
     opacity: 0.3;
   }
 }
 
 /* Value Animations */
 @keyframes temporal-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     filter: brightness(1);
   }
+
   50% {
     transform: scale(1.02);
     filter: brightness(1.1);
@@ -647,9 +657,12 @@
 }
 
 @keyframes value-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
   }
+
   50% {
     text-shadow:
       0 0 15px rgba(0, 212, 170, 0.8),
@@ -658,19 +671,25 @@
 }
 
 @keyframes temporal-drift {
-  0%, 100% {
+
+  0%,
+  100% {
     filter: blur(0px);
   }
+
   50% {
     filter: blur(0.5px);
   }
 }
 
 @keyframes value-drift {
-  0%, 100% {
+
+  0%,
+  100% {
     text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
     filter: hue-rotate(0deg);
   }
+
   50% {
     text-shadow: 0 0 8px rgba(0, 212, 170, 0.3);
     filter: hue-rotate(10deg);
@@ -678,36 +697,49 @@
 }
 
 @keyframes temporal-glitch {
-  0%, 90%, 100% {
+
+  0%,
+  90%,
+  100% {
     transform: translateX(0);
   }
+
   92% {
     transform: translateX(-2px);
   }
+
   94% {
     transform: translateX(2px);
   }
+
   96% {
     transform: translateX(-1px);
   }
+
   98% {
     transform: translateX(1px);
   }
 }
 
 @keyframes value-glitch {
-  0%, 90%, 100% {
+
+  0%,
+  90%,
+  100% {
     filter: hue-rotate(0deg);
     text-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
   }
+
   91% {
     filter: hue-rotate(90deg);
     text-shadow: 0 0 5px rgba(255, 0, 100, 0.8);
   }
+
   93% {
     filter: hue-rotate(-90deg);
     text-shadow: 0 0 5px rgba(0, 255, 150, 0.8);
   }
+
   95% {
     filter: hue-rotate(180deg);
     text-shadow: 0 0 8px rgba(100, 150, 255, 0.6);
@@ -716,9 +748,12 @@
 
 /* Utility Animations */
 @keyframes accuracy-shimmer {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(-100%);
   }
+
   50% {
     transform: translateX(100%);
   }
@@ -728,25 +763,34 @@
   0% {
     background-position: 0 0;
   }
+
   100% {
     background-position: 8px 8px;
   }
 }
 
 @keyframes real-time-blink {
-  0%, 50% {
+
+  0%,
+  50% {
     opacity: 1;
   }
-  51%, 100% {
+
+  51%,
+  100% {
     opacity: 0.3;
   }
 }
 
 @keyframes separator-blink {
-  0%, 50% {
+
+  0%,
+  50% {
     opacity: 1;
   }
-  51%, 100% {
+
+  51%,
+  100% {
     opacity: 0.5;
   }
 }
@@ -772,7 +816,7 @@
     gap: var(--space-2);
   }
 
-  .timerUnit + .timerUnit::before {
+  .timerUnit+.timerUnit::before {
     margin: 0 var(--space-1);
     font-size: var(--text-h4);
   }
@@ -788,6 +832,7 @@
    ============================================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
   .temporalCounter,
   .counterValue,
   .quantumParticle,

@@ -24,7 +24,9 @@
 }
 
 .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;  background: #000000;
+  mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+  opacity: 1;
+  background: #000000;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -55,7 +57,9 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .loading p {
@@ -125,7 +129,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 .status {
   padding: 6px 12px;
   border-radius: 0.25rem;
-  color: #000000aa;
+  color: #000000;
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -172,7 +176,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 
 /* Vote Results */
 .voteResults {
-  background: #00000022;
+  background: #000000;
   border-radius: 12px;
   padding: 16px;
   user-select: none;
@@ -202,8 +206,8 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   display: flex;
   align-items: center;
   gap: 6px;
+  color: #00d4aa;
   font-size: 0.9rem;
-  color: var(--text-secondary);
 }
 
 .voteIcon {

@@ -152,9 +152,7 @@ export const Features: FC = () => {
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
         >
           <h2 className={styles.title}>
-            <span className={styles.gradientText}>Temporal Precision</span>
-            <br />
-            <span >at Scale</span>
+            <span className={styles.gradientText}>Temporal Precision at Scale</span>
           </h2>
           <p className={styles.subtitle}>
             Revolutionary blockchain infrastructure combining nanosecond timing accuracy

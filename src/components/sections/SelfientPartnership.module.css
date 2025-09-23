@@ -25,7 +25,9 @@
 }
 
 .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;  background: #000000;
+  mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+  opacity: 1;
+  background: #000000;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -81,7 +83,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 .proposalLink:hover {
   gap: 12px;
   color: #ffffff;
-  background:#000000;
+  background: #000000;
 
 }
 
@@ -119,8 +121,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   user-select: none;
 }
 
-.featureItem:hover {
-}
+.featureItem:hover {}
 
 .featureIcon {
   width: 40px;
@@ -165,15 +166,14 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   user-select: none;
 }
 
-.descriptionItem:hover {
-}
+.descriptionItem:hover {}
 
 .descriptionIcon {
   width: 40px;
   height: 40px;
   color: #000000;
   margin-bottom: 16px;
-  display:none;
+  display: none;
 }
 
 .descriptionItem h4 {
@@ -193,7 +193,8 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   .selfientPartnership {
     padding: 2rem 0;
   }
-  .container{}
+
+  .container {}
 
   .overview,
   .features,

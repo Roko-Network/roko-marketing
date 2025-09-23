@@ -33,7 +33,9 @@
 }
 
 .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;  color: #000000;
+  mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+  opacity: 1;
+  color: #000000;
 }
 
 .subtitle {
@@ -293,7 +295,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   grid-template-columns: 1fr 1fr 1fr;
   gap: 2px;
   background: #000000;
-  border:1px solid #000000;
+  border: 1px solid #000000;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -302,7 +304,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   display: contents;
 }
 
-.tableHeader > div {
+.tableHeader>div {
   background: #000000;
   padding: 1rem;
   font-family: var(--font-display, 'Rajdhani', sans-serif);
@@ -319,14 +321,14 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   background: #f0f0f0;
 }
 
-.tableRow > div {
+.tableRow>div {
   background: #FFFFFF;
   padding: 1rem;
   font-family: var(--font-body, 'HK Guise', sans-serif);
   color: #000000;
 }
 
-.tableRow.highlighted > div {
+.tableRow.highlighted>div {
   background: #f0f0f0;
 }
 
@@ -354,7 +356,8 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
-  overflow-x: auto;  border: 1px solid #e5e5e5;
+  overflow-x: auto;
+  border: 1px solid #e5e5e5;
 
 }
 
@@ -376,7 +379,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   padding: 1.5rem;
   border-radius: 8px;
   background: #f5f5f5;
-    border: 1px solid #e5e5e5;
+  border: 1px solid #e5e5e5;
 
 }
 
@@ -522,15 +525,23 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
     overflow: hidden;
   }
 
-  .tableRow > div {
+  .tableRow>div {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
 
-  .tableRow > div:first-child::after { content: "Feature"; }
-  .tableRow > div:nth-child(2)::after { content: "Traditional"; }
-  .tableRow > div:nth-child(3)::after { content: "ROKO"; }
+  .tableRow>div:first-child::after {
+    content: "Feature";
+  }
+
+  .tableRow>div:nth-child(2)::after {
+    content: "Traditional";
+  }
+
+  .tableRow>div:nth-child(3)::after {
+    content: "ROKO";
+  }
 }
 
 @media (max-width: 768px) {
@@ -622,6 +633,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
+
   .visualizationCard,
   .metricsCard,
   .deepDive {
@@ -635,7 +647,9 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   }
 
   .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;    background: none;
+    mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+    opacity: 1;
+    background: none;
     -webkit-text-fill-color: initial;
     color: #ffffff;
   }
@@ -671,6 +685,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 
 /* Glass morphism enhancement */
 @supports (backdrop-filter: blur(10px)) {
+
   .visualizationCard,
   .metricsCard,
   .deepDive {
@@ -680,6 +695,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 }
 
 @supports not (backdrop-filter: blur(10px)) {
+
   .visualizationCard,
   .metricsCard,
   .deepDive {
@@ -689,6 +705,13 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 
 /* Add ethereal floating animation */
 @keyframes float {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.05); }
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
 }

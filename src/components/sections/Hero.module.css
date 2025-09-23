@@ -3,7 +3,7 @@
   position: relative;
   min-height: calc(100vh - 100px);
   display: flex;
-  padding:unset!important;
+  padding: unset !important;
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -21,6 +21,7 @@
   background: transparent;
   z-index: 1;
   overflow: hidden;
+  display: none;
 }
 
 .backgroundGradient::before {
@@ -75,7 +76,7 @@
 
 .headline {
   font-family: var(--font-display, 'Rajdhani', sans-serif);
-  font-size: clamp(1.875rem, 6vw, 3rem);
+  font-size: clamp(1.875rem, 6vw, 3rem)!important;
   /* Reduced from clamp(2.5rem, 8vw, 4.5rem) */
   font-weight: 300;
   line-height: 1.1;
@@ -84,22 +85,57 @@
 }
 
 .mainHeader {
-  font-size: 4rem;
+  font-size: clamp(2.4rem, 6vw, 5rem)!important;
   font-weight: 700;
-  margin-bottom: unset !important;
+  margin-bottom: -1rem !important;
 }
-
 .mainSubheader {
-  letter-spacing: 1.5rem;
+  letter-spacing: 2rem;
   font-weight: 100;
-  margin-right: -1.5rem;
-  opacity: 0.4;
-  font-size: 1.5rem !important;
-
+  margin-right: -1rem;
+  opacity: 0.2;
+  font-size: clamp(2rem, 6vw, 2.5rem) !important;
+  position: relative;
+  padding-left:1rem;
+  isolation: isolate; /* keeps the overlay’s blur from bleeding outside */
 }
+
+/* Overlay that blurs the background only at the edges */
+.mainSubheader::after {
+  content: "";
+  position: absolute;
+  inset: 0;                /* cover the element box */
+  pointer-events: none;
+
+  /* blur what’s behind this element */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  /* mask so only the edges show the blur, center is transparent (clear) */
+  mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 45%,
+    rgba(0, 0, 0, 0.6) 65%,
+    rgba(0, 0, 0, 0.85) 80%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0) 45%,
+    rgba(0, 0, 0, 0.6) 65%,
+    rgba(0, 0, 0, 0.85) 80%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  mask-mode: alpha;
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+}
+
 
 .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;  color: var(--text-primary);
+  mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+  opacity: 1;
+  color: var(--text-primary);
 }
 
 .typewriter {
@@ -148,11 +184,12 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 }
 
 .highlight {
-  color: var(--text-primary)!important;
+  color: var(--text-primary) !important;
   font-weight: 600;
 }
-.highlight > a{
-    color: var(--text-primary)!important;
+
+.highlight>a {
+  color: var(--text-primary) !important;
 
 }
 
@@ -227,6 +264,29 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 
 /* Responsive Design */
 @media (max-width: 768px) {
+
+.mainHeader {
+  font-weight: 700;
+  margin-bottom: unset !important;
+}
+
+.mainSubheader {
+  letter-spacing: 0.5rem;
+  font-weight: 100;
+  padding-left:0.5rem;
+  margin-right: -0.5rem;
+  opacity: 0.4;
+
+}
+
+.headline {
+  font-family: var(--font-display, 'Rajdhani', sans-serif);
+  /* Reduced from clamp(2.5rem, 8vw, 4.5rem) */
+  font-weight: 300;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
   .content {
     padding: 1.5rem;
     gap: 1.5rem;
@@ -275,7 +335,9 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   }
 
   .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;    background: none;
+    mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+    opacity: 1;
+    background: none;
     -webkit-text-fill-color: initial;
     color: #1A202C;
   }

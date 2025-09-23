@@ -68,17 +68,17 @@ export const Hero: FC<HeroProps> = () => {
       >
 
 
-        {/* Main Headline */}
-        <motion.div className={styles.headlineContainer} variants={itemVariants}>
-          <h1 className={styles.mainHeader}>
-            <span className={styles.gradientText}>DECENTRALIZED TIME</span>
-            <br />
             <motion.span
               className={styles.mainSubheader}
-              variants={typewriterVariants}
+              variants={containerVariants}
             >
               ROKO NETWORK
             </motion.span>
+        {/* Main Headline */}
+        <motion.div className={styles.headlineContainer} variants={itemVariants}>
+
+          <h1 className={styles.mainHeader}>
+            <span className={styles.gradientText}>DECENTRALIZED TIME</span>
           </h1>
         </motion.div>
         {/* Main Headline */}

@@ -24,7 +24,9 @@
 }
 
 .gradientText {
-mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;  background: #000000;
+  mask: linear-gradient(to right, #00000088, #000000aa, #000000cc, #000000aa, #00000088);
+  opacity: 1;
+  background: #000000;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -49,10 +51,8 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   grid-template-columns: 1fr 1fr;
   gap: 60px;
   align-items: center;
-  backdrop-filter: blur(10px);
   border-radius: 16px;
   padding: 60px;
-  border: 2px solid #00000022;
 }
 
 .eggVisual {
@@ -68,7 +68,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 }
 
 .egg {
-  background:transparent;
+  background: transparent;
   /*
   position: absolute;
   top: 50%;
@@ -95,8 +95,17 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 }
 
 @keyframes sparkle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.7; transform: scale(1.1); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
 }
 
 .eggGlow {
@@ -114,8 +123,17 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 }
 
 @keyframes pulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-  50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.8;
+  }
 }
 
 .particles {
@@ -135,18 +153,62 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   */
 }
 
-.particle:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
-.particle:nth-child(2) { top: 80%; left: 20%; animation-delay: 0.5s; }
-.particle:nth-child(3) { top: 40%; left: 80%; animation-delay: 1s; }
-.particle:nth-child(4) { top: 70%; left: 70%; animation-delay: 1.5s; }
-.particle:nth-child(5) { top: 30%; left: 30%; animation-delay: 2s; }
-.particle:nth-child(6) { top: 60%; left: 90%; animation-delay: 2.5s; }
+.particle:nth-child(1) {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+  top: 80%;
+  left: 20%;
+  animation-delay: 0.5s;
+}
+
+.particle:nth-child(3) {
+  top: 40%;
+  left: 80%;
+  animation-delay: 1s;
+}
+
+.particle:nth-child(4) {
+  top: 70%;
+  left: 70%;
+  animation-delay: 1.5s;
+}
+
+.particle:nth-child(5) {
+  top: 30%;
+  left: 30%;
+  animation-delay: 2s;
+}
+
+.particle:nth-child(6) {
+  top: 60%;
+  left: 90%;
+  animation-delay: 2.5s;
+}
 
 @keyframes float {
-  0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(-100px) translateX(20px);
+    opacity: 0;
+  }
 }
 
 .eggContent {
@@ -209,7 +271,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #0078D4;
+  color: black;
   text-decoration: none;
   font-weight: 600;
   font-size: 1.1rem;
@@ -232,7 +294,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   border-radius: 16px;
   padding: 60px;
   border: 2px solid #00000022;
-  display:none;
+  display: none;
 }
 
 .robitProcess h3 {
@@ -265,8 +327,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   border: 1px solid #e5e5e5;
 }
 
-.step:hover {
-}
+.step:hover {}
 
 .stepNumber {
   display: inline-flex;
@@ -298,7 +359,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 .stepConnector {
   width: 40px;
   height: 2px;
-  background:#f5f5f5;
+  background: #f5f5f5;
   position: relative;
 }
 
@@ -336,14 +397,13 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 .fact {
   text-align: center;
   padding: 30px 20px;
-  background:#f5f5f5;
+  background: #f5f5f5;
   border-radius: 0.5rem;
   transition: all 0.3s ease;
   border: 1px solid #e5e5e5;
 }
 
-.fact:hover {
-}
+.fact:hover {}
 
 .factEmoji {
   font-size: 3rem;
@@ -362,7 +422,7 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   border-radius: 16px;
   padding: 60px;
   text-align: center;
-  border:2px solid #00000022;
+  border: 2px solid #00000022;
   color: white;
 }
 
@@ -401,19 +461,19 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 
 .primaryButton {
   background: white;
-  border:2px solid #00000022;
+  border: 2px solid #00000022;
   color: #000000;
 }
 
 .primaryButton:hover {
   background: #000000;
-  color:#ffffff;
+  color: #ffffff;
 }
 
 .secondaryButton {
   background: transparent;
   color: white;
-  background:#000000;
+  background: #000000;
 }
 
 .secondaryButton:hover {
@@ -440,13 +500,11 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: repeating-linear-gradient(
-    90deg,
-    transparent,
-    transparent 100px,
-    rgba(147, 51, 234, 0.02) 100px,
-    rgba(147, 51, 234, 0.02) 101px
-  );
+  background-image: repeating-linear-gradient(90deg,
+      transparent,
+      transparent 100px,
+      rgba(147, 51, 234, 0.02) 100px,
+      rgba(147, 51, 234, 0.02) 101px);
 }
 
 .floatingOrbs {
@@ -463,9 +521,19 @@ mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #000000
 }
 
 @keyframes float-orb {
-  0%, 100% { transform: translateY(0) translateX(0); }
-  33% { transform: translateY(-30px) translateX(20px); }
-  66% { transform: translateY(20px) translateX(-20px); }
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+
+  33% {
+    transform: translateY(-30px) translateX(20px);
+  }
+
+  66% {
+    transform: translateY(20px) translateX(-20px);
+  }
 }
 
 /* Responsive Design */
