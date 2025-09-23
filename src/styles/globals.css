@@ -545,6 +545,8 @@ textarea::placeholder {
   font-size: var(--text-lg);
 }
 
+.tsqd-parent-container{display:none!important;}
+
 /* Status Components */
 .status-badge {
   display: inline-flex;

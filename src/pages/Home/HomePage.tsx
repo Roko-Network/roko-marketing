@@ -21,8 +21,15 @@ type SceneParams = {
 
 const TRANSITION_MS = 600;
 
-// Pull-to-paginate tuning
-const PULL_THRESHOLD_FRAC = 0.25;   // 25% of viewport width to snap
+// ─────────────────────────────────────────────────────────────────────────────
+// ORIENTATION TOGGLE
+// Set this to true for VERTICAL pagination (default), false for HORIZONTAL.
+// You can override this locally in the file as needed.
+const PAGINATE_VERTICAL = true;
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Pull-to-paginate tuning (fractions of the active axis length)
+const PULL_THRESHOLD_FRAC = 0.25;   // 25% of axis to snap
 const PULL_MAX_FRAC = 0.35;         // max rubberband pull
 const PULL_RELEASE_MS = 200;        // spring-back delay after last wheel/touch
 
@@ -114,10 +121,10 @@ const normalizeWheel = (e: WheelEvent) => {
   return px;
 };
 
-/** Only allow horizontal pull if neighbor page exists in that direction */
+/** Only allow deck pull if neighbor page exists in that direction */
 const canPullDeck = (dir: 1 | -1, curIndex: number, maxIndex: number) => {
-  if (dir > 0) return curIndex < maxIndex; // pulling left (next)
-  if (dir < 0) return curIndex > 0;        // pulling right (prev)
+  if (dir > 0) return curIndex < maxIndex; // next
+  if (dir < 0) return curIndex > 0;        // prev
   return false;
 };
 
@@ -126,12 +133,12 @@ const HomePage: React.FC = memo(() => {
   const sections = useMemo(
     () => [
       { key: 'hero', node: <Hero /> },
-      { key: 'ecosystem', node: <Ecosystem /> },
-      { key: 'metrics', node: <Metrics /> },
       { key: 'features', node: <Features /> },
       { key: 'technology', node: <Technology /> },
       { key: 'selfient', node: <SelfientPartnership /> },
       { key: 'fractional', node: <FractionalRobots /> },
+      { key: 'metrics', node: <Metrics /> },
+      { key: 'ecosystem', node: <Ecosystem /> },
       //{ key: 'tokenomics', node: <Tokenomics /> },
       //{ key: 'governance', node: <GovernanceProposals /> },
     ],
@@ -155,13 +162,28 @@ const HomePage: React.FC = memo(() => {
     if (el) contentRefs.current[i] = el;
   }, []);
 
-  // Viewport width
-  const vwRef = useRef<number>(typeof window !== 'undefined' ? window.innerWidth : 1280);
+  // Track the active axis size:
+  //  - Horizontal mode uses viewport width
+  //  - Vertical mode uses container height = (viewport height - headerHeight)
+  const [headerHeight, setHeaderHeight] = React.useState<number>(80);
+  const axisRef = useRef<number>(
+    typeof window !== 'undefined'
+      ? (PAGINATE_VERTICAL ? Math.max(0, window.innerHeight - 80) : window.innerWidth)
+      : (PAGINATE_VERTICAL ? 720 : 1280)
+  );
+
   useEffect(() => {
-    const onRes = () => { vwRef.current = window.innerWidth || vwRef.current; };
+    const onRes = () => {
+      if (PAGINATE_VERTICAL) {
+        axisRef.current = Math.max(0, (window.innerHeight || 0) - headerHeight);
+      } else {
+        axisRef.current = window.innerWidth || axisRef.current;
+      }
+    };
     window.addEventListener('resize', onRes);
+    onRes(); // initial
     return () => window.removeEventListener('resize', onRes);
-  }, []);
+  }, [headerHeight]);
 
   // Particle weights → Scene
   const blendRAF = useRef<number | null>(null);
@@ -270,8 +292,8 @@ const HomePage: React.FC = memo(() => {
   };
 
   const trySnapIfThreshold = (dir: 1 | -1) => {
-    const vw = vwRef.current;
-    const thresholdPx = vw * PULL_THRESHOLD_FRAC;
+    const axis = axisRef.current;
+    const thresholdPx = axis * PULL_THRESHOLD_FRAC;
 
     if (Math.abs(pullPxRef.current) >= thresholdPx) {
       const target = dir > 0 ? index + 1 : index - 1;
@@ -287,7 +309,8 @@ const HomePage: React.FC = memo(() => {
   };
 
   // ───────────────────────────────────────────────────────────────────────────
-  // Wheel: let native vertical scroll run; at edge convert delta to horizontal pull.
+  // Wheel: let native vertical scroll run; at edge convert to PAGINATION pull
+  // (horizontal or vertical depending on orientation).
   // Dynamic gain so ~3–4 detents cross threshold (no “freewheel” needed).
   // ───────────────────────────────────────────────────────────────────────────
   const onWheel = useCallback(
@@ -313,11 +336,11 @@ const HomePage: React.FC = memo(() => {
         return;
       }
 
-      // Edge reached → convert to horizontal pull
+      // Edge reached → pull the deck along the active axis
       e.preventDefault();
       setDeckTransitionMs(0);
 
-      const dir: 1 | -1 = dyNorm > 0 ? 1 : -1;
+      const dir: 1 | -1 = dyNorm > 0 ? 1 : -1; // +down = next
       const maxIndex = sections.length - 1;
 
       // Block pull past ends
@@ -329,14 +352,14 @@ const HomePage: React.FC = memo(() => {
       }
 
       // Dynamic gain: ~3.5 detents to reach threshold
-      const vw = vwRef.current;
-      const thresholdPx = vw * PULL_THRESHOLD_FRAC;
+      const axis = axisRef.current;
+      const thresholdPx = axis * PULL_THRESHOLD_FRAC;
       const perDetentTarget = thresholdPx / 3.5;
       const BASE_DETENT_PX = 120; // typical notch in px
       const gain = perDetentTarget / BASE_DETENT_PX;
 
-      const maxPx = vw * PULL_MAX_FRAC;
-      const deltaPx = gain * dyNorm; // +down → positive; subtract to move left
+      const maxPx = axis * PULL_MAX_FRAC;
+      const deltaPx = gain * dyNorm; // +down → positive; subtract to move towards next page
       const nextPx = clamp(pullPxRef.current - deltaPx, -maxPx, maxPx);
       setPullPx(nextPx);
 
@@ -348,6 +371,7 @@ const HomePage: React.FC = memo(() => {
 
   // ───────────────────────────────────────────────────────────────────────────
   // Touch: let native vertical scroll run; only start pull at vertical edge.
+  // Works for both orientations (we always watch vertical content edges).
   // ───────────────────────────────────────────────────────────────────────────
   const tStartY = useRef<number | null>(null);
   const tPrevY = useRef<number | null>(null);
@@ -385,7 +409,7 @@ const HomePage: React.FC = memo(() => {
       return; // no preventDefault → buttery iOS vertical scroll
     }
 
-    // At vertical edge → pull deck horizontally
+    // At vertical edge → pull deck along the active axis
     const dir: 1 | -1 = dyMove > 0 ? 1 : -1;
     const maxIndex = sections.length - 1;
 
@@ -398,8 +422,8 @@ const HomePage: React.FC = memo(() => {
     e.preventDefault(); // now we control the deck
     setDeckTransitionMs(0);
 
-    const vw = vwRef.current;
-    const maxPx = vw * PULL_MAX_FRAC;
+    const axis = axisRef.current;
+    const maxPx = axis * PULL_MAX_FRAC;
 
     const nextPx = clamp(pullPxRef.current - dyMove, -maxPx, maxPx);
     setPullPx(nextPx);
@@ -463,57 +487,60 @@ const HomePage: React.FC = memo(() => {
       window.removeEventListener('touchend', onTouchEnd as EventListener);
     };
   }, [onWheel, onKey, onTouchStart, onTouchMove, onTouchEnd]);
-// Measure and watch the real header height (handles responsive & dynamic changes)
-const [headerHeight, setHeaderHeight] = React.useState<number>(80);
 
-React.useLayoutEffect(() => {
-  if (typeof window === 'undefined') return;
+  // Measure and watch the real header height (handles responsive & dynamic changes)
+  React.useLayoutEffect(() => {
+    if (typeof window === 'undefined') return;
 
-  // Try a few common selectors; tweak to match your Header if needed
-  const selectors = ['#site-header', 'header[role="banner"]', '.site-header', 'header'];
-  let headerEl: HTMLElement | null = null;
-  for (const sel of selectors) {
-    const el = document.querySelector<HTMLElement>(sel);
-    if (el) { headerEl = el; break; }
-  }
+    // Try a few common selectors; tweak to match your Header if needed
+    const selectors = ['#site-header', 'header[role="banner"]', '.site-header', 'header'];
+    let headerEl: HTMLElement | null = null;
+    for (const sel of selectors) {
+      const el = document.querySelector<HTMLElement>(sel);
+      if (el) { headerEl = el; break; }
+    }
 
-  const read = () => {
-    const h = headerEl?.getBoundingClientRect().height ?? 0;
-    setHeaderHeight(Math.round(h));
+    const read = () => {
+      const h = headerEl?.getBoundingClientRect().height ?? 0;
+      setHeaderHeight(Math.round(h));
+    };
+
+    // Initial read
+    read();
+
+    // Watch for size changes
+    let ro: ResizeObserver | null = null;
+    if (headerEl && 'ResizeObserver' in window) {
+      ro = new ResizeObserver(read);
+      ro.observe(headerEl);
+    }
+
+    // Also update on viewport resize (layout shifts)
+    window.addEventListener('resize', read);
+
+    return () => {
+      window.removeEventListener('resize', read);
+      if (ro && headerEl) ro.unobserve(headerEl);
+    };
+  }, []);
+
+  // Styles
+  const containerStyle: React.CSSProperties = {
+    position: 'relative',
+    width: '100vw',
+    height: `calc(100vh - ${headerHeight}px)`,
+    overflow: 'hidden',
+    background: 'var(--color-calm, #fff)',
+    touchAction: 'pan-y', // let vertical pans be native; we intercept only at edges
   };
-
-  // Initial read
-  read();
-
-  // Watch for size changes
-  let ro: ResizeObserver | null = null;
-  if (headerEl && 'ResizeObserver' in window) {
-    ro = new ResizeObserver(read);
-    ro.observe(headerEl);
-  }
-
-  // Also update on viewport resize (layout shifts)
-  window.addEventListener('resize', read);
-
-  return () => {
-    window.removeEventListener('resize', read);
-    if (ro && headerEl) ro.unobserve(headerEl);
-  };
-}, []);
-// Styles
-const containerStyle: React.CSSProperties = {
-  position: 'relative',
-  width: '100vw',
-  height: `calc(100vh - ${headerHeight}px)`,
-  overflow: 'hidden',
-  background: 'var(--color-calm, #fff)',
-  touchAction: 'pan-y', // let vertical pans be native; we intercept only at edges
-};
 
   const sceneParams = sceneParamsByPage[index] ?? sceneParamsByPage[0];
 
   // Compose transform: base index translate + pull (px)
-  const deckTransform = `translate3d(calc(${-index * 100}vw + ${pullPx}px), 0, 0)`;
+  const deckTransform = PAGINATE_VERTICAL
+    // Move by container height (100vh - headerHeight) per page
+    ? `translate3d(0, calc(${ -index } * (100vh - ${headerHeight}px) + ${pullPx}px), 0)`
+    : `translate3d(calc(${ -index * 100 }vw + ${pullPx}px), 0, 0)`;
 
   return (
     <div style={containerStyle} aria-live="polite">
@@ -530,7 +557,7 @@ const containerStyle: React.CSSProperties = {
         />
       </div>
 
-      {/* HORIZONTAL RAIL OF FULL-PAGE SLIDES */}
+      {/* FULL-PAGE SLIDES: direction depends on PAGINATE_VERTICAL */}
       <div
         ref={deckRef}
         style={{
@@ -540,9 +567,10 @@ const containerStyle: React.CSSProperties = {
           transform: deckTransform,
           transition: `transform ${deckTransitionMs}ms cubic-bezier(.2,.8,.2,1)`,
           display: 'flex',
-          flexDirection: 'row',
-          width: `${sections.length * 100}vw`,
-          height: '100%',
+          flexDirection: PAGINATE_VERTICAL ? 'column' : 'row',
+          width: PAGINATE_VERTICAL ? '100%' : `${sections.length * 100}vw`,
+          // For vertical mode, stack N slides tall relative to container height
+          height: PAGINATE_VERTICAL ? `${sections.length * 100}%` : '100%',
           willChange: 'transform',
           overscrollBehavior: 'contain',
         }}
@@ -550,18 +578,22 @@ const containerStyle: React.CSSProperties = {
         {sections.map((s, i) => {
           const isActive = i === index;
           const offset = isActive ? 0 : (i > index ? 15 : -15);
+          const slideTransform = PAGINATE_VERTICAL
+            ? `translateY(${offset}px)`
+            : `translateX(${offset}px)`;
+
           return (
             <div
               key={s.key}
               ref={(el) => setSlideRef(el, i)}
               style={{
-                width: '100vw',
+                width: PAGINATE_VERTICAL ? '100%' : '100vw',
                 height: '100%',
                 overflow: 'auto',
                 overscrollBehavior: 'contain',
                 WebkitOverflowScrolling: 'touch', // iOS momentum on slides
                 boxSizing: 'border-box',
-                transform: `translateX(${offset}px)`,
+                transform: slideTransform,
                 transition: `transform ${TRANSITION_MS}ms cubic-bezier(.2,.8,.2,1)`,
                 background: 'transparent',
               }}
@@ -579,22 +611,22 @@ const containerStyle: React.CSSProperties = {
         })}
       </div>
 
-          {/* Top pagination bars (1px below header) */}
+      {/* Top pagination bars (1px below header) */}
       <div
         role="tablist"
         aria-label="Page navigation"
         style={{
-          position: 'fixed',                // stays aligned to header regardless of slide transform
+          position: 'fixed',
           left: 0,
           right: 0,
-          top: `${headerHeight + 0}px`,     // 1px below the header
+          top: `${headerHeight + 0}px`,
           zIndex: 10,
           padding: '0 0px',
           display: 'flex',
           alignItems: 'center',
           gap: 1,
-          pointerEvents: 'auto',            // set to 'none' if you want it non-interactive
-          height: 1,                       // small hit area for clicks/taps
+          pointerEvents: 'auto',
+          height: 1,
         }}
       >
         {sections.map((s, i) => {
@@ -610,8 +642,8 @@ const containerStyle: React.CSSProperties = {
               aria-selected={isActive}
               aria-label={`Go to ${s.key}`}
               style={{
-                flex: 1,                     // equidistant segments across the width
-                height: 5,                   // “line” thickness
+                flex: 1,
+                height: 5,
                 background: isActive ? '#00000022' : '#00000011',
                 border: 'none',
                 borderRadius: 1,
@@ -624,7 +656,6 @@ const containerStyle: React.CSSProperties = {
           );
         })}
       </div>
-
     </div>
   );
 });

@@ -33,7 +33,7 @@
 }
 
 .gradientText {
-  color: #000000;
+mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;  color: #000000;
 }
 
 .subtitle {
@@ -635,7 +635,7 @@
   }
 
   .gradientText {
-    background: none;
+mask:linear-gradient(to right, #00000088, #000000aa,#000000cc,#000000aa, #00000088);opacity:1;    background: none;
     -webkit-text-fill-color: initial;
     color: #ffffff;
   }

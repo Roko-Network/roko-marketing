@@ -389,7 +389,6 @@
 /* Large screens */
 @media (min-width: 1920px) {
   .main {
-    padding-top: 88px; /* Slightly larger header spacing */
   }
 }
 
