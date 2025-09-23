@@ -100,7 +100,7 @@ const TechnologyPage: React.FC<TechnologyPageProps> = memo(({ section }) => {
             <h2 className={styles.sectionTitle}>Consensus Mechanism</h2>
             <p className={styles.cardDescription}>
               Temporal Proof of Stake (TPoS) ensures both security and temporal accuracy,
-              creating a revolutionary consensus mechanism built for time-sensitive applications.
+              creating a novel consensus mechanism built for time-sensitive applications.
             </p>
           </motion.div>
         )}
