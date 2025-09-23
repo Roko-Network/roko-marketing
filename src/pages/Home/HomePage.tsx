@@ -312,7 +312,7 @@ const HomePage: React.FC = memo(() => {
       </div>
 
       {/* SCROLLABLE CONTENT WRAPPER (height = vh - header, overflow: auto) */}
-      <div ref={scrollRef} style={scrollContainerStyle}>
+      <div ref={scrollRef} style={scrollContainerStyle} data-scroll-container="true">
         {sections.map((s, i) => (
           <section
             key={s.key}

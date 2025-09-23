@@ -1,4 +1,4 @@
-import React, { FC, useState, useCallback, useMemo, useEffect } from 'react';
+import React, { FC, useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import {
@@ -117,7 +117,63 @@ const integrations: Integration[] = [
 ];
 
 export const Ecosystem: FC = () => {
-  const [ref, inView] = useInView({ threshold: 0.1, triggerOnce: true });
+  const fallbackInView = typeof window === 'undefined' ? true : !('IntersectionObserver' in window);
+  const [observerRef, inView] = useInView({
+    threshold: 0.1,
+    triggerOnce: true,
+    rootMargin: '120px 0px',
+    fallbackInView,
+  });
+
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const setSectionRef = useCallback((node: HTMLElement | null) => {
+    sectionRef.current = node;
+    observerRef(node);
+  }, [observerRef]);
+
+  const [hasBeenVisible, setHasBeenVisible] = useState(() => fallbackInView);
+
+  useEffect(() => {
+    if (inView) {
+      setHasBeenVisible(true);
+    }
+  }, [inView]);
+
+  // Safari/Brave occasionally fail the IntersectionObserver when the section lives in a nested scroll container.
+  // Manually check the bounding box as a safety net so content never stays hidden.
+  const ensureVisible = useCallback(() => {
+    const el = sectionRef.current;
+    if (!el || typeof window === 'undefined') return;
+
+    const rect = el.getBoundingClientRect();
+    const viewportHeight = window.innerHeight || document.documentElement?.clientHeight || 0;
+
+    if (rect.top <= viewportHeight * 0.95 && rect.bottom >= viewportHeight * 0.05) {
+      setHasBeenVisible(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (hasBeenVisible || typeof window === 'undefined') return;
+
+    ensureVisible();
+
+    const scrollContainer = sectionRef.current?.closest('[data-scroll-container]') as (HTMLElement | null);
+    const scrollTarget: HTMLElement | (Window & typeof globalThis) = scrollContainer ?? window;
+
+    const handleScroll = () => ensureVisible();
+    const handleResize = () => ensureVisible();
+
+    scrollTarget.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      scrollTarget.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [ensureVisible, hasBeenVisible]);
+
+  const isVisible = hasBeenVisible || inView;
   const [selectedCategory, setSelectedCategory] =
     useState<'all' | 'partners' | 'service-providers' | 'built-on'>('all');
 
@@ -186,7 +242,7 @@ export const Ecosystem: FC = () => {
 
   return (
     <section
-      ref={ref}
+      ref={setSectionRef}
       className={styles.ecosystem}
       role="region"
       aria-label="ROKO Network ecosystem and partnerships"
@@ -197,7 +253,7 @@ export const Ecosystem: FC = () => {
         {/* Header */}
         <motion.div className={styles.header}
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}>
           <h2 className={styles.title}><span className={styles.gradientText}>Thriving Ecosystem</span></h2>
           <p className={styles.subtitle}>Join a growing community of developers, enterprises, and innovators
@@ -205,7 +261,7 @@ export const Ecosystem: FC = () => {
         </motion.div>
 
         {/* Partners */}
-        <motion.div className={styles.partnersSection} variants={containerVariants} initial="hidden" animate={inView ? 'visible' : 'hidden'}>
+        <motion.div className={styles.partnersSection} variants={containerVariants} initial="hidden" animate={isVisible ? 'visible' : 'hidden'}>
           <motion.div className={styles.categoryFilters} variants={itemVariants}>
             {(['all', 'partners', 'service-providers', 'built-on'] as const).map((category) => (
               <button
@@ -236,7 +292,7 @@ export const Ecosystem: FC = () => {
                   className={`${styles.partnerCard} ${partner.featured ? styles.featured : ''}`}
                   whileHover={{ y: -4 }}
                   initial={{ opacity: 0, y: 20 }}
-                  animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}
                 >
                   <div className={styles.partnerLogo}>
@@ -284,7 +340,7 @@ export const Ecosystem: FC = () => {
         </motion.div>
 
         {/* Featured Solutions */}
-        <motion.div className={styles.solutionsSection} variants={containerVariants} initial="hidden" animate={inView ? 'visible' : 'hidden'}>
+        <motion.div className={styles.solutionsSection} variants={containerVariants} initial="hidden" animate={isVisible ? 'visible' : 'hidden'}>
           <motion.div className={styles.sectionHeader} variants={itemVariants}>
             <h3>Featured Solutions</h3>
             <p>Innovative applications and infrastructure being developed on ROKO Network</p>
@@ -297,7 +353,7 @@ export const Ecosystem: FC = () => {
                 className={styles.solutionCard}
                 whileHover={{ scale: 1.02, y: -2 }}
                 initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.15 }}
               >
                 <div className={styles.solutionImage}>
@@ -323,7 +379,7 @@ export const Ecosystem: FC = () => {
         </motion.div>
 
         {/* Integrations */}
-        <motion.div className={styles.integrationsSection} variants={containerVariants} initial="hidden" animate={inView ? 'visible' : 'hidden'}>
+        <motion.div className={styles.integrationsSection} variants={containerVariants} initial="hidden" animate={isVisible ? 'visible' : 'hidden'}>
           <motion.div className={styles.sectionHeader} variants={itemVariants}>
             <h3>Integration Options</h3>
             <p>BETA</p>
@@ -335,7 +391,7 @@ export const Ecosystem: FC = () => {
                 key={integration.name}
                 className={styles.integrationCard}
                 initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <div className={styles.integrationIcon}>
@@ -352,7 +408,7 @@ export const Ecosystem: FC = () => {
         </motion.div>
 
         {/* CTA */}
-        <motion.div className={styles.partnershipCta} variants={itemVariants} initial="hidden" animate={inView ? 'visible' : 'hidden'}>
+        <motion.div className={styles.partnershipCta} variants={itemVariants} initial="hidden" animate={isVisible ? 'visible' : 'hidden'}>
           <div className={styles.ctaContent}>
             <h3>Join Our Ecosystem</h3>
             <p>
