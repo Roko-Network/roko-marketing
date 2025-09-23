@@ -161,7 +161,13 @@ export const TokenStats: React.FC<TokenStatsProps> = memo(({
         </span>
         {stats && stats.lastUpdated && (
           <span className={styles.lastUpdate}>
-            Last updated: {new Date(stats.lastUpdated).toLocaleTimeString()}
+            Last updated: {(() => {
+              // Safari requires ISO 8601 format - convert "2025-09-23 03:31:23 UTC" to ISO format
+              const isoDate = stats.lastUpdated.replace(' UTC', 'Z').replace(' ', 'T');
+              const date = new Date(isoDate);
+              // Fallback if date is still invalid
+              return isNaN(date.getTime()) ? 'Recently' : date.toLocaleTimeString();
+            })()}
           </span>
         )}
       </div>
