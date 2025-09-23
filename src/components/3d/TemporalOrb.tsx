@@ -215,7 +215,7 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
           transparent
           opacity={0.01}
           wireframe
-          blending={THREE.AdditiveBlending}
+          blending={THREE.SubtractEquation}
         />
       </mesh>
 
@@ -226,7 +226,7 @@ export const TemporalOrb: React.FC<TemporalOrbProps> = ({
           color="#000000ff"
           transparent
           opacity={0.1}
-          blending={THREE.AdditiveBlending}
+          blending={THREE.SubtractiveBlending}
           wireframe
         />
       </mesh>
