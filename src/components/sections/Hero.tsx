@@ -67,18 +67,17 @@ export const Hero: FC<HeroProps> = () => {
         animate={inView ? 'visible' : 'hidden'}
       >
 
-
-            <motion.span
-              className={styles.mainSubheader}
-              variants={containerVariants}
-            >
-              ROKO NETWORK
-            </motion.span>
+        <motion.span
+          className={styles.mainSubheader}
+          variants={containerVariants}
+        >
+          ROKO NETWORK
+        </motion.span>
         {/* Main Headline */}
         <motion.div className={styles.headlineContainer} variants={itemVariants}>
 
           <h1 className={styles.mainHeader}>
-            <span className={styles.gradientText}>DECENTRALIZED TIME</span>
+            <span className={styles.gradientText}>TIME DECENTRALIZED</span>
           </h1>
         </motion.div>
         {/* Main Headline */}

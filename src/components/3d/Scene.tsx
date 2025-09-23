@@ -24,7 +24,7 @@ const CONFIG = {
   // global timing (drives all dramatic beats)
   timing: {
     bpm: 92,          // master tempo
-    swing: 0.1,       // 0..0.25 (push/pull off-beats)
+    swing: 0.04,       // 0..0.25 (push/pull off-beats)
     barBeats: 4,      // 4/4 feel
     pulseDecay: 1.6   // how fast flash decays (per second)
   },
@@ -32,11 +32,11 @@ const CONFIG = {
   // beat-visuals
   pulses: {
     enabled: true,
-    max: 12,
-    segments: 128,
-    lifeSec: 1.25,
-    expand: 10.0,     // how far rings bloom from DAO radius
-    brightness: 1.2   // extra glow
+    max: 33,
+    segments: 66,
+    lifeSec: 1,
+    expand: 5.0,     // how far rings bloom from DAO radius
+    brightness: 0.8   // extra glow
   },
 
   metronome: {
@@ -105,7 +105,7 @@ const CONFIG = {
   // particle-to-icosahedron spline links (grayscale)
   linkSplines: {
     enabled: true,
-    count: 100,
+    count: 66,
     segments: 12,
     wiggleAmp: 0.5,
     wiggleFreq: 1.4,
@@ -372,7 +372,7 @@ const ParticlesSystem: React.FC<{
   const linkCfg = CONFIG.linkSplines;
   const LINK_COUNT = linkCfg.count;
   const LINK_SEG = linkCfg.segments;
-  const linkStride = LINK_SEG * 3;
+  const linkStride = LINK_SEG * 0.5;
   const linkPos = useMemo(() => new Float32Array(LINK_COUNT * linkStride), [LINK_COUNT, linkStride]);
   const linkCol = useMemo(() => new Float32Array(LINK_COUNT * linkStride), [LINK_COUNT, linkStride]);
   const linkLife = useMemo(() => new Float32Array(LINK_COUNT).fill(1), [LINK_COUNT]);
